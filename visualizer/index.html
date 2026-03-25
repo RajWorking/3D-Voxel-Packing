@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Object Mesh Simulator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="panel">
+      <div class="panel-block">
+        <p class="eyebrow">3D Viewer</p>
+        <h1>Object Mesh Simulator</h1>
+        <p class="panel-copy">
+          Visualize point-based 3D objects from a JSON file. Drag on the canvas to rotate the scene.
+        </p>
+      </div>
+
+      <div class="panel-block controls">
+        <button id="load-default-button" type="button">Load objects.json</button>
+        <button id="open-file-button" type="button">Open JSON File</button>
+        <input id="file-input" class="visually-hidden" type="file" accept=".json,application/json">
+        <p class="file-name" id="file-name">No file selected</p>
+        <button id="reset-view-button" type="button">Reset View</button>
+      </div>
+
+      <div class="panel-block">
+        <div class="stat-grid">
+          <div>
+            <p class="stat-label">Objects</p>
+            <p class="stat-value" id="object-count">0</p>
+          </div>
+          <div>
+            <p class="stat-label">Points</p>
+            <p class="stat-value" id="point-count">0</p>
+          </div>
+        </div>
+        <p class="status" id="status">Loading scene…</p>
+      </div>
+
+      <div class="panel-block">
+        <h2>Legend</h2>
+        <div class="legend" id="legend"></div>
+      </div>
+    </aside>
+
+    <main class="viewer-panel">
+      <canvas id="scene" aria-label="3D object viewer"></canvas>
+      <aside class="axis-controls" aria-label="Rotation controls">
+        <p class="axis-title">Rotation</p>
+        <label class="axis-row" for="rotate-x">
+          <span>X</span>
+          <input id="rotate-x" type="range" min="-180" max="180" value="0" step="1">
+          <output id="rotate-x-value" for="rotate-x">0°</output>
+        </label>
+        <label class="axis-row" for="rotate-y">
+          <span>Y</span>
+          <input id="rotate-y" type="range" min="-180" max="180" value="0" step="1">
+          <output id="rotate-y-value" for="rotate-y">0°</output>
+        </label>
+        <label class="axis-row" for="rotate-z">
+          <span>Z</span>
+          <input id="rotate-z" type="range" min="-180" max="180" value="0" step="1">
+          <output id="rotate-z-value" for="rotate-z">0°</output>
+        </label>
+      </aside>
+      <div class="viewer-hint">Use sliders to rotate. Drag to move. Scroll to zoom.</div>
+    </main>
+  </div>
+
+  <script src="viewer.js"></script>
+</body>
+</html>

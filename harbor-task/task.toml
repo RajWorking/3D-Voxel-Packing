@@ -1,0 +1,12 @@
+[task]
+name        = "3d-voxel-bin-packing"
+description = "Pack 10 irregularly-shaped 3D voxel objects (tray, 4 bowls, glass, 2 forks, stirrer, lid) into the minimum axis-aligned bounding box using only rigid transformations."
+version     = "1.0"
+
+[agent]
+user = "user"
+
+[scoring]
+# Verifier exits 0 on valid packing, 1 on invalid.
+# Continuous volume score is written to /tmp/score.txt by the verifier.
+reference_volume = 490
