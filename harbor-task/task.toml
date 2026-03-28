@@ -1,6 +1,6 @@
 [task]
 name        = "3d-voxel-bin-packing"
-description = "Pack 10 irregularly-shaped 3D voxel objects (tray, 4 bowls, glass, 2 forks, stirrer, lid) into the minimum axis-aligned bounding box using only rigid transformations."
+description = "Pack 10 irregularly-shaped 3D voxel objects into the minimum axis-aligned bounding box using only rigid transformations."
 version     = "1.0"
 
 [agent]

@@ -154,12 +154,28 @@ button:hover {
 
 .legend-item {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr auto auto;
   gap: 10px;
   align-items: center;
   padding: 10px 12px;
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.72);
+}
+
+.legend-toggle {
+  min-width: 50px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.legend-toggle.is-on {
+  border-color: rgba(78, 58, 34, 0.28);
+}
+
+.legend-toggle.is-off {
+  opacity: 0.72;
 }
 
 .swatch {

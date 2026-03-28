@@ -49,10 +49,23 @@ const state = {
   zoom: 30,
   defaultZoom: 30,
   scene: null,
+  hiddenObjectNames: new Set(),
   pointerActive: false,
   lastPointerX: 0,
   lastPointerY: 0
 };
+
+function isObjectVisible(name) {
+  return !state.hiddenObjectNames.has(name);
+}
+
+function toggleObjectVisibility(name) {
+  if (state.hiddenObjectNames.has(name)) {
+    state.hiddenObjectNames.delete(name);
+  } else {
+    state.hiddenObjectNames.add(name);
+  }
+}
 
 function dedupePoints(points) {
   const seen = new Set();
@@ -402,7 +415,9 @@ function render() {
     drawAxisLabel(axis.label, axis.end, axis.color);
   });
 
-  const edges = projectedScene.objects
+  const visibleObjects = projectedScene.objects.filter((object) => isObjectVisible(object.name));
+
+  const edges = visibleObjects
     .flatMap((object) => object.projectedEdges.map((edge) => ({
       ...edge,
       color: withAlpha(object.color, 0.14)
@@ -413,7 +428,7 @@ function render() {
     drawLine(edge.start, edge.end, edge.color, 1.5);
   });
 
-  const points = projectedScene.objects
+  const points = visibleObjects
     .flatMap((object) => object.projectedPoints.map((point) => ({
       ...point,
       color: object.color
@@ -432,13 +447,23 @@ function renderLegend(objects) {
   legendElement.innerHTML = "";
 
   objects.forEach((object) => {
+    const visible = isObjectVisible(object.name);
     const item = document.createElement("div");
     item.className = "legend-item";
     item.innerHTML = `
       <span class="swatch" style="background:${object.color}"></span>
       <span class="legend-name">${object.name}</span>
+      <button class="legend-toggle ${visible ? "is-on" : "is-off"}" type="button" aria-pressed="${visible}" aria-label="Toggle ${object.name}">${visible ? "On" : "Off"}</button>
       <span class="legend-count">${object.points.length} pts</span>
     `;
+
+    const toggleButton = item.querySelector(".legend-toggle");
+    toggleButton.addEventListener("click", () => {
+      toggleObjectVisibility(object.name);
+      renderLegend(state.scene.objects);
+      render();
+    });
+
     legendElement.appendChild(item);
   });
 }
@@ -450,6 +475,7 @@ function updateStats(scene) {
 
 function loadScene(rawData, label) {
   state.scene = flattenObjects(rawData);
+  state.hiddenObjectNames = new Set();
   renderLegend(state.scene.objects);
   updateStats(state.scene);
   statusElement.textContent = `Loaded ${label}.`;

@@ -6,12 +6,15 @@ RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
     python3-numpy \
+    tmux \
+    asciinema \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy task files into container
-COPY . /task/
+RUN useradd -m -s /bin/bash user
 
-# Create working directory for agent output
-RUN mkdir -p /home/user && chmod 777 /home/user
+RUN mkdir -p /task
+COPY objects.json /task/objects.json
+COPY tools/ /task/tools/
+COPY instruction.md /task/instruction.md
 
 WORKDIR /home/user
