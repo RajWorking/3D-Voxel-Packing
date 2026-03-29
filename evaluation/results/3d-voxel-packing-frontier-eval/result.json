@@ -12,15 +12,15 @@
                 "n_errors": 0,
                 "metrics": [
                     {
-                        "mean": 0.7886500000000001
+                        "mean": 0.83795
                     }
                 ],
                 "reward_stats": {
                     "reward": {
-                        "0.8": [
+                        "0.85": [
                             "harbor-task__6e55sva"
                         ],
-                        "0.7773": [
+                        "0.8259": [
                             "harbor-task__5GEh2LW"
                         ]
                     }
@@ -32,15 +32,15 @@
                 "n_errors": 0,
                 "metrics": [
                     {
-                        "mean": 0.8654999999999999
+                        "mean": 0.91955
                     }
                 ],
                 "reward_stats": {
                     "reward": {
-                        "0.8421": [
+                        "0.8947": [
                             "harbor-task__XWgY7X9"
                         ],
-                        "0.8889": [
+                        "0.9444": [
                             "harbor-task__BkZ6RKr"
                         ]
                     }
@@ -52,15 +52,15 @@
                 "n_errors": 0,
                 "metrics": [
                     {
-                        "mean": 0.8706
+                        "mean": 0.925
                     }
                 ],
                 "reward_stats": {
                     "reward": {
-                        "0.9412": [
+                        "1.0": [
                             "harbor-task__63mBPxB"
                         ],
-                        "0.8": [
+                        "0.85": [
                             "harbor-task__fLGjfWw"
                         ]
                     }

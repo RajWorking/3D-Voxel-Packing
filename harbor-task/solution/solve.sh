@@ -30,29 +30,26 @@ place() { python3 /task/tools/place_object.py "$@"; }
 python3 /task/tools/check_state.py
 echo
 
+# ── Ball ──────────────────────────────────────────────────────────────────────
+place ball  xyz +++ 2 0 0
+
 # ── Bowls (12 × 4 × 6 each) ───────────────────────────────────────────────────
-# 5 identical bowls — key challenge. Use inspect_object.py to find orientations
-# that allow tight packing (e.g. rotate to 6×4×12 via perm="zyx" to stack along x).
-place bowl1 xyz +++ 0 0 0    # natural orientation
-place ball  xyz +++ 0 1 0    # between bowl1 (y=0..4) and bowl2 (y=6..)
-place bowl2 xyz +-+ 0 6 0    # y-flipped, beside bowl1 in y
+place bowl1 xyz +++ 1 5 0
+place bowl2 xyz +++ 1 7 0
+place bowl3 yxz +++ 10 0 0
+place bowl4 yxz +++ 12 0 0
+place bowl5 yxz -++ 0 0 0
 
-place bowl3 xyz +++ 12 0 0   # separate stack
-place bowl4 xyz +++ 12 2 0   # on top of bowl3 along y
-place bowl5 xyz +++ 12 4 0   # on top of bowl4 along y
-
-# ── Flat objects (donut1: 8×4×1, donut2: 6×4×1, chocolate: 6×4×1) ────────────
-# All 1-unit thick — can fill gaps on top of or beside the bowls.
-place donut1    xyz +++ 0 0 0   # TODO: pick best orientation and offset
-place donut2    xyz +++ 0 0 0   # TODO: pick best orientation and offset
-place chocolate xyz +++ 0 0 0   # TODO: pick best orientation and offset
+# ── Flat objects ──────────────────────────────────────────────────────────────
+place donut1    zxy +++ 16 2 0
+place donut2    yzx +++ 5 9 0
+place chocolate xzy +++ 4 11 0
 
 # ── Match boxes (3 × 2 × 3 each) ──────────────────────────────────────────────
-# Small — good gap fillers. Can be rotated to 2×3×3 or 3×3×2 etc.
-place match_box1 xyz +++ 0 0 0  # TODO: pick best orientation and offset
-place match_box2 xyz +++ 0 0 0  # TODO: pick best orientation and offset
-place match_box3 xyz +++ 0 0 0  # TODO: pick best orientation and offset
-place match_box4 xyz +++ 0 0 0  # TODO: pick best orientation and offset
+place match_box1 xyz +++ 14 0 0
+place match_box2 xyz +++ 14 10 0
+place match_box3 xyz +++ 14 0 3
+place match_box4 xyz +++ 14 10 3
 
 echo
 python3 /task/tools/finalize.py
