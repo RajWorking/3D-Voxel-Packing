@@ -1,0 +1,48 @@
+New Terminal Output:
+36
+user@a85be64098f5:~$ python3 /task/tools/place_object.py bowl1 xyz +++ 0 0 0
+PLACED bowl1
+  Transform : perm=xyz signs=+++ offset=(0,0,0)
+  Voxels    : 108
+  Range     : x=[0,11] y=[0,3] z=[0,5]
+  Bounding box so far: 12 x 4 x 6 = 288
+Bounding box: 12 x 4 x 6 = 288
+Placed   (1): bowl1
+Unplaced (12): ball, bowl2, bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+user@a85be64098f5:~$ python3 /task/tools/place_object.py bowl2 xyz +++ 0 2 0
+PLACED bowl2
+  Transform : perm=xyz signs=+++ offset=(0,2,0)
+  Voxels    : 108
+  Range     : x=[0,11] y=[2,5] z=[0,5]
+  Bounding box so far: 12 x 6 x 6 = 432
+Bounding box: 12 x 6 x 6 = 432
+Placed   (2): bowl1, bowl2
+Unplaced (11): ball, bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+user@a85be64098f5:~$ python3 /task/tools/place_object.py bowl3 xyz +++ 0 4 0
+PLACED bowl3
+  Transform : perm=xyz signs=+++ offset=(0,4,0)
+  Voxels    : 108
+  Range     : x=[0,11] y=[4,7] z=[0,5]
+  Bounding box so far: 12 x 8 x 6 = 576
+Bounding box: 12 x 8 x 6 = 576
+Placed   (3): bowl1, bowl2, bowl3
+Unplaced (10): ball, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+user@a85be64098f5:~$ python3 /task/tools/place_object.py bowl4 xyz +++ 0 6 0
+PLACED bowl4
+  Transform : perm=xyz signs=+++ offset=(0,6,0)
+  Voxels    : 108
+  Range     : x=[0,11] y=[6,9] z=[0,5]
+  Bounding box so far: 12 x 10 x 6 = 720
+Bounding box: 12 x 10 x 6 = 720
+Placed   (4): bowl1, bowl2, bowl3, bowl4
+Unplaced (9): ball, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+user@a85be64098f5:~$ python3 /task/tools/place_object.py bowl5 xyz +++ 0 8 0
+PLACED bowl5
+  Transform : perm=xyz signs=+++ offset=(0,8,0)
+  Voxels    : 108
+  Range     : x=[0,11] y=[8,11] z=[0,5]
+  Bounding box so far: 12 x 12 x 6 = 864
+Bounding box: 12 x 12 x 6 = 864
+Placed   (5): bowl1, bowl2, bowl3, bowl4, bowl5
+Unplaced (8): ball, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+user@a85be64098f5:~$

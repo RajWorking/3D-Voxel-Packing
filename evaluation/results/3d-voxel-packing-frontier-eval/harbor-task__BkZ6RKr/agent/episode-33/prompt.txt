@@ -1,0 +1,68 @@
+New Terminal Output:
+96
+user@a85be64098f5:~$ python3 /task/tools/remove_object.py bowl1
+REMOVED bowl1
+Bounding box: 12 x 20 x 6 = 1440
+Placed   (12): ball, bowl2, bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+Unplaced (1): bowl1
+user@a85be64098f5:~$ python3 /task/tools/remove_object.py bowl2
+REMOVED bowl2
+Bounding box: 12 x 20 x 6 = 1440
+Placed   (11): ball, bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+Unplaced (2): bowl1, bowl2
+user@a85be64098f5:~$ python3 /task/tools/remove_object.py bowl3
+REMOVED bowl3
+Bounding box: 12 x 20 x 6 = 1440
+Placed   (10): ball, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+Unplaced (3): bowl1, bowl2, bowl3
+user@a85be64098f5:~$ python3 /task/tools/remove_object.py bowl4
+REMOVED bowl4
+Bounding box: 12 x 20 x 6 = 1440
+Placed   (9): ball, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+Unplaced (4): bowl1, bowl2, bowl3, bowl4
+user@a85be64098f5:~$ python3 /task/tools/remove_object.py bowl5
+REMOVED bowl5
+Bounding box: 11 x 20 x 6 = 1320
+Placed   (8): ball, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+Unplaced (5): bowl1, bowl2, bowl3, bowl4, bowl5
+user@a85be64098f5:~$ python3 /task/tools/remove_object.py ball
+REMOVED ball
+Bounding box: 11 x 14 x 6 = 924
+Placed   (7): chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+Unplaced (6): ball, bowl1, bowl2, bowl3, bowl4, bowl5
+user@a85be64098f5:~$ python3 /task/tools/remove_object.py donut1
+REMOVED donut1
+Bounding box: 11 x 13 x 6 = 858
+Placed   (6): chocolate, donut2, match_box1, match_box2, match_box3, match_box4
+Unplaced (7): ball, bowl1, bowl2, bowl3, bowl4, bowl5, donut1
+user@a85be64098f5:~$ python3 /task/tools/remove_object.py chocolate
+REMOVED chocolate
+Bounding box: 11 x 12 x 6 = 792
+Placed   (5): donut2, match_box1, match_box2, match_box3, match_box4
+Unplaced (8): ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut1
+user@a85be64098f5:~$ python3 /task/tools/remove_object.py donut2
+REMOVED donut2
+Bounding box: 11 x 3 x 6 = 198
+Placed   (4): match_box1, match_box2, match_box3, match_box4
+Unplaced (9): ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut1, donut2
+user@a85be64098f5:~$ python3 /task/tools/remove_object.py match_box1
+REMOVED match_box1
+Bounding box: 11 x 3 x 6 = 198
+Placed   (3): match_box2, match_box3, match_box4
+Unplaced (10): ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1
+user@a85be64098f5:~$ python3 /task/tools/remove_object.py match_box2
+REMOVED match_box2
+Bounding box: 3 x 2 x 6 = 36
+Placed   (2): match_box3, match_box4
+Unplaced (11): ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2
+user@a85be64098f5:~$ python3 /task/tools/remove_object.py match_box3
+REMOVED match_box3
+Bounding box: 3 x 2 x 3 = 18
+Placed   (1): match_box4
+Unplaced (12): ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3
+user@a85be64098f5:~$ python3 /task/tools/remove_object.py match_box4
+REMOVED match_box4
+Bounding box: none (no objects placed yet)
+Placed   (0): —
+Unplaced (13): ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+user@a85be64098f5:~$

@@ -1,0 +1,176 @@
+Previous response had warnings:
+WARNINGS: - Extra text detected before JSON object
+- Extra text detected after JSON object
+- Command 1 should end with newline when followed by another command. Otherwise the two commands will be concatenated together on the same line.
+
+New Terminal Output:
+
+Trying box 14x12x8...
+^CTraceback (most recent call last):
+  File "/home/user/solve.py", line 76, in <module>
+    if solve(0):
+  File "/home/user/solve.py", line 69, in solve
+    if solve(idx + 1):
+  File "/home/user/solve.py", line 69, in solve
+    if solve(idx + 1):
+  File "/home/user/solve.py", line 69, in solve
+    if solve(idx + 1):
+  File "/home/user/solve.py", line 65, in solve
+    if not np.any(grid[x:x+sx, y:y+sy, z:z+sz] & obj_grid):
+  File "<__array_function__ internals>", line 2, in any
+KeyboardInterrupt
+
+user@9732490332b2:~$ cat << 'EOF' > greedy_pack.py
+max_c = v.max(axis=0)
+                obj_grid = np.zeros(max_c + 1, dtype=bool)
+                for voxel in v:
+                    obj_grid[tuple(voxel)] = True
+                syms.append((v, perm_str, signs_str, obj_grid))
+    return syms
+
+syms_dict = {name: get_symmetries(voxels) for name, voxels in objects.items()}
+ordered_names = sorted(objects.keys(), key=lambda name: len(objects[name]), reverse=True)
+
+best_vol = float('inf')
+best_placements = None
+
+start_time = time.time()
+iterations = 0
+
+BOX_X, BOX_Y, BOX_Z = 14, 14, 10
+
+while time.time() - start_time < 20:
+    iterations += 1
+    grid = np.zeros((BOX_X, BOX_Y, BOX_Z), dtype=bool)
+    placements = {}
+    success = True
+
+    # Randomize order slightly, but keep big objects first
+    names = ordered_names[:6] + random.sample(ordered_names[6:], len(ordered_names)-6)
+
+    for name in names:
+        placed = False
+        syms = syms_dict[name]
+        random.shuffle(syms)
+
+        for sym_voxels, perm_str, signs_str, obj_grid in syms:
+  > import json
+> import numpy as np
+> import random
+> import time
+>
+> with open('/task/objects.json') as f:
+>     objs = json.load(f)
+>
+> def get_voxels(name):
+>     voxels = []
+>     for layer in objs[name].values():
+>         voxels.extend(layer)
+>     return np.array(voxels)
+>
+> objects = {name: get_voxels(name) for name in objs.keys()}
+>
+> def get_symmetries(voxels):
+>     syms = []
+>     for perm in [(0,1,2), (0,2,1), (1,0,2), (1,2,0), (2,0,1), (2,1,0)]:
+>         for signs in [(1,1,1), (1,1,-1), (1,-1,1), (1,-1,-1), (-1,1,1), (-1,1,-1), (-1,-1,1), (-1,-1,-1)]:
+>             v = voxels[:, perm] * signs
+>             v = v - v.min(axis=0)
+>             is_new = True
+>             for s, _, _, _ in syms:
+>                 if v.shape == s.shape and set(map(tuple, v)) == set(map(tuple, s)):
+>                     is_new = False
+>                     break
+>             if is_new:
+>                 perm_str = "".join(["xyz"[i] for i in perm])
+>                 signs_str = "".join(["+" if s == 1 else "-" for s in signs])
+>                 max_c = v.max(axis=0)
+>                 obj_grid = np.zeros(max_c + 1, dtype=bool)
+>                 for voxel in v:
+>                     obj_grid[tuple(voxel)] = True
+>                 syms.append((v, perm_str, signs_str, obj_grid))
+>     return syms
+>
+> syms_dict = {name: get_symmetries(voxels) for name, voxels in objects.items()}
+> ordered_names = sorted(objects.keys(), key=lambda name: len(objects[name]), reverse=True)
+>
+> best_vol = float('inf')
+> best_placements = None
+>
+> start_time = time.time()
+> iterations = 0
+>
+> BOX_X, BOX_Y, BOX_Z = 14, 14, 10
+>
+> while time.time() - start_time < 20:
+>     iterations += 1
+>     grid = np.zeros((BOX_X, BOX_Y, BOX_Z), dtype=bool)
+>     placements = {}
+>     success = True
+>
+>     # Randomize order slightly, but keep big objects first
+>     names = ordered_names[:6] + random.sample(ordered_names[6:], len(ordered_names)-6)
+>
+>     for name in names:
+>         placed = False
+>         syms = syms_dict[name]
+>         random.shuffle(syms)
+>
+>         for sym_voxels, perm_str, signs_str, obj_grid in syms:
+>             sx, sy, sz = obj_grid.shape
+>             if sx > BOX_X or sy > BOX_Y or sz > BOX_Z:
+>                 continue
+>
+>             # Find all valid positions
+>             valid_positions = []
+>             for x in range(BOX_X - sx + 1):
+>                 for y in range(BOX_Y - sy + 1):
+>                     for z in range(BOX_Z - sz + 1):
+>                         if not np.any(grid[x:x+sx, y:y+sy, z:z+sz] & obj_grid):
+>                             valid_positions.append((x, y, z))
+>
+>             if valid_positions:
+>                 # Pick a position that minimizes max bounds (to keep volume small)
+>                 # or just pick randomly among the best ones
+>                 valid_positions.sort(key=lambda p: max(p[0]+sx, p[1]+sy, p[2]+sz))
+>                 x, y, z = random.choice(valid_positions[:5])
+>
+>                 grid[x:x+sx, y:y+sy, z:z+sz] |= obj_grid
+>                 placements[name] = (perm_str, signs_str, x, y, z)
+>                 placed = True
+>                 break
+>
+>         if not placed:
+>             success = False
+>             break
+>
+>     if success:
+>         # Calculate actual volume
+>         max_x = max_y = max_z = 0
+>         for name, (perm, signs, x, y, z) in placements.items():
+>             sx, sy, sz = syms_dict[name][0][3].shape # approximate, actual shape depends on sym
+>             # Let's just use the grid to find max bounds
+>         coords = np.argwhere(grid)
+>         if len(coords) > 0:
+>             max_bounds = coords.max(axis=0)
+>             vol = (max_bounds[0] + 1) * (max_bounds[1] + 1) * (max_bounds[2] + 1)
+>             if vol < best_vol:
+>                 best_vol = vol
+>                 best_placements = placements
+>                 print(f"Iteration {iterations}: Found packing with volume {vol}")
+>
+> if best_placements:
+>     print(f"Best volume found: {best_vol}")
+>     with open('solution_cmds.sh', 'w') as f:
+>         for name, (perm, signs, x, y, z) in best_placements.items():
+>             f.write(f"python3 /task/tools/place_object.py {name} {perm} {signs} {x} {y} {z}\n")
+>         f.write("python3 /task/tools/finalize.py\n")
+> else:
+>     print("No solution found.")
+> EOF
+user@9732490332b2:~$ python3 greedy_pack.py
+Iteration 31: Found packing with volume 1960
+Iteration 55: Found packing with volume 1820
+Iteration 1493: Found packing with volume 1680
+Best volume found: 1680
+user@9732490332b2:~$

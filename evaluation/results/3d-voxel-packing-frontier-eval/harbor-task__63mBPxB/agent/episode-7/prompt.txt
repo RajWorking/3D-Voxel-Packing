@@ -1,0 +1,13 @@
+Previous response had warnings:
+WARNINGS: - Extra text detected before JSON object
+- Extra text detected after JSON object
+
+New Terminal Output:
+
+user@36710be3486f:~$ python3 solver.py 12 10 10
+No solution for 12x10x10 in 0.31s
+user@36710be3486f:~$ python3 solver.py 12 9 10
+No solution for 12x9x10 in 0.04s
+user@36710be3486f:~$ python3 solver.py 12 8 11
+No solution for 12x8x11 in 0.04s
+user@36710be3486f:~$

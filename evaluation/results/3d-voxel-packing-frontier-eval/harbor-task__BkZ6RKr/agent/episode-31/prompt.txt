@@ -1,0 +1,41 @@
+Current Terminal Screen:
+>             print(f"Trial {trial}: vol={vol}, dims={dims[0]}x{dims[1]}x{dims[2]}, order={order}")
+>
+> if best_result:
+>     placements, final_mn, final_mx = best_result
+>     dims = [final_mx[i]-final_mn[i]+1 for i in range(3)]
+>     print(f"\n=== BEST: {dims[0]}x{dims[1]}x{dims[2]}={best_vol} ===")
+>     # Compute actual offsets (shift so min=0)
+>     shift = [-final_mn[i] for i in range(3)]
+>     print(f"Shift: {shift}")
+>     print(f"Ball: xyz +++ offset=({ball_ox+shift[0]},{shift[1]},{shift[2]})")
+>     for i in range(5):
+>         print(f"Bowl{i+1}: xyz +++ offset=({shift[0]},{shift_y+2*i+shift[1]},{shift[2]})")
+>     for name in obj_names:
+>         p, ox, oy, oz = placements[name]
+>         pname = perm_names[perms_list.index(p)]
+>         print(f"{name}: {pname} +++ offset=({ox+shift[0]},{oy+shift[1]},{oz+shift[2]})")
+> else:
+>     print("No improvement found")
+>
+> PYEOF
+user@a85be64098f5:~$ python3 /tmp/solve14.py
+Base: [0,11]x[0,16]x[0,5] = 1224
+Trial 0: vol=1296, dims=12x18x6, order=['donut1', 'chocolate', 'donut2', 'match_box1', 'match_box2', 'match_box3', 'match_box4']
+
+=== BEST: 12x18x6=1296 ===
+Shift: [0, 0, 0]
+Ball: xyz +++ offset=(1,0,0)
+Bowl1: xyz +++ offset=(0,5,0)
+Bowl2: xyz +++ offset=(0,7,0)
+Bowl3: xyz +++ offset=(0,9,0)
+Bowl4: xyz +++ offset=(0,11,0)
+Bowl5: xyz +++ offset=(0,13,0)
+donut1: xzy +++ offset=(0,17,0)
+chocolate: yzx +++ offset=(0,0,0)
+donut2: yzx +++ offset=(4,9,0)
+match_box1: xyz +++ offset=(9,0,0)
+match_box2: xyz +++ offset=(9,0,3)
+match_box3: xyz +++ offset=(9,16,0)
+match_box4: xyz +++ offset=(9,16,3)
+user@a85be64098f5:~$

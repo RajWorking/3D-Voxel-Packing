@@ -1,0 +1,41 @@
+Current Terminal Screen:
+>                     mn = [min(0, ox), min(0, oy), min(0, oz)]
+>                     mx = [max(sdims[0], ox+abdims[0]), max(sdims[1], oy+abdims[1]), max(sdims[2], oz+abdims[2])]
+>                     vol = (mx[0]-mn[0]) * (mx[1]-mn[1]) * (mx[2]-mn[2])
+>                     if vol >= best:
+>                         continue
+>
+>                     ball_s = set((v[0]+ox, v[1]+oy, v[2]+oz) for v in ball_t)
+>                     if ball_s & stack:
+>                         continue
+>
+>                     union = stack | ball_s
+>                     amn = [min(v[i] for v in union) for i in range(3)]
+>                     amx = [max(v[i] for v in union) for i in range(3)]
+>                     actual_vol = 1
+>                     dims = []
+>                     for i in range(3):
+>                         d = amx[i] - amn[i] + 1
+>                         actual_vol *= d
+>                         dims.append(d)
+>
+>                     if actual_vol < best:
+>                         best = actual_vol
+>                         best_info = (bp, abp, ox, oy, oz, dims, sdims, abdims)
+>                         print(f"New best: {best}, bowl_perm={bp}, ball_perm={abp}, offset=({ox},{oy},{oz}), dims={dims}")
+>
+> print(f"\nFinal best: {best}")
+> if best_info:
+>     print(f"  {best_info}")
+> else:
+>     print("  No improvement over 1440")
+>
+> PYEOF
+user@a85be64098f5:~$ python3 /tmp/solve10.py
+New best: 1368, bowl_perm=(0, 1, 2), ball_perm=(0, 1, 2), offset=(0,-7,0), dims=[12, 19, 6]
+New best: 1296, bowl_perm=(0, 1, 2), ball_perm=(0, 1, 2), offset=(0,-6,0), dims=[12, 18, 6]
+New best: 1224, bowl_perm=(0, 1, 2), ball_perm=(0, 1, 2), offset=(1,-5,0), dims=[12, 17, 6]
+
+Final best: 1224
+  ((0, 1, 2), (0, 1, 2), 1, -5, 0, [12, 17, 6], [12, 12, 6], [10, 8, 6])
+user@a85be64098f5:~$

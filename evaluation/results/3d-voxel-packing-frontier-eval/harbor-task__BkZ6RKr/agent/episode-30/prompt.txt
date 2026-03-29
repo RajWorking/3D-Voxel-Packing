@@ -1,0 +1,176 @@
+New Terminal Output:
+
+user@a85be64098f5:~$ cat > /tmp/solve14.py << 'PYEOF'
+> import json
+> import random
+>
+> with open('/task/objects.json') as f:
+>     data = json.load(f)
+>
+> def get_voxels(name):
+>     voxels = set()
+>     for group in data[name].values():
+>         for v in group:
+x2': get_voxels('match_box2'),
+    'match_box3': get_voxels('match_box3'),
+    'match_box4': get_voxels('match_box4'),
+}
+
+def find_placements_flex(obj_voxels, occ, max_vol, current_mn, current_mx):
+    """Find placements that keep total volume under max_vol."""
+    results = []
+    for p in perms_list:
+        rotated = apply_perm(obj_voxels, p)
+        rdims = [max(v[i] for v in rotated)+1 for i in range(3)]
+        # Allow placement anywhere that keeps volume under max_vol
+        for ox in range(max(0, current_mn[0]-1), current_mx[0]+2):
+            for oy in range(max(0, current_mn[1]-1), current_mx[1]+2):
+                for oz in range(max(0, current_mn[2]-1), current_mx[2]+2):
+                    new_mn = [min(current_mn[i], [ox,oy,oz][i]) for i in range(3)]
+                    new_mx = [max(current_mx[i], [ox,oy,oz][i]+rdims[i]-1) for i in range(3)]
+                    vol = 1
+                    for i in range(3):
+                        vol *= (new_mx[i] - new_mn[i] + 1)
+                    if vol >>             voxels.add(tuple(v))
+>     min_x = min(v[0] for v in voxels)
+>     min_y = min(v[1] for v in voxels)
+>     min_z = min(v[2] for v in voxels)
+>     return set((x-min_x, y-min_y, z-min_z) for x,y,z in voxels)
+>
+> def apply_perm(voxels, p):
+>     transformed = set((v[p[0]], v[p[1]], v[p[2]]) for v in voxels)
+>     mn = [min(v[i] for v in transformed) for i in range(3)]
+>     return set((v[0]-mn[0], v[1]-mn[1], v[2]-mn[2]) for v in transformed)
+>
+> bowl = get_voxels('bowl1')
+> ball = get_voxels('ball')
+  dims = [cur_mx[i]-cur_mn[i]+1 for i in range(3)]
+            print(f"Trial {trial}: vol={vol}, dims={dims[0]}x{dims[1]}x{dims[2]}, order={order}")
+
+if best_result:
+    placements, final_mn, final_mx = best_result
+    dims = [final_mx[i]-final_mn[i]+1 for i in range(3)]
+    print(f"\n=== BEST: {dims[0]}x{dims[1]}x{dims[2]}={best_vol} ===")
+    # Compute actual offsets (shift so min=0)
+    shift = [-final_mn[i] for i in range(3)]
+    print(f"Shift: {shift}")
+    print(f"Ball: xyz +++ offset=({ball_ox+shift[0]},{shift[1]},{shift[2]})")
+    for i in range(5):
+        print(f"Bowl{i+1}: xyz +++ offset=({shift[0]},{shift_y+2*i+shift[1]},{shift[2]})")
+    for name in obj_names:
+        p, ox, oy, oz = placements[na> perms_list = [(0,1,2),(0,2,1),(1,0,2),(1,2,0),(2,0,1),(2,1,0)]
+> perm_names = ['xyz','xzy','yxz','yzx','zxy','zyx']
+{pname} +++ offset=({ox+shift[0]},{oy+>
+> small_objects = {
+>     'chocolate': get_voxels('chocolate'),
+>     'donut1': get_voxels('donut1'),
+.py>     'donut2': get_voxels('donut2'),
+>     'match_box1': get_voxels('match_box1'),
+>     'match_box2': get_voxels('match_box2'),
+>     'match_box3': get_voxels('match_box3'),
+>     'match_box4': get_voxels('match_box4'),
+> }
+>
+> def find_placements_flex(obj_voxels, occ, max_vol, current_mn, current_mx):
+>     """Find placements that keep total volume under max_vol."""
+>     results = []
+>     for p in perms_list:
+>         rotated = apply_perm(obj_voxels, p)
+>         rdims = [max(v[i] for v in rotated)+1 for i in range(3)]
+>         # Allow placement anywhere that keeps volume under max_vol
+>         for ox in range(max(0, current_mn[0]-1), current_mx[0]+2):
+>             for oy in range(max(0, current_mn[1]-1), current_mx[1]+2):
+>                 for oz in range(max(0, current_mn[2]-1), current_mx[2]+2):
+>                     new_mn = [min(current_mn[i], [ox,oy,oz][i]) for i in range(3)]
+>                     new_mx = [max(current_mx[i], [ox,oy,oz][i]+rdims[i]-1) for i in range(3)]
+>                     vol = 1
+>                     for i in range(3):
+>                         vol *= (new_mx[i] - new_mn[i] + 1)
+>                     if vol > max_vol:
+>                         continue
+>                     placed = set((v[0]+ox, v[1]+oy, v[2]+oz) for v in rotated)
+>                     if not (placed & occ):
+>                         results.append((p, ox, oy, oz, placed, vol))
+>     # Sort by volume (prefer placements that don't increase bbox)
+>     results.sort(key=lambda r: r[5])
+>     return results
+>
+> # Config: ball at (1,-5,0), 12x17x6=1224
+> ball_ox, ball_oy = 1, -5
+> shift_y = 5
+>
+> occupied_base = set()
+> for i in range(5):
+>     for x,y,z in bowl:
+>         occupied_base.add((x, y + shift_y + 2*i, z))
+> for x,y,z in ball:
+>     occupied_base.add((x + ball_ox, y, z))
+>
+> mn = [min(v[i] for v in occupied_base) for i in range(3)]
+> mx = [max(v[i] for v in occupied_base) for i in range(3)]
+> print(f"Base: [{mn[0]},{mx[0]}]x[{mn[1]},{mx[1]}]x[{mn[2]},{mx[2]}] = {(mx[0]-mn[0]+1)*(mx[1]-mn[1]+1)*(mx[2]-mn[2]+1)}")
+>
+> obj_names = ['donut1', 'chocolate', 'donut2', 'match_box1', 'match_box2', 'match_box3', 'match_box4']
+>
+> best_result = None
+> best_vol = 1440
+>
+> for trial in range(500):
+>     order = obj_names[:]
+>     if trial > 1:
+>         random.shuffle(order)
+>     elif trial == 1:
+>         order = list(reversed(obj_names))
+>
+>     remaining = occupied_base.copy()
+>     cur_mn = list(mn)
+>     cur_mx = list(mx)
+>     placements = {}
+>     success = True
+>
+>     for name in order:
+>         obj = small_objects[name]
+>         valid = find_placements_flex(obj, remaining, best_vol, cur_mn, cur_mx)
+>         if valid:
+>             p, ox, oy, oz, placed, vol = valid[0]
+>             remaining |= placed
+>             placements[name] = (p, ox, oy, oz)
+>             for i in range(3):
+>                 cur_mn[i] = min(cur_mn[i], min(v[i] for v in placed))
+>                 cur_mx[i] = max(cur_mx[i], max(v[i] for v in placed))
+>         else:
+>             success = False
+>             break
+>
+>     if success:
+>         vol = 1
+>         for i in range(3):
+>             vol *= (cur_mx[i] - cur_mn[i] + 1)
+>         if vol < best_vol:
+>             best_vol = vol
+>             best_result = (placements.copy(), list(cur_mn), list(cur_mx))
+>             dims = [cur_mx[i]-cur_mn[i]+1 for i in range(3)]
+>             print(f"Trial {trial}: vol={vol}, dims={dims[0]}x{dims[1]}x{dims[2]}, order={order}")
+>
+> if best_result:
+>     placements, final_mn, final_mx = best_result
+>     dims = [final_mx[i]-final_mn[i]+1 for i in range(3)]
+>     print(f"\n=== BEST: {dims[0]}x{dims[1]}x{dims[2]}={best_vol} ===")
+>     # Compute actual offsets (shift so min=0)
+>     shift = [-final_mn[i] for i in range(3)]
+>     print(f"Shift: {shift}")
+>     print(f"Ball: xyz +++ offset=({ball_ox+shift[0]},{shift[1]},{shift[2]})")
+>     for i in range(5):
+>         print(f"Bowl{i+1}: xyz +++ offset=({shift[0]},{shift_y+2*i+shift[1]},{shift[2]})")
+>     for name in obj_names:
+>         p, ox, oy, oz = placements[name]
+>         pname = perm_names[perms_list.index(p)]
+>         print(f"{name}: {pname} +++ offset=({ox+shift[0]},{oy+shift[1]},{oz+shift[2]})")
+> else:
+>     print("No improvement found")
+>
+> PYEOF
+user@a85be64098f5:~$ python3 /tmp/solve14.py
+Base: [0,11]x[0,16]x[0,5] = 1224
+Trial 0: vol=1296, dims=12x18x6, order=['donut1', 'chocolate', 'donut2', 'match_box1', 'match_box2', 'match_box3', 'match_box4']
+

@@ -1,0 +1,16 @@
+New Terminal Output:
+
+user@61aa19fdb377:~$ python3 - <<'PY'
+> mods=['z3','ortools','pulp','python-constraint']
+> for m in mods:
+>     try:
+>         __import__(m)
+>         print(m,'YES')
+>     except Exception as e:
+>         print(m,'NO')
+> PY
+z3 NO
+ortools NO
+pulp NO
+python-constraint NO
+user@61aa19fdb377:~$

@@ -1,0 +1,41 @@
+Current Terminal Screen:
+>     vol = w * h * 6
+>     print(f"All normal bowls start={start}: {w}x{h}x6 = {vol}")
+> EOF
+Normal bowl (opening up) at various y offsets:
+  dy=-8: 12x16, no overlap
+  dy=-7: 12x15, no overlap
+  dy=-6: 12x14, no overlap
+  dy=-5: 12x13, no overlap
+  dy=-4: 12x12, no overlap
+  dy=6: 12x10, no overlap
+  dy=7: 12x11, no overlap
+  dy=8: 12x12, no overlap
+  dy=9: 12x13, no overlap
+  dy=10: 12x14, no overlap
+  dy=11: 12x15, no overlap
+
+Flipped bowl (opening down) at various y offsets:
+  dy=-8: 12x16, no overlap
+  dy=-7: 12x15, no overlap
+  dy=-6: 12x14, no overlap
+  dy=-5: 12x13, no overlap
+  dy=-4: 12x12, no overlap
+  dy=-3: 12x11, no overlap
+  dy=-2: 12x10, no overlap
+  dy=8: 12x12, no overlap
+  dy=9: 12x13, no overlap
+  dy=10: 12x14, no overlap
+  dy=11: 12x15, no overlap
+
+Flipped bowl at dy=-4:
+  Overlap: 0
+  Combined y range: -4 to 7
+
+=== Best arrangements: ball + 5 bowls ===
+Best: vol=1296, config=n_below=0 start=4, n_above=5 start=-2, 12x18x6
+All normal bowls start=6: 12x18x6 = 1296
+All normal bowls start=7: 12x19x6 = 1368
+All normal bowls start=8: 12x20x6 = 1440
+All normal bowls start=9: 12x21x6 = 1512
+user@a968081b7478:~$

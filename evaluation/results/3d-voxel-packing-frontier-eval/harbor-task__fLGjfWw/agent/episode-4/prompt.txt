@@ -1,0 +1,101 @@
+Previous response had warnings:
+WARNINGS: - Extra text detected before JSON object
+- Extra text detected after JSON object
+
+New Terminal Output:
+
+user@9732490332b2:~$ cat << 'EOF' > pack_bowls.py
+> import json
+> import numpy as np
+>
+> with open('/task/objects.json') as f:
+>     objs = json.load(f)
+>
+> def get_voxels(name):
+>     voxels = []
+>     for layer in objs[name].values():
+>         voxels.extend(layer)
+s
+
+bowl_syms = get_symmetries(bowl)
+print(f"Bowl has {len(bowl_syms)} unique symmetries")
+
+# Find best shift for 2 bowls
+best_vol = 100000
+best_pair = None
+
+v1_set = set(map(tuple, bowl))
+
+for sym_idx, v2 in enumerate(bowl_syms):
+    for dx in range(-12, 13):
+        for dy in range(-12, 13):
+            for dz in range(-12, 13):
+                v2_shifted = v2 + [dx, dy, dz]
+                v2_set = set(map(tuple, v2_shifted))
+                if not v1_set.intersection(v2_set):
+                    # valid placement
+                    all_v = np.vstack((bowl, v2_shifted))
+                    min_c = all_v.min(axis=0)
+                    max_c = all_v.max(axis=0)
+                    vol = np.prod(max_c - min_c + 1)
+                    if vol < best_vol:
+                        best_vol = vol
+                        best_pair = (sym_idx, dx, dy, dz)
+
+print(f"Best 2-bowl volume: {best_vol} at shift {best_pair}")
+EOF
+python3 pack_bowls.py
+>     return np.array(voxels)
+>
+> bowl = get_voxels('bowl1')
+>
+> # Try to find valid shifts for a second bowl that doesn't collide
+> # We will keep the first bowl at origin.
+> # A second bowl can be rotated or not.
+>
+> def get_symmetries(voxels):
+>     syms = []
+>     for perm in [(0,1,2), (0,2,1), (1,0,2), (1,2,0), (2,0,1), (2,1,0)]:
+>         for signs in [(1,1,1), (1,1,-1), (1,-1,1), (1,-1,-1), (-1,1,1), (-1,1,-1), (-1,-1,1), (-1,-1,-1)]:
+>             v = voxels[:, perm] * signs
+>             v = v - v.min(axis=0)
+>             # check if unique
+>             is_new = True
+>             for s in syms:
+>                 if v.shape == s.shape and set(map(tuple, v)) == set(map(tuple, s)):
+>                     is_new = False
+>                     break
+>             if is_new:
+>                 syms.append(v)
+>     return syms
+>
+> bowl_syms = get_symmetries(bowl)
+> print(f"Bowl has {len(bowl_syms)} unique symmetries")
+>
+> # Find best shift for 2 bowls
+> best_vol = 100000
+> best_pair = None
+>
+> v1_set = set(map(tuple, bowl))
+>
+> for sym_idx, v2 in enumerate(bowl_syms):
+>     for dx in range(-12, 13):
+>         for dy in range(-12, 13):
+>             for dz in range(-12, 13):
+>                 v2_shifted = v2 + [dx, dy, dz]
+>                 v2_set = set(map(tuple, v2_shifted))
+>                 if not v1_set.intersection(v2_set):
+>                     # valid placement
+>                     all_v = np.vstack((bowl, v2_shifted))
+>                     min_c = all_v.min(axis=0)
+>                     max_c = all_v.max(axis=0)
+>                     vol = np.prod(max_c - min_c + 1)
+>                     if vol < best_vol:
+>                         best_vol = vol
+>                         best_pair = (sym_idx, dx, dy, dz)
+>
+> print(f"Best 2-bowl volume: {best_vol} at shift {best_pair}")
+> EOF
+user@9732490332b2:~$ python3 pack_bowls.py
+Bowl has 12 unique symmetries
+

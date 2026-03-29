@@ -1,0 +1,137 @@
+New Terminal Output:
+
+user@a85be64098f5:~$ cat > /tmp/nest.py << 'PYEOF'
+> import json
+>
+> with open('/task/objects.json') as f:
+>     data = json.load(f)
+ing bowl + x-flipped bowl with y-offsets:")
+for dy in range(-8, 9):
+    flipped_shifted = set((x, y+dy) for x,y in bowl_xflipped_2d)
+    overlap = bowl_2d & flipped_shifted
+    union = bowl_2d | flipped_shifted
+    if len(overlap) == 0:
+        ux = max(v[0] for v in union) - min(v[0] for v in union) + 1
+        uy = max(v[1] for v in union) - min(v[1] for v in union) + 1
+        print(f"  dy={dy}: no overlap, union={len(union)} cells, bbox={ux}x{uy}={ux*uy}")
+
+# Try nesting: bowl + bowl with y-offset (same orientation)
+print("\nTrying bowl + same bowl with y-offset:")
+for dy in range(1, 8):
+    shifted = set((x, y+dy) for x,y in bowl_2d)
+    overlap = bowl_2d & shifted
+    union = bowl_2d | shifted
+    if len(overlap) == 0:
+        ux = max(v[0] for v in union) - min(v[0] for v in union) + 1
+        uy = max(v[1] for v in union) - min(v[1] for v in union) + 1
+        print(f"  dy={dy}: no overlap, union={len(union)} cells, bbox={ux}x{uy}={ux*uy}")
+
+PYEOF
+python3 /tmp/nest.py
+>
+> def get_voxels(name):
+>     voxels = set()
+>     for group in data[name].values():
+>         for v in group:
+>             voxels.add(tuple(v))
+>     min_x = min(v[0] for v in voxels)
+>     min_y = min(v[1] for v in voxels)
+>     min_z = min(v[2] for v in voxels)
+>     return set((x-min_x, y-min_y, z-min_z) for x,y,z in voxels)
+>
+> def apply_transform(voxels, perm, signs):
+>     perm_map = {'x': 0, 'y': 1, 'z': 2}
+>     pi = [perm_map[c] for c in perm]
+>     si = [1 if c == '+' else -1 for c in signs]
+>     transformed = set()
+>     for v in voxels:
+>         nv = (si[0]*v[pi[0]], si[1]*v[pi[1]], si[2]*v[pi[2]])
+>         transformed.add(nv)
+>     min_x = min(v[0] for v in transformed)
+>     min_y = min(v[1] for v in transformed)
+>     min_z = min(v[2] for v in transformed)
+>     return set((x-min_x, y-min_y, z-min_z) for x,y,z in transformed)
+>
+> def translate(voxels, ox, oy, oz):
+>     return set((x+ox, y+oy, z+oz) for x,y,z in voxels)
+>
+> bowl = get_voxels('bowl1')
+> ball = get_voxels('ball')
+>
+> # Bowl cross-section (2D, since uniform in z)
+> bowl_2d = set((x,y) for x,y,z in bowl if z == 0)
+> print("Bowl 2D cross-section (18 cells):")
+> for y in range(4):
+>     row = ''.join('#' if (x,y) in bowl_2d else '.' for x in range(12))
+>     print(f"  y={y}: {row}")
+>
+> # Try nesting: bowl normal + bowl y-flipped with x-offset
+> bowl_flipped_2d = set((x, 3-y) for x,y in bowl_2d)
+>
+> print("\nTrying bowl + y-flipped bowl with x-offsets:")
+> for dx in range(-12, 13):
+>     flipped_shifted = set((x+dx, y) for x,y in bowl_flipped_2d)
+>     overlap = bowl_2d & flipped_shifted
+>     union = bowl_2d | flipped_shifted
+>     ux = max(v[0] for v in union) - min(v[0] for v in union) + 1
+>     uy = max(v[1] for v in union) - min(v[1] for v in union) + 1
+>     if len(overlap) == 0 and ux * uy < 80:
+>         print(f"  dx={dx}: no overlap, union={len(union)} cells, bbox={ux}x{uy}={ux*uy}")
+>
+> # Try nesting: bowl normal + bowl x-flipped with y-offset
+> bowl_xflipped_2d = set((11-x, y) for x,y in bowl_2d)
+> print("\nTrying bowl + x-flipped bowl with y-offsets:")
+> for dy in range(-8, 9):
+>     flipped_shifted = set((x, y+dy) for x,y in bowl_xflipped_2d)
+>     overlap = bowl_2d & flipped_shifted
+>     union = bowl_2d | flipped_shifted
+>     if len(overlap) == 0:
+>         ux = max(v[0] for v in union) - min(v[0] for v in union) + 1
+>         uy = max(v[1] for v in union) - min(v[1] for v in union) + 1
+>         print(f"  dy={dy}: no overlap, union={len(union)} cells, bbox={ux}x{uy}={ux*uy}")
+>
+> # Try nesting: bowl + bowl with y-offset (same orientation)
+> print("\nTrying bowl + same bowl with y-offset:")
+> for dy in range(1, 8):
+>     shifted = set((x, y+dy) for x,y in bowl_2d)
+>     overlap = bowl_2d & shifted
+>     union = bowl_2d | shifted
+>     if len(overlap) == 0:
+>         ux = max(v[0] for v in union) - min(v[0] for v in union) + 1
+>         uy = max(v[1] for v in union) - min(v[1] for v in union) + 1
+>         print(f"  dy={dy}: no overlap, union={len(union)} cells, bbox={ux}x{uy}={ux*uy}")
+>
+> PYEOF
+user@a85be64098f5:~$ python3 /tmp/nest.py
+Bowl 2D cross-section (18 cells):
+  y=0: ##........##
+  y=1: .##......##.
+  y=2: ..##....##..
+  y=3: ...######...
+
+Trying bowl + y-flipped bowl with x-offsets:
+
+Trying bowl + x-flipped bowl with y-offsets:
+  dy=-8: no overlap, union=36 cells, bbox=12x12=144
+  dy=-7: no overlap, union=36 cells, bbox=12x11=132
+  dy=-6: no overlap, union=36 cells, bbox=12x10=120
+  dy=-5: no overlap, union=36 cells, bbox=12x9=108
+  dy=-4: no overlap, union=36 cells, bbox=12x8=96
+  dy=-3: no overlap, union=36 cells, bbox=12x7=84
+  dy=-2: no overlap, union=36 cells, bbox=12x6=72
+  dy=2: no overlap, union=36 cells, bbox=12x6=72
+  dy=3: no overlap, union=36 cells, bbox=12x7=84
+  dy=4: no overlap, union=36 cells, bbox=12x8=96
+  dy=5: no overlap, union=36 cells, bbox=12x9=108
+  dy=6: no overlap, union=36 cells, bbox=12x10=120
+  dy=7: no overlap, union=36 cells, bbox=12x11=132
+  dy=8: no overlap, union=36 cells, bbox=12x12=144
+
+Trying bowl + same bowl with y-offset:
+  dy=2: no overlap, union=36 cells, bbox=12x6=72
+  dy=3: no overlap, union=36 cells, bbox=12x7=84
+  dy=4: no overlap, union=36 cells, bbox=12x8=96
+  dy=5: no overlap, union=36 cells, bbox=12x9=108
+  dy=6: no overlap, union=36 cells, bbox=12x10=120
+  dy=7: no overlap, union=36 cells, bbox=12x11=132
+user@a85be64098f5:~$

@@ -1,0 +1,41 @@
+Current Terminal Screen:
+  y=18: OO......OOOO
+  y=19: OOO....OOOOO
+
+z=5:
+  y= 0: ..OOOOOOOO..
+  y= 1: O..OOOOOO..O
+  y= 2: ....OOOO....
+  y= 3: O..........O
+  y= 4: ....OOOO....
+  y= 5: O..........O
+  y= 6: ....OOOO....
+  y= 7: O..........O
+  y= 8: ....OOOO....
+  y= 9: O..........O
+  y=10: OO..OOOO..OO
+  y=11: OOO......OOO
+  y=12: OOO....OOOOO
+  y=13: OO......OOOO
+  y=14: O........OOO
+  y=15: ..........OO
+  y=16: ..........OO
+  y=17: O........OOO
+  y=18: OO......OOOO
+  y=19: OOO....OOOOO
+
+Empty in ball region (y=12..19) at z=0:
+  y=12: OOO....OOOOO
+  y=13: OO......OOOO
+  y=14: O........OOO
+  y=15: ..........OO
+  y=16: ..........OO
+  y=17: O........OOO
+  y=18: OO......OOOO
+  y=19: OOO....OOOOO
+
+Large empty regions:
+  x=10,11, y=12..19: 96 empty cells
+  Ball region z=0: 40 empty cells
+  Ball region z=2: 48 empty cells
+user@a85be64098f5:~$

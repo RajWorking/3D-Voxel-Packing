@@ -1,0 +1,41 @@
+Current Terminal Screen:
+  z=5: 70 empty
+Total 3D empty: 436
+
+Consistent empty XY cells (same at all z): 70
+
+Rectangular blocks in consistent empty:
+  3x1 at (0,0)
+  3x1 at (0,17)
+  3x1 at (4,8)
+  3x1 at (4,10)
+  3x1 at (4,12)
+  3x1 at (4,14)
+  3x1 at (4,16)
+  3x1 at (5,8)
+  3x1 at (5,10)
+  3x1 at (5,12)
+  3x1 at (5,14)
+  3x1 at (5,16)
+  3x1 at (7,0)
+  3x1 at (8,0)
+  3x1 at (8,1)
+  3x1 at (9,0)
+  3x1 at (9,1)
+  3x1 at (9,2)
+  3x1 at (9,5)
+  3x1 at (9,17)
+  3x2 at (8,0)
+  3x2 at (9,0)
+  3x2 at (9,1)
+  3x3 at (9,0)
+  4x1 at (4,8)
+  4x1 at (4,10)
+  4x1 at (4,12)
+  4x1 at (4,14)
+  4x1 at (4,16)
+  4x1 at (7,0)
+  4x1 at (8,0)
+  4x1 at (8,1)
+  4x2 at (8,0)
+user@a968081b7478:~$

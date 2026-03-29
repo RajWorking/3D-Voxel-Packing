@@ -1,0 +1,112 @@
+New Terminal Output:
+
+user@a85be64098f5:~$ cat > /tmp/analyze.py << 'PYEOF'
+> import json
+>
+> with open('/task/objects.json') as f:
+>     data = json.load(f)
+>
+> def get_voxels(name):
+>     voxels = set()
+>     for group in data[name].values():
+>         for v in group:
+>             voxels.add(tuple(v))
+>     # Normalize
+>     min_x = min(v[0] for v in voxels)
+>     min_y = min(v[1] for v in voxels)
+>     min_z = min(v[2] for v in voxels)
+>     return set((x-min_x, y-min_y, z-min_z) for x,y,z in voxels)
+>
+> def bbox(voxels):
+>     max_x = max(v[0] for v in voxels) + 1
+>     max_y = max(v[1] for v in voxels) + 1
+>     max_z = max(v[2] for v in voxels) + 1
+>     return max_x, max_y, max_z
+>
+> def apply_transform(voxels, perm, signs):
+>     perm_map = {'x': 0, 'y': 1, 'z': 2}
+>     pi = [perm_map[c] for c in perm]
+>     si = [1 if c == '+' else -1 for c in signs]
+>     transformed = set()
+>     for v in voxels:
+>         nv = (si[0]*v[pi[0]], si[1]*v[pi[1]], si[2]*v[pi[2]])
+>         transformed.add(nv)
+>     # Normalize
+>     min_x = min(v[0] for v in transformed)
+>     min_y = min(v[1] for v in transformed)
+>     min_z = min(v[2] for v in transformed)
+>     return set((x-min_x, y-min_y, z-min_z) for x,y,z in transformed)
+>
+> def translate(voxels, ox, oy, oz):
+>     return set((x+ox, y+oy, z+oz) for x,y,z in voxels)
+>
+> # Get all objects
+> objects = {}
+> for name in data:
+>     objects[name] = get_voxels(name)
+>     bx, by, bz = bbox(objects[name])
+>     print(f'{name}: {len(objects[name])} voxels, bbox {bx}x{by}x{bz}={bx*by*bz}')
+>
+> # Check if bowl can nest with flipped bowl with offset
+> bowl = objects['bowl1']
+> print(f'\nBowl analysis:')
+>
+> # Try all 48 transforms for bowl and see which pairs can nest
+> perms = ['xyz', 'xzy', 'yxz', 'yzx', 'zxy', 'zyx']
+> signs_list = []
+> for a in '+-':
+>     for b in '+-':
+>         for c in '+-':
+>             signs_list.append(a+b+c)
+>
+> # For each transform, compute the bowl shape
+> bowl_transforms = []
+> for perm in perms:
+>     for signs in signs_list:
+>         t = apply_transform(bowl, perm, signs)
+>         bx, by, bz = bbox(t)
+>         # Use frozenset as key to deduplicate
+>         bowl_transforms.append((perm, signs, t, bx, by, bz))
+>
+> # Deduplicate by shape
+> unique_shapes = {}
+> for perm, signs, t, bx, by, bz in bowl_transforms:
+>     key = frozenset(t)
+>     if key not in unique_shapes:
+>         unique_shapes[key] = (perm, signs, bx, by, bz)
+>
+> print(f'Unique bowl orientations: {len(unique_shapes)}')
+> for key, (perm, signs, bx, by, bz) in sorted(unique_shapes.items(), key=lambda x: x[1]):
+>     print(f'  {perm} {signs}: {bx}x{by}x{bz}')
+>
+> PYEOF
+user@a85be64098f5:~$ python3 /tmp/analyze.py
+bowl1: 108 voxels, bbox 12x4x6=288
+bowl2: 108 voxels, bbox 12x4x6=288
+bowl3: 108 voxels, bbox 12x4x6=288
+bowl4: 108 voxels, bbox 12x4x6=288
+bowl5: 108 voxels, bbox 12x4x6=288
+chocolate: 24 voxels, bbox 6x4x1=24
+donut1: 28 voxels, bbox 8x4x1=32
+donut2: 20 voxels, bbox 6x4x1=24
+ball: 320 voxels, bbox 10x8x6=480
+match_box1: 18 voxels, bbox 3x2x3=18
+match_box2: 18 voxels, bbox 3x2x3=18
+match_box3: 18 voxels, bbox 3x2x3=18
+match_box4: 18 voxels, bbox 3x2x3=18
+
+Bowl analysis:
+Unique bowl orientations: 12
+  xyz +++: 12x4x6
+  xyz +-+: 12x4x6
+  xzy +++: 12x6x4
+  xzy ++-: 12x6x4
+  yxz +++: 4x12x6
+  yxz -++: 4x12x6
+  yzx +++: 4x6x12
+  yzx -++: 4x6x12
+  zxy +++: 6x12x4
+  zxy ++-: 6x12x4
+  zyx +++: 6x4x12
+  zyx +-+: 6x4x12
+user@a85be64098f5:~$

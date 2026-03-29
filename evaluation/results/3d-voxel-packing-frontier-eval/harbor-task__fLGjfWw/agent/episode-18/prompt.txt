@@ -1,0 +1,12 @@
+Previous response had warnings:
+WARNINGS: - Extra text detected before JSON object
+- Extra text detected after JSON object
+
+New Terminal Output:
+
+Trying (12, 12, 8)...
+Failed.
+Trying (12, 11, 8)...
+Failed.
+Trying (12, 10, 8)...
+

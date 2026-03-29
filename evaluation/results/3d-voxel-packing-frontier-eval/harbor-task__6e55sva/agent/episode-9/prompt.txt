@@ -1,0 +1,200 @@
+New Terminal Output:
+
+user@61aa19fdb377:~$ python3 - <<'PY'
+,sign,dims))
+    orients[name]=[(v[0],v[1],v[2],k) for k,v in seen.items()]
+# candidate placements
+placements={}
+for name in objs:
+    lst=[]
+    for perm,sign,dims,pts in orients[name]:
+        dx,dy,dz=dims
+        if dx>box[0] or dy>box[1] or dz>box[2]:
+            continue
+        for ox in range(box[0]-dx+1):
+            for oy in range(box[1]-dy+1):
+                for oz in range(box[2]-dz+1):
+                    vox=tuple((x+ox,y+oy,z+oz) for x,y,z in pts)
+                    lst.append((perm,sign,ox,oy,oz,dims,vox))
+    placements[name]=lst
+    print(name,len(lst))
+order=sorted(objs,key=lambda n: len(placements[n]))
+print('order',order)
+start=time.time(); best=None
+# occupancy index from voxel to candidate ids not built; use recursion with frontier anchors
+
+def search(i, occ, ans):
+    global best
+    if time.time()-start>55: return False
+    if i==len(order):
+        best=ans.copy(); return True
+    name=order[i]
+    # choose lexicographically lowest empty cell as anchor if any occupancy exists
+    anchor=None
+    if occ:
+        for z in range(box[2]):
+            for y in range(box[1]):
+                for x in range(box[0]):
+                    if (x,y,z) not in occ:
+                        anchor=(x,y,z); break
+                if anchor: break
+            if anchor: break
+    cand=placements[name]
+    # prefer placements near origin and intersecting anchor neighborhood if possible
+    cand2=[]
+    for p in cand:
+        vox=p[6]
+        s=set(vox)
+        if any(v in occ for v in vox):
+            continue
+        score=(p[4],p[3],p[2])
+        if anchor is None or anchor in s:
+            cand2.append((0,score,p))
+        else:
+            ax,ay,az=anchor
+            md=min(abs(x-ax)+abs(y-ay)+abs(z-az) for x,y,z in vox)
+            cand2.append((1+md,score,p))
+    cand2.sort(key=lambda t:(t[0],t[1]))
+    for _,_,p in cand2[:400]:
+        perm,sign,ox,oy,oz,dims,vox=p
+        for v in vox: occ.add(v)
+        ans[name]=(perm,sign,ox,oy,oz)
+        if search(i+1,occ,ans): return True
+        del ans[name]
+        for v in vox: occ.remove(v)
+    return False
+
+ok=search(0,set(),{})
+print('ok',ok,'elapsed',time.time()-start)
+if ok:
+    for n in order:
+        print(n,best[n])
+PY
+> import json,itertools,time
+> with open('/task/objects.json') as f:
+>     data=json.load(f)
+> objs={}
+> for name,obj in data.items():
+>     pts=[]
+>     for arr in obj.values(): pts.extend(map(tuple,arr))
+>     objs[name]=sorted(set(pts))
+> perms=['xyz','xzy','yxz','yzx','zxy','zyx']
+> signs=[''.join(s) for s in itertools.product('+-', repeat=3)]
+> box=(24,10,6)
+>
+> def transf(pts,perm,sign):
+>     out=[]
+>     for x,y,z in pts:
+>         d={'x':x,'y':y,'z':z}
+>         q=[d[perm[i]] for i in range(3)]
+>         q=[q[i] if sign[i]=='+' else -q[i] for i in range(3)]
+>         out.append(tuple(q))
+>     mins=[min(p[i] for p in out) for i in range(3)]
+>     out=tuple(sorted((p[0]-mins[0],p[1]-mins[1],p[2]-mins[2]) for p in out))
+>     dims=(max(p[0] for p in out)+1,max(p[1] for p in out)+1,max(p[2] for p in out)+1)
+>     return out,dims
+> # unique orientations
+> orients={}
+> for name,pts in objs.items():
+>     seen={}
+>     for perm in perms:
+>         for sign in signs:
+>             out,dims=transf(pts,perm,sign)
+>             seen.setdefault(out,(perm,sign,dims))
+>     orients[name]=[(v[0],v[1],v[2],k) for k,v in seen.items()]
+> # candidate placements
+> placements={}
+> for name in objs:
+>     lst=[]
+>     for perm,sign,dims,pts in orients[name]:
+>         dx,dy,dz=dims
+>         if dx>box[0] or dy>box[1] or dz>box[2]:
+>             continue
+>         for ox in range(box[0]-dx+1):
+>             for oy in range(box[1]-dy+1):
+>                 for oz in range(box[2]-dz+1):
+>                     vox=tuple((x+ox,y+oy,z+oz) for x,y,z in pts)
+>                     lst.append((perm,sign,ox,oy,oz,dims,vox))
+>     placements[name]=lst
+>     print(name,len(lst))
+> order=sorted(objs,key=lambda n: len(placements[n]))
+> print('order',order)
+> start=time.time(); best=None
+> # occupancy index from voxel to candidate ids not built; use recursion with frontier anchors
+>
+> def search(i, occ, ans):
+>     global best
+>     if time.time()-start>55: return False
+>     if i==len(order):
+>         best=ans.copy(); return True
+>     name=order[i]
+>     # choose lexicographically lowest empty cell as anchor if any occupancy exists
+>     anchor=None
+>     if occ:
+>         for z in range(box[2]):
+>             for y in range(box[1]):
+>                 for x in range(box[0]):
+>                     if (x,y,z) not in occ:
+>                         anchor=(x,y,z); break
+>                 if anchor: break
+>             if anchor: break
+>     cand=placements[name]
+>     # prefer placements near origin and intersecting anchor neighborhood if possible
+>     cand2=[]
+>     for p in cand:
+>         vox=p[6]
+>         s=set(vox)
+>         if any(v in occ for v in vox):
+>             continue
+>         score=(p[4],p[3],p[2])
+>         if anchor is None or anchor in s:
+>             cand2.append((0,score,p))
+>         else:
+>             ax,ay,az=anchor
+>             md=min(abs(x-ax)+abs(y-ay)+abs(z-az) for x,y,z in vox)
+>             cand2.append((1+md,score,p))
+>     cand2.sort(key=lambda t:(t[0],t[1]))
+>     for _,_,p in cand2[:400]:
+>         perm,sign,ox,oy,oz,dims,vox=p
+>         for v in vox: occ.add(v)
+>         ans[name]=(perm,sign,ox,oy,oz)
+>         if search(i+1,occ,ans): return True
+>         del ans[name]
+>         for v in vox: occ.remove(v)
+>     return False
+>
+> ok=search(0,set(),{})
+> print('ok',ok,'elapsed',time.time()-start)
+> if ok:
+>     for n in order:
+>         print(n,best[n])
+> PY
+bowl1 572
+bowl2 572
+bowl3 572
+bowl4 572
+bowl5 572
+chocolate 2736
+donut1 1818
+donut2 2736
+ball 62
+match_box1 2408
+match_box2 2408
+match_box3 2408
+match_box4 2408
+order ['ball', 'bowl1', 'bowl2', 'bowl3', 'bowl4', 'bowl5', 'donut1', 'match_box1', 'match_box2', 'match_box3', 'match_box4', 'chocolate', 'donut2']
+ok True elapsed 0.34654736518859863
+ball ('xyz', '+++', 0, 0, 0)
+bowl1 ('xyz', '+++', 0, 6, 0)
+bowl2 ('xyz', '+++', 8, 1, 0)
+bowl3 ('xyz', '+-+', 6, 5, 0)
+bowl4 ('xyz', '+-+', 12, 0, 0)
+bowl5 ('xyz', '+++', 12, 6, 0)
+donut1 ('xzy', '+++', 7, 0, 0)
+match_box1 ('yxz', '+++', 11, 7, 0)
+match_box2 ('yxz', '+++', 19, 2, 0)
+match_box3 ('yxz', '+++', 17, 4, 0)
+match_box4 ('yxz', '+++', 11, 7, 3)
+chocolate ('yzx', '+++', 10, 1, 0)
+donut2 ('zyx', '+++', 21, 3, 0)
+user@61aa19fdb377:~$

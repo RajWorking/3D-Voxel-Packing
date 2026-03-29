@@ -1,0 +1,98 @@
+New Terminal Output:
+
+user@a968081b7478:~$ python3 << 'EOF'
+> import json
+> with open('/task/objects.json') as f:
+>     data = json.load(f)
+>
+> # Get ball voxels
+> ball_voxels = set()
+> for group in data['ball'].values():
+>     for v in group:
+>         ball_voxels.add(tuple(v))
+>
+> # Find empty space inside ball's bounding box
+> print("Empty spaces inside ball's 10x8x6 bounding box:")
+> empty = []
+> for z in range(6):
+>     count = 0
+>     for x in range(10):
+>         for y in range(8):
+>             if (x,y,z) not in ball_voxels:
+>                 count += 1
+>                 empty.append((x,y,z))
+>     print(f"  z={z}: {count} empty voxels")
+> print(f"Total empty in bbox: {len(empty)}")
+> print(f"Ball bbox volume: {10*8*6} = 480")
+> print(f"Ball voxels: {len(ball_voxels)}")
+> print(f"Empty: {480 - len(ball_voxels)}")
+>
+> # What are the empty positions?
+> print("\nEmpty positions:")
+> for z in range(6):
+>     layer_empty = [(x,y) for x,y,zz in empty if zz==z]
+>     if layer_empty:
+>         print(f"  z={z}: {sorted(layer_empty)}")
+>
+> # Can any flat object fit in the empty space?
+> # The flat objects are 1 unit thick in z
+> # chocolate: 6x4x1 = 24 voxels
+> # donut1: 8x4x1 = 28 voxels (with 4 holes)
+> # donut2: 6x4x1 = 20 voxels (with 4 holes)
+>
+> # Empty at z=0: corners only
+> # Let me check what fits
+> for z in range(6):
+>     layer_empty = set((x,y) for x,y,zz in empty if zz==z)
+>     print(f"\nz={z} empty count: {len(layer_empty)}")
+>     if layer_empty:
+>         min_x = min(x for x,y in layer_empty)
+>         max_x = max(x for x,y in layer_empty)
+>         min_y = min(y for x,y in layer_empty)
+>         max_y = max(y for x,y in layer_empty)
+>         print(f"  Range: x=[{min_x},{max_x}], y=[{min_y},{max_y}]")
+> EOF
+Empty spaces inside ball's 10x8x6 bounding box:
+  z=0: 24 empty voxels
+  z=1: 24 empty voxels
+  z=2: 32 empty voxels
+  z=3: 32 empty voxels
+  z=4: 24 empty voxels
+  z=5: 24 empty voxels
+Total empty in bbox: 160
+Ball bbox volume: 480 = 480
+Ball voxels: 320
+Empty: 160
+
+Empty positions:
+  z=0: [(0, 0), (0, 1), (0, 2), (0, 5), (0, 6), (0, 7), (1, 0), (1, 1), (1, 6), (1, 7), (2, 0), (2, 7), (7, 0), (7, 7), (8, 0), (8, 1), (8, 6), (8, 7), (9, 0),
+(9, 1), (9, 2), (9, 5), (9, 6), (9, 7)]
+  z=1: [(0, 0), (0, 1), (0, 2), (0, 5), (0, 6), (0, 7), (1, 0), (1, 1), (1, 6), (1, 7), (2, 0), (2, 7), (7, 0), (7, 7), (8, 0), (8, 1), (8, 6), (8, 7), (9, 0),
+(9, 1), (9, 2), (9, 5), (9, 6), (9, 7)]
+  z=2: [(0, 0), (0, 1), (0, 2), (0, 5), (0, 6), (0, 7), (1, 0), (1, 1), (1, 6), (1, 7), (2, 0), (2, 3), (2, 4), (2, 7), (4, 2), (4, 5), (5, 2), (5, 5), (7, 0),
+(7, 3), (7, 4), (7, 7), (8, 0), (8, 1), (8, 6), (8, 7), (9, 0), (9, 1), (9, 2), (9, 5), (9, 6), (9, 7)]
+  z=3: [(0, 0), (0, 1), (0, 2), (0, 5), (0, 6), (0, 7), (1, 0), (1, 1), (1, 6), (1, 7), (2, 0), (2, 3), (2, 4), (2, 7), (4, 2), (4, 5), (5, 2), (5, 5), (7, 0),
+(7, 3), (7, 4), (7, 7), (8, 0), (8, 1), (8, 6), (8, 7), (9, 0), (9, 1), (9, 2), (9, 5), (9, 6), (9, 7)]
+  z=4: [(0, 0), (0, 1), (0, 2), (0, 5), (0, 6), (0, 7), (1, 0), (1, 1), (1, 6), (1, 7), (2, 0), (2, 7), (7, 0), (7, 7), (8, 0), (8, 1), (8, 6), (8, 7), (9, 0),
+(9, 1), (9, 2), (9, 5), (9, 6), (9, 7)]
+  z=5: [(0, 0), (0, 1), (0, 2), (0, 5), (0, 6), (0, 7), (1, 0), (1, 1), (1, 6), (1, 7), (2, 0), (2, 7), (7, 0), (7, 7), (8, 0), (8, 1), (8, 6), (8, 7), (9, 0),
+(9, 1), (9, 2), (9, 5), (9, 6), (9, 7)]
+
+z=0 empty count: 24
+  Range: x=[0,9], y=[0,7]
+
+z=1 empty count: 24
+  Range: x=[0,9], y=[0,7]
+
+z=2 empty count: 32
+  Range: x=[0,9], y=[0,7]
+
+z=3 empty count: 32
+  Range: x=[0,9], y=[0,7]
+
+z=4 empty count: 24
+  Range: x=[0,9], y=[0,7]
+
+z=5 empty count: 24
+  Range: x=[0,9], y=[0,7]
+user@a968081b7478:~$

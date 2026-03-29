@@ -1,0 +1,80 @@
+New Terminal Output:
+
+user@61aa19fdb377:~$ python3 - <<'PY'
+> import json,itertools,time
+> with open('/task/objects.json') as f:
+>     data=json.load(f)
+> pts=[]
+> for arr in data['bowl1'].values(): pts.extend(map(tuple,arr))
+> pts=set(pts)
+> perms=['xyz','xzy','yxz','yzx','zxy','zyx']
+> signs=['+++','++-','+-+','+--','-++','-+-','--+','---']
+>
+> def tr(pts,perm,sign):
+>     out=[]
+>     for x,y,z in pts:
+>         d={'x':x,'y':y,'z':z}
+>         q=[d[perm[i]] for i in range(3)]
+>         q=[q[i] if sign[i]=='+' else -q[i] for i in range(3)]
+>         out.append(tuple(q))
+>     mins=[min(p[i] for p in out) for i in range(3)]
+>     out={(p[0]-mins[0],p[1]-mins[1],p[2]-mins[2]) for p in out}
+>     dims=(max(p[0] for p in out)+1,max(p[1] for p in out)+1,max(p[2] for p in out)+1)
+>     return out,dims
+> ori=[]; seen={}
+> for perm in perms:
+>     for sign in signs:
+>         out,dims=tr(pts,perm,sign)
+>         if out not in seen:
+>             seen[out]=(perm,sign,dims)
+>             ori.append((perm,sign,dims,out))
+> print('orientations',len(ori))
+>
+> best=None
+> start=time.time()
+> N=5
+>
+> def search(box, idx, occ, placements, frontier):
+>     if time.time()-start>25: return False
+>     if idx==N: return True
+>     cand=sorted(frontier|{(0,0,0)}, key=lambda p:(p[2],p[1],p[0]))[:80]
+>     for perm,sign,dims,out in sorted(ori, key=lambda t:(t[2][2],t[2][1],t[2][0])):
+>         dx,dy,dz=dims
+>         for ox,oy,oz in cand:
+>             if ox+dx>box[0] or oy+dy>box[1] or oz+dz>box[2]: continue
+>             placed=[]; ok=True
+>             for p in out:
+>                 q=(p[0]+ox,p[1]+oy,p[2]+oz)
+>                 if q in occ: ok=False; break
+>                 placed.append(q)
+>             if not ok: continue
+>             for q in placed: occ.add(q)
+>             placements.append((perm,sign,ox,oy,oz,dims))
+>             nf=set(frontier)
+>             nf.update([(ox+dx,oy,oz),(ox,oy+dy,oz),(ox,oy,oz+dz)])
+>             if search(box, idx+1, occ, placements, nf): return True
+>             placements.pop()
+>             for q in placed: occ.remove(q)
+>     return False
+>
+> vol=108*N
+> cands=[]
+> for X in range(4,25):
+>   for Y in range(4,25):
+>     for Z in range(4,25):
+>       if X*Y*Z<vol: continue
+>       cands.append((X*Y*Z,(X,Y,Z)))
+> for v,box in sorted(cands)[:250]:
+>     print('try',box,'vol',v)
+>     occ=set(); placements=[]
+>     if search(box,0,occ,placements,set()):
+>         print('FOUND',box,v)
+>         for i,p in enumerate(placements,1): print('bowl',i,p)
+>         break
+> else:
+>     print('none found in time')
+> PY
+Traceback (most recent call last):
+  File "<stdin>", line 25, in <module>
+TypeError: unhashable type: 'set'
+user@61aa19fdb377:~$

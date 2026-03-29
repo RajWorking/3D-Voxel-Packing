@@ -1,0 +1,225 @@
+New Terminal Output:
+
+user@a85be64098f5:~$ cat > /tmp/solve.py << 'PYEOF'
+> import json
+> from itertools import product
+>
+> with open('/task/objects.json') as f:
+>     data = json.load(f)
+>
+> def get_voxels(name):
+>     voxels = set()
+>     for group in data[name].values():
+>         for v in group:
+>             voxels.add(tuple(v))
+>     min_x = min(v[0] for v in voxels)
+>     min_y = min(v[1] for v in voxels)
+>     min_z = min(v[2] for v in voxels)
+>     return set((x-min_x, y-min_y, z-min_z) for x,y,z in voxels)
+>
+> def apply_transform(voxels, perm, signs):
+>     perm_map = {'x': 0, 'y': 1, 'z': 2}
+>     pi = [perm_map[c] for c in perm]
+>     si = [1 if c == '+' else -1 for c in signs]
+>     transformed = set()
+:
+    row = ''.join('#' if (x,y) in bowl_rot_2d else '.' for x in range(4))
+    if '#' in row:
+        print(f"  y={y:2d}: {row}")
+
+# Stack rotated bowls along x with dx=2
+rot_stack_2d = set()
+for i in range(5):
+    shifted = set((x + 2*i, y) for x,y in bowl_rot_2d)
+    rot_stack_2d |= shifted
+rsx = max(x for x,y in rot_stack_2d) + 1
+rsy = max(y for x,y in rot_stack_2d) + 1
+print(f"\nRotated stack: {rsx}x{rsy}")
+for y in range(rsy):
+    row = ''.join('#' if (x,y) in rot_stack_2d else '.' for x in range(rsx))
+    print(f"  y={y:2d}: {row}")
+
+# Now ball is 10x8x6. If bowls are 12x12x6, ball is 10x8x6
+# What if we orient bowls as 12x4x6 and stack them along y?
+# 2 bowls at dy=2 -> 12x6x6, 3 bowls at dy=2 -> 12x8x6
+# 3 bowls in 12x8x6! That's the same y-extent as the ball!
+print("\n=== 3 bowls stacked dy=2 ===")
+stack3_2d = set()
+for i in range(3):
+    shifted = set((x, y + 2*i) for x,y in bowl_2d)
+    stack3_2d |= shifted
+s3x = max(x for x,y in stack3_2d) + 1
+s3y = max(y for x,y in stack3_2d) + 1
+print(f"3-bowl >     for v in voxels:
+>         nv = (si[0]*v[pi[0]], si[1]*v[pi[1]], si[2]*v[pi[2]])
+>         transformed.add(nv)
+>     min_x = min(v[0] for v in transformed)
+>     min_y = min(v[1] for v in transformed)
+rl>     min_z = min(v[2] for v in transformed)
+ b>     return set((x-min_x, y-min_y, z-min_z) for x,y,z in transformed)
+>
+> def translate(voxels, ox, oy, oz):
+>     return set((x+ox, y+oy, z+oz) for x,y,z in voxels)
+>
+> def bbox_vol(voxels):
+>     if not voxels:
+>         return 0
+>     mx = max(v[0] for v in voxels) + 1
+>     my = max(v[1] for v in voxels) + 1
+>     mz = max(v[2] for v in voxels) + 1
+>     return mx * my * mz, mx, my, mz
+>
+> bowl = get_voxels('bowl1')
+> ball = get_voxels('ball')
+>
+> # Bowl cross-section is uniform in z (6 layers)
+> # Let's think about the bowl in 2D (xy plane)
+> bowl_2d = set((x,y) for x,y,z in bowl if z == 0)  # 18 cells in 12x4
+>
+> # Key idea: orient bowls so their 12-length axis is along x
+> # Stack 5 bowls along y with dy=2, giving 12x12 footprint in xy, z=6
+> # Then place ball (10x8) somewhere
+>
+> # Option A: Ball next to bowls along y
+> # Bowls: 12x12x6, Ball at y=12: 10x8x6 -> total 12x20x6 = 1440
+> # But ball is only 10 wide, so 12x20x6 = 1440
+>
+> # Option B: Ball next to bowls along x
+> # Bowls: 12x12x6, Ball at x=12: 10x8x6 -> total 22x12x6 = 1584
+>
+> # Option C: Interleave ball with bowls
+> # The bowl stack has empty spaces. Can the ball fit partially in those spaces?
+>
+> # Let me check: in the 5-bowl stack (12x12x6), what's the empty space?
+> bowl_stack_2d = set()
+> for i in range(5):
+>     shifted = set((x, y + 2*i) for x,y in bowl_2d)
+>     bowl_stack_2d |= shifted
+>
+> empty_2d = set((x,y) for x in range(12) for y in range(12)) - bowl_stack_2d
+> print("Empty cells in 5-bowl stack (per z-layer):")
+> for y in range(12):
+>     row = ''.join('O' if (x,y) in empty_2d else '#' for x in range(12))
+>     print(f"  y={y:2d}: {row}")
+>
+> # The empty spaces are mostly at x=4-7 (center columns) and corners
+> # Can we fit the ball's cross-section in those empty spaces? No - ball is 10x8.
+>
+> # Option D: Orient bowls as 6x12x4 (perm=zxy) and stack along z
+> # Bowl becomes 6x12x4. Stack 5 bowls along... hmm
+>
+> # Option E: Orient bowls as 4x12x6 (perm=yxz) and stack along x with dx=2
+> # This gives the same nesting but rotated
+> bowl_rot = apply_transform(bowl, 'yxz', '+++')
+> bowl_rot_2d = set((x,y) for x,y,z in bowl_rot if z == 0)
+> print(f"\nRotated bowl (yxz +++) 2D: bbox {max(x for x,y in bowl_rot_2d)+1}x{max(y for x,y in bowl_rot_2d)+1}")
+> for y in range(12):
+>     row = ''.join('#' if (x,y) in bowl_rot_2d else '.' for x in range(4))
+>     if '#' in row:
+>         print(f"  y={y:2d}: {row}")
+>
+> # Stack rotated bowls along x with dx=2
+> rot_stack_2d = set()
+> for i in range(5):
+>     shifted = set((x + 2*i, y) for x,y in bowl_rot_2d)
+>     rot_stack_2d |= shifted
+> rsx = max(x for x,y in rot_stack_2d) + 1
+> rsy = max(y for x,y in rot_stack_2d) + 1
+> print(f"\nRotated stack: {rsx}x{rsy}")
+> for y in range(rsy):
+>     row = ''.join('#' if (x,y) in rot_stack_2d else '.' for x in range(rsx))
+>     print(f"  y={y:2d}: {row}")
+>
+> # Now ball is 10x8x6. If bowls are 12x12x6, ball is 10x8x6
+> # What if we orient bowls as 12x4x6 and stack them along y?
+> # 2 bowls at dy=2 -> 12x6x6, 3 bowls at dy=2 -> 12x8x6
+> # 3 bowls in 12x8x6! That's the same y-extent as the ball!
+> print("\n=== 3 bowls stacked dy=2 ===")
+> stack3_2d = set()
+> for i in range(3):
+>     shifted = set((x, y + 2*i) for x,y in bowl_2d)
+>     stack3_2d |= shifted
+> s3x = max(x for x,y in stack3_2d) + 1
+> s3y = max(y for x,y in stack3_2d) + 1
+> print(f"3-bowl stack: {s3x}x{s3y}")
+> for y in range(s3y):
+>     row = ''.join('#' if (x,y) in stack3_2d else '.' for x in range(s3x))
+>     print(f"  y={y}: {row}")
+>
+> # Ball is 10x8. 3 bowls are 12x8. Place side by side: 22x8x6 = 1056
+> # Or overlap in x? Ball is 10 wide, bowls 12 wide.
+> # What about placing ball at x=0 and bowls at x=10? -> 22x8x6
+> # Or ball at x=2 (centered in 12)? Ball is 10 wide, fits in 12 with 2 spare.
+> # Can ball and 3-bowl-stack share the same 12x8 footprint?
+>
+> # Check overlap between ball 2D (at z=0) and 3-bowl-stack
+> ball_2d_z0 = set((x,y) for x,y,z in ball if z == 0)
+> print(f"\nBall 2D at z=0: {len(ball_2d_z0)} cells in {max(x for x,y in ball_2d_z0)+1}x{max(y for x,y in ball_2d_z0)+1}")
+>
+> # Try placing ball at offset (1,0) within the 12x8 region
+> for ox in range(3):
+>     ball_shifted = set((x+ox, y) for x,y in ball_2d_z0)
+>     overlap = ball_shifted & stack3_2d
+>     union = ball_shifted | stack3_2d
+>     print(f"  Ball at ox={ox}: overlap={len(overlap)}, union={len(union)}")
+>
+> PYEOF
+user@a85be64098f5:~$ python3 /tmp/solve.py
+Empty cells in 5-bowl stack (per z-layer):
+  y= 0: ##OOOOOOOO##
+  y= 1: O##OOOOOO##O
+  y= 2: ####OOOO####
+  y= 3: O##########O
+  y= 4: ####OOOO####
+  y= 5: O##########O
+  y= 6: ####OOOO####
+  y= 7: O##########O
+  y= 8: ####OOOO####
+  y= 9: O##########O
+  y=10: OO##OOOO##OO
+  y=11: OOO######OOO
+
+Rotated bowl (yxz +++) 2D: bbox 4x12
+  y= 0: #...
+  y= 1: ##..
+  y= 2: .##.
+  y= 3: ..##
+  y= 4: ...#
+  y= 5: ...#
+  y= 6: ...#
+  y= 7: ...#
+  y= 8: ..##
+  y= 9: .##.
+  y=10: ##..
+  y=11: #...
+
+Rotated stack: 12x12
+  y= 0: #.#.#.#.#...
+  y= 1: ##########..
+  y= 2: .##########.
+  y= 3: ..##########
+  y= 4: ...#.#.#.#.#
+  y= 5: ...#.#.#.#.#
+  y= 6: ...#.#.#.#.#
+  y= 7: ...#.#.#.#.#
+  y= 8: ..##########
+  y= 9: .##########.
+  y=10: ##########..
+  y=11: #.#.#.#.#...
+
+=== 3 bowls stacked dy=2 ===
+3-bowl stack: 12x8
+  y=0: ##........##
+  y=1: .##......##.
+  y=2: ####....####
+  y=3: .##########.
+  y=4: ####....####
+  y=5: .##########.
+  y=6: ..##....##..
+  y=7: ...######...
+
+Ball 2D at z=0: 56 cells in 10x8
+  Ball at ox=0: overlap=34, union=76
+  Ball at ox=1: overlap=34, union=76
+  Ball at ox=2: overlap=34, union=76
+user@a85be64098f5:~$

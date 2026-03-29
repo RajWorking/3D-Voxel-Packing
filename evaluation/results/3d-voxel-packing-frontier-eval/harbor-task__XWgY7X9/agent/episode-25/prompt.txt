@@ -1,0 +1,41 @@
+Current Terminal Screen:
+> for obj_name in ['donut1', 'chocolate', 'donut2', 'match_box1', 'match_box2', 'match_box3', 'match_box4']:
+>     result = find_placement(obj_name, occupied)
+>     if result:
+>         perm, signs, ox, oy, oz, placed, sx, sy, sz = result
+>         occupied |= placed
+>         placements[obj_name] = (perm, signs, ox, oy, oz)
+>         print(f"{obj_name}: perm={perm} signs={signs} offset=({ox},{oy},{oz}) size={sx}x{sy}x{sz}")
+>     else:
+>         print(f"{obj_name}: DOES NOT FIT!")
+>
+> # Final bounding box
+> min_x = min(v[0] for v in occupied)
+> max_x = max(v[0] for v in occupied)
+> min_y = min(v[1] for v in occupied)
+> max_y = max(v[1] for v in occupied)
+> min_z = min(v[2] for v in occupied)
+> max_z = max(v[2] for v in occupied)
+> w = max_x - min_x + 1
+> h = max_y - min_y + 1
+> d = max_z - min_z + 1
+> print(f"\nFinal bounding box: {w}x{h}x{d} = {w*h*d}")
+> print(f"Total voxels: {len(occupied)}")
+> EOF
+Ball z range: 0..5
+Bowl z range: 0..5
+After ball + 5 bowls: 860 voxels
+Z range: 0..5
+X range: 0..11
+Y range: 0..17
+donut1: DOES NOT FIT!
+chocolate: perm=yzx signs=+++ offset=(4,8,0) size=4x1x6
+donut2: perm=yzx signs=+++ offset=(4,10,0) size=4x1x6
+match_box1: perm=xyz signs=+++ offset=(8,0,0) size=3x2x3
+match_box2: perm=xyz signs=+++ offset=(8,0,3) size=3x2x3
+match_box3: perm=yxz signs=+++ offset=(10,2,0) size=2x3x3
+match_box4: perm=yxz signs=+++ offset=(10,2,3) size=2x3x3
+
+Final bounding box: 12x18x6 = 1296
+Total voxels: 976
+user@a968081b7478:~$

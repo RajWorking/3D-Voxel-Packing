@@ -1,0 +1,41 @@
+Current Terminal Screen:
+>             print(f"SUCCESS! donut1 at ({dox},{doy},{doz}) perm={perm_names[perms_list.index(dp)]}")
+>             for name in obj_names:
+>                 p,ox,oy,oz = placements[name]
+>                 pn = perm_names[perms_list.index(p)]
+>                 print(f"  {name}: {pn} +++ ({ox},{oy},{oz})")
+>
+>             # Print placement commands
+>             print("\n=== PLACEMENT COMMANDS ===")
+>             print(f"Ball: xyz +++ offset=(1,0,0)")
+>             for i in range(5):
+>                 print(f"Bowl{i+1}: xyz +++ offset=(0,{5+2*i},0)")
+>             for name in obj_names:
+>                 p,ox,oy,oz = placements[name]
+>                 pn = perm_names[perms_list.index(p)]
+>                 print(f"{name}: {pn} +++ offset=({ox},{oy},{oz})")
+>             import sys
+>             sys.exit(0)
+>
+> print("No solution found for 12x17x6")
+>
+> PYEOF
+user@a85be64098f5:~$ python3 /tmp/solve17.py
+Donut1 orientations:
+  xyz: 8x4x1
+    Total valid positions: 0
+  xzy: 8x1x4
+    Total valid positions: 0
+  yxz: 4x8x1
+    Total valid positions: 0
+  yzx: 4x1x8
+    Doesn't fit in bbox
+  zxy: 1x8x4
+    Total valid positions: 0
+  zyx: 1x4x8
+    Doesn't fit in bbox
+
+Trying donut1-first approach:
+Total donut1 placements: 0
+No solution found for 12x17x6
+user@a85be64098f5:~$

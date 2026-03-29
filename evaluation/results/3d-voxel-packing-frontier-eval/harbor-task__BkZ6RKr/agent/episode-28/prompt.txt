@@ -1,0 +1,4 @@
+New Terminal Output:
+==
+  Bbox: 12x17x6=1224, occupied=860
+

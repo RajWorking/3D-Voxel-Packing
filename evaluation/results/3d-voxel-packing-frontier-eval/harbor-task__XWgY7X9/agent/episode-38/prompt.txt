@@ -1,0 +1,111 @@
+New Terminal Output:
+
+user@a968081b7478:~$ python3 << 'EOF'
+> import json
+> from itertools import product
+>
+> with open('/task/objects.json') as f:
+>     data = json.load(f)
+>
+> def get_voxels_normalized(name):
+>     voxels = set()
+>     for group in data[name].values():
+>         for v in group:
+>             voxels.add(tuple(v))
+>     mx = min(v[0] for v in voxels)
+>     my = min(v[1] for v in voxels)
+>     mz = min(v[2] for v in voxels)
+>     return set((x-mx, y-my, z-mz) for x,y,z in voxels)
+>
+> def transform_voxels(voxels, perm, signs):
+>     pmap = {'x':0, 'y':1, 'z':2}
+>     new_voxels = set()
+>     for v in voxels:
+>         nv = [0,0,0]
+>         for i, c in enumerate(perm):
+>             val = v[pmap[c]]
+>             if signs[i] == '-':
+>                 val = -val
+>             nv[i] = val
+>         new_voxels.add(tuple(nv))
+>     mx = min(v[0] for v in new_voxels)
+>     my = min(v[1] for v in new_voxels)
+>     mz = min(v[2] for v in new_voxels)
+>     return set((x-mx, y-my, z-mz) for x,y,z in new_voxels)
+>
+> bowl_v = get_voxels_normalized('bowl1')
+> ball_v = get_voxels_normalized('ball')
+> bowl_xy = set((x,y) for x,y,z in bowl_v)
+> ball_all_xy = set((x,y) for x,y,z in ball_v)
+    + donut1 at (2,0,0): {w2}x{h2}x6 = {vol2}")
+        else:
+            print(f"    donut1 at (2,0,0): OVERLAP ({len(d1_overlap)} voxels)")
+EOF
+>
+> # 5 bowls at y=0,2,4,6,8
+> nested_bowls = set()
+> for i in range(5):
+>     for x,y in bowl_xy:
+>         nested_bowls.add((x, y + i*2))
+>
+> # Ball at various y offsets
+> for ball_y in range(6, 16):
+>     ball_shifted = set((x, y+ball_y) for x,y in ball_all_xy)
+>     overlap = ball_shifted & nested_bowls
+>     if not overlap:
+>         combined = nested_bowls | ball_shifted
+>         min_y = min(y for x,y in combined)
+>         max_y = max(y for x,y in combined)
+>         h = max_y - min_y + 1
+>         print(f"Ball at y={ball_y}: 12x{h}x6 = {12*h*6}, no overlap")
+>
+> # Best: find minimum h
+> print("\nChecking ball positions more carefully:")
+> for ball_y in range(4, 14):
+>     # Check ALL z layers for overlap
+>     ball_shifted_3d = set((x, y+ball_y, z) for x,y,z in ball_v)
+>     bowls_3d = set()
+>     for i in range(5):
+>         for x,y,z in bowl_v:
+>             bowls_3d.add((x, y + i*2, z))
+>
+>     overlap = ball_shifted_3d & bowls_3d
+>     if not overlap:
+>         combined = ball_shifted_3d | bowls_3d
+>         max_y = max(y for x,y,z in combined)
+>         min_y = min(y for x,y,z in combined)
+>         h = max_y - min_y + 1
+>         max_x = max(x for x,y,z in combined)
+>         w = max_x + 1
+>         vol = w * h * 6
+>         print(f"  Ball at y={ball_y}: {w}x{h}x6 = {vol}")
+>
+>         # Check if donut1 fits in bowl interior at y=0
+>         # Bowl interior at y=0: x=2..9 (8 cells)
+>         # Donut1 as 8x1x4 at x=2, y=0, z=0
+>         donut1_v = get_voxels_normalized('donut1')
+>         donut1_t = transform_voxels(donut1_v, 'xzy', '+++')
+>         # 8x1x4 at offset (2, 0, 0)
+>         donut1_placed = set((x+2, y+0, z+0) for x,y,z in donut1_t)
+>         all_occupied = combined | donut1_placed
+>         d1_overlap = donut1_placed & (ball_shifted_3d | bowls_3d)
+>         if not d1_overlap:
+>             max_y2 = max(y for x,y,z in all_occupied)
+>             h2 = max_y2 - min(y for x,y,z in all_occupied) + 1
+>             w2 = max(x for x,y,z in all_occupied) + 1
+>             vol2 = w2 * h2 * 6
+>             print(f"    + donut1 at (2,0,0): {w2}x{h2}x6 = {vol2}")
+>         else:
+>             print(f"    donut1 at (2,0,0): OVERLAP ({len(d1_overlap)} voxels)")
+> EOF
+Ball at y=12: 12x20x6 = 1440, no overlap
+Ball at y=13: 12x21x6 = 1512, no overlap
+Ball at y=14: 12x22x6 = 1584, no overlap
+Ball at y=15: 12x23x6 = 1656, no overlap
+
+Checking ball positions more carefully:
+  Ball at y=12: 12x20x6 = 1440
+    + donut1 at (2,0,0): 12x20x6 = 1440
+  Ball at y=13: 12x21x6 = 1512
+    + donut1 at (2,0,0): 12x21x6 = 1512
+user@a968081b7478:~$

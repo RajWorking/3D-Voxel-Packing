@@ -1,0 +1,1298 @@
+[?2004huser@9732490332b2:~$ asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004huser@9732490332b2:~$ clear
+[?2004l[H[J[?2004huser@9732490332b2:~$ python3 /task/tools/check_state.py
+[?2004l=== Workspace State ===
+Bounding box   : none (no objects placed yet)
+Total voxels   : 0
+Placed   ( 0) : —
+Unplaced (13) : ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+[?2004huser@9732490332b2:~$ cat /task/objects.json
+[?2004l{
+  "bowl1": {
+    "layer_z1": [
+      [0,0,1],[1,0,1],                                                                     [10,0,1],[11,0,1],
+               [1,1,1],[2,1,1],                                                   [9,1,1],[10,1,1],
+                        [2,2,1],[3,2,1],                                 [8,2,1],[9,2,1],
+                                 [3,3,1],[4,3,1],[5,3,1],[6,3,1],[7,3,1],[8,3,1]
+    ],
+    "layer_z2": [
+      [0,0,2],[1,0,2],                                                                       [10,0,2],[11,0,2],
+               [1,1,2],[2,1,2],                                                   [9,1,2],[10,1,2],
+                        [2,2,2],[3,2,2],                                 [8,2,2],[9,2,2],
+                                 [3,3,2],[4,3,2],[5,3,2],[6,3,2],[7,3,2],[8,3,2]
+    ],
+    "layer_z3": [
+      [0,0,3],[1,0,3],                                                                       [10,0,3],[11,0,3],
+               [1,1,3],[2,1,3],                                                   [9,1,3],[10,1,3],
+                        [2,2,3],[3,2,3],                                 [8,2,3],[9,2,3],
+                                 [3,3,3],[4,3,3],[5,3,3],[6,3,3],[7,3,3],[8,3,3]
+    ],
+    "layer_z4": [
+      [0,0,4],[1,0,4],                                                                       [10,0,4],[11,0,4],
+               [1,1,4],[2,1,4],                                                   [9,1,4],[10,1,4],
+                        [2,2,4],[3,2,4],                                 [8,2,4],[9,2,4],
+                                 [3,3,4],[4,3,4],[5,3,4],[6,3,4],[7,3,4],[8,3,4]
+    ],
+    "layer_z5": [
+      [0,0,5],[1,0,5],                                                                       [10,0,5],[11,0,5],
+               [1,1,5],[2,1,5],                                                   [9,1,5],[10,1,5],
+                        [2,2,5],[3,2,5],                                 [8,2,5],[9,2,5],
+                                 [3,3,5],[4,3,5],[5,3,5],[6,3,5],[7,3,5],[8,3,5]
+    ],
+    "layer_z6": [
+      [0,0,6],[1,0,6],                                                                       [10,0,6],[11,0,6],
+               [1,1,6],[2,1,6],                                                   [9,1,6],[10,1,6],
+                        [2,2,6],[3,2,6],                                 [8,2,6],[9,2,6],
+                                 [3,3,6],[4,3,6],[5,3,6],[6,3,6],[7,3,6],[8,3,6]
+    ]
+  },
+  "bowl2": {
+    "layer_z1": [
+      [0,0,1],[1,0,1],                                                                     [10,0,1],[11,0,1],
+               [1,1,1],[2,1,1],                                                   [9,1,1],[10,1,1],
+                        [2,2,1],[3,2,1],                                 [8,2,1],[9,2,1],
+                                 [3,3,1],[4,3,1],[5,3,1],[6,3,1],[7,3,1],[8,3,1]
+    ],
+    "layer_z2": [
+      [0,0,2],[1,0,2],                                                                       [10,0,2],[11,0,2],
+               [1,1,2],[2,1,2],                                                   [9,1,2],[10,1,2],
+                        [2,2,2],[3,2,2],                                 [8,2,2],[9,2,2],
+                                 [3,3,2],[4,3,2],[5,3,2],[6,3,2],[7,3,2],[8,3,2]
+    ],
+    "layer_z3": [
+      [0,0,3],[1,0,3],                                                                       [10,0,3],[11,0,3],
+               [1,1,3],[2,1,3],                                                   [9,1,3],[10,1,3],
+                        [2,2,3],[3,2,3],                                 [8,2,3],[9,2,3],
+                                 [3,3,3],[4,3,3],[5,3,3],[6,3,3],[7,3,3],[8,3,3]
+    ],
+    "layer_z4": [
+      [0,0,4],[1,0,4],                                                                       [10,0,4],[11,0,4],
+               [1,1,4],[2,1,4],                                                   [9,1,4],[10,1,4],
+                        [2,2,4],[3,2,4],                                 [8,2,4],[9,2,4],
+                                 [3,3,4],[4,3,4],[5,3,4],[6,3,4],[7,3,4],[8,3,4]
+    ],
+    "layer_z5": [
+      [0,0,5],[1,0,5],                                                                       [10,0,5],[11,0,5],
+               [1,1,5],[2,1,5],                                                   [9,1,5],[10,1,5],
+                        [2,2,5],[3,2,5],                                 [8,2,5],[9,2,5],
+                                 [3,3,5],[4,3,5],[5,3,5],[6,3,5],[7,3,5],[8,3,5]
+    ],
+    "layer_z6": [
+      [0,0,6],[1,0,6],                                                                       [10,0,6],[11,0,6],
+               [1,1,6],[2,1,6],                                                   [9,1,6],[10,1,6],
+                        [2,2,6],[3,2,6],                                 [8,2,6],[9,2,6],
+                                 [3,3,6],[4,3,6],[5,3,6],[6,3,6],[7,3,6],[8,3,6]
+    ]
+  },
+  "bowl3": {
+    "layer_z1": [
+      [0,0,1],[1,0,1],                                                                     [10,0,1],[11,0,1],
+               [1,1,1],[2,1,1],                                                   [9,1,1],[10,1,1],
+                        [2,2,1],[3,2,1],                                 [8,2,1],[9,2,1],
+                                 [3,3,1],[4,3,1],[5,3,1],[6,3,1],[7,3,1],[8,3,1]
+    ],
+    "layer_z2": [
+      [0,0,2],[1,0,2],                                                                       [10,0,2],[11,0,2],
+               [1,1,2],[2,1,2],                                                   [9,1,2],[10,1,2],
+                        [2,2,2],[3,2,2],                                 [8,2,2],[9,2,2],
+                                 [3,3,2],[4,3,2],[5,3,2],[6,3,2],[7,3,2],[8,3,2]
+    ],
+    "layer_z3": [
+      [0,0,3],[1,0,3],                                                                       [10,0,3],[11,0,3],
+               [1,1,3],[2,1,3],                                                   [9,1,3],[10,1,3],
+                        [2,2,3],[3,2,3],                                 [8,2,3],[9,2,3],
+                                 [3,3,3],[4,3,3],[5,3,3],[6,3,3],[7,3,3],[8,3,3]
+    ],
+    "layer_z4": [
+      [0,0,4],[1,0,4],                                                                       [10,0,4],[11,0,4],
+               [1,1,4],[2,1,4],                                                   [9,1,4],[10,1,4],
+                        [2,2,4],[3,2,4],                                 [8,2,4],[9,2,4],
+                                 [3,3,4],[4,3,4],[5,3,4],[6,3,4],[7,3,4],[8,3,4]
+    ],
+    "layer_z5": [
+      [0,0,5],[1,0,5],                                                                       [10,0,5],[11,0,5],
+               [1,1,5],[2,1,5],                                                   [9,1,5],[10,1,5],
+                        [2,2,5],[3,2,5],                                 [8,2,5],[9,2,5],
+                                 [3,3,5],[4,3,5],[5,3,5],[6,3,5],[7,3,5],[8,3,5]
+    ],
+    "layer_z6": [
+      [0,0,6],[1,0,6],                                                                       [10,0,6],[11,0,6],
+               [1,1,6],[2,1,6],                                                   [9,1,6],[10,1,6],
+                        [2,2,6],[3,2,6],                                 [8,2,6],[9,2,6],
+                                 [3,3,6],[4,3,6],[5,3,6],[6,3,6],[7,3,6],[8,3,6]
+    ]
+  },
+  "bowl4": {
+    "layer_z1": [
+      [0,0,1],[1,0,1],                                                                     [10,0,1],[11,0,1],
+               [1,1,1],[2,1,1],                                                   [9,1,1],[10,1,1],
+                        [2,2,1],[3,2,1],                                 [8,2,1],[9,2,1],
+                                 [3,3,1],[4,3,1],[5,3,1],[6,3,1],[7,3,1],[8,3,1]
+    ],
+    "layer_z2": [
+      [0,0,2],[1,0,2],                                                                       [10,0,2],[11,0,2],
+               [1,1,2],[2,1,2],                                                   [9,1,2],[10,1,2],
+                        [2,2,2],[3,2,2],                                 [8,2,2],[9,2,2],
+                                 [3,3,2],[4,3,2],[5,3,2],[6,3,2],[7,3,2],[8,3,2]
+    ],
+    "layer_z3": [
+      [0,0,3],[1,0,3],                                                                       [10,0,3],[11,0,3],
+               [1,1,3],[2,1,3],                                                   [9,1,3],[10,1,3],
+                        [2,2,3],[3,2,3],                                 [8,2,3],[9,2,3],
+                                 [3,3,3],[4,3,3],[5,3,3],[6,3,3],[7,3,3],[8,3,3]
+    ],
+    "layer_z4": [
+      [0,0,4],[1,0,4],                                                                       [10,0,4],[11,0,4],
+               [1,1,4],[2,1,4],                                                   [9,1,4],[10,1,4],
+                        [2,2,4],[3,2,4],                                 [8,2,4],[9,2,4],
+                                 [3,3,4],[4,3,4],[5,3,4],[6,3,4],[7,3,4],[8,3,4]
+    ],
+    "layer_z5": [
+      [0,0,5],[1,0,5],                                                                       [10,0,5],[11,0,5],
+               [1,1,5],[2,1,5],                                                   [9,1,5],[10,1,5],
+                        [2,2,5],[3,2,5],                                 [8,2,5],[9,2,5],
+                                 [3,3,5],[4,3,5],[5,3,5],[6,3,5],[7,3,5],[8,3,5]
+    ],
+    "layer_z6": [
+      [0,0,6],[1,0,6],                                                                       [10,0,6],[11,0,6],
+               [1,1,6],[2,1,6],                                                   [9,1,6],[10,1,6],
+                        [2,2,6],[3,2,6],                                 [8,2,6],[9,2,6],
+                                 [3,3,6],[4,3,6],[5,3,6],[6,3,6],[7,3,6],[8,3,6]
+    ]
+  },
+  "bowl5": {
+    "layer_z1": [
+      [0,0,1],[1,0,1],                                                                     [10,0,1],[11,0,1],
+               [1,1,1],[2,1,1],                                                   [9,1,1],[10,1,1],
+                        [2,2,1],[3,2,1],                                 [8,2,1],[9,2,1],
+                                 [3,3,1],[4,3,1],[5,3,1],[6,3,1],[7,3,1],[8,3,1]
+    ],
+    "layer_z2": [
+      [0,0,2],[1,0,2],                                                                       [10,0,2],[11,0,2],
+               [1,1,2],[2,1,2],                                                   [9,1,2],[10,1,2],
+                        [2,2,2],[3,2,2],                                 [8,2,2],[9,2,2],
+                                 [3,3,2],[4,3,2],[5,3,2],[6,3,2],[7,3,2],[8,3,2]
+    ],
+    "layer_z3": [
+      [0,0,3],[1,0,3],                                                                       [10,0,3],[11,0,3],
+               [1,1,3],[2,1,3],                                                   [9,1,3],[10,1,3],
+                        [2,2,3],[3,2,3],                                 [8,2,3],[9,2,3],
+                                 [3,3,3],[4,3,3],[5,3,3],[6,3,3],[7,3,3],[8,3,3]
+    ],
+    "layer_z4": [
+      [0,0,4],[1,0,4],                                                                       [10,0,4],[11,0,4],
+               [1,1,4],[2,1,4],                                                   [9,1,4],[10,1,4],
+                        [2,2,4],[3,2,4],                                 [8,2,4],[9,2,4],
+                                 [3,3,4],[4,3,4],[5,3,4],[6,3,4],[7,3,4],[8,3,4]
+    ],
+    "layer_z5": [
+      [0,0,5],[1,0,5],                                                                       [10,0,5],[11,0,5],
+               [1,1,5],[2,1,5],                                                   [9,1,5],[10,1,5],
+                        [2,2,5],[3,2,5],                                 [8,2,5],[9,2,5],
+                                 [3,3,5],[4,3,5],[5,3,5],[6,3,5],[7,3,5],[8,3,5]
+    ],
+    "layer_z6": [
+      [0,0,6],[1,0,6],                                                                       [10,0,6],[11,0,6],
+               [1,1,6],[2,1,6],                                                   [9,1,6],[10,1,6],
+                        [2,2,6],[3,2,6],                                 [8,2,6],[9,2,6],
+                                 [3,3,6],[4,3,6],[5,3,6],[6,3,6],[7,3,6],[8,3,6]
+    ]
+  },
+  "chocolate": {
+    "layer_z0": [
+      [0,0,0],[1,0,0],[2,0,0],[3,0,0],[4,0,0],[5,0,0],
+      [0,1,0],[1,1,0],[2,1,0],[3,1,0],[4,1,0],[5,1,0],
+      [0,2,0],[1,2,0],[2,2,0],[3,2,0],[4,2,0],[5,2,0],
+      [0,3,0],[1,3,0],[2,3,0],[3,3,0],[4,3,0],[5,3,0]
+    ]
+  },
+  "donut1": {
+    "layer_z0": [
+      [0,0,0],[1,0,0],[2,0,0],[3,0,0],[4,0,0],[5,0,0],[6,0,0],[7,0,0],
+      [0,1,0],[1,1,0],[2,1,0],                  [5,1,0],[6,1,0],[7,1,0],
+      [0,2,0],[1,2,0],[2,2,0],                  [5,2,0],[6,2,0],[7,2,0],
+      [0,3,0],[1,3,0],[2,3,0],[3,3,0],[4,3,0],[5,3,0],[6,3,0],[7,3,0]
+    ]
+  },
+  "donut2": {
+    "layer_z0": [
+      [0,0,0],[1,0,0],[2,0,0],[3,0,0],[4,0,0],[5,0,0],
+      [0,1,0],[1,1,0],                  [4,1,0],[5,1,0],
+      [0,2,0],[1,2,0],                  [4,2,0],[5,2,0],
+      [0,3,0],[1,3,0],[2,3,0],[3,3,0],[4,3,0],[5,3,0]
+    ]
+  },
+  "ball": {
+    "layer_z0": [
+                                 [3,0,0],[4,0,0],[5,0,0],[6,0,0],
+                        [2,1,0],[3,1,0],[4,1,0],[5,1,0],[6,1,0],[7,1,0],
+               [1,2,0],[2,2,0],[3,2,0],[4,2,0],[5,2,0],[6,2,0],[7,2,0],[8,2,0],
+      [0,3,0],[1,3,0],[2,3,0],[3,3,0],[4,3,0],[5,3,0],[6,3,0],[7,3,0],[8,3,0],[9,3,0],
+      [0,4,0],[1,4,0],[2,4,0],[3,4,0],[4,4,0],[5,4,0],[6,4,0],[7,4,0],[8,4,0],[9,4,0],
+               [1,5,0],[2,5,0],[3,5,0],[4,5,0],[5,5,0],[6,5,0],[7,5,0],[8,5,0],
+                        [2,6,0],[3,6,0],[4,6,0],[5,6,0],[6,6,0],[7,6,0],
+                                 [3,7,0],[4,7,0],[5,7,0],[6,7,0]
+    ],
+    "layer_z1": [
+                                 [3,0,1],[4,0,1],[5,0,1],[6,0,1],
+                        [2,1,1],[3,1,1],[4,1,1],[5,1,1],[6,1,1],[7,1,1],
+               [1,2,1],[2,2,1],[3,2,1],[4,2,1],[5,2,1],[6,2,1],[7,2,1],[8,2,1],
+      [0,3,1],[1,3,1],[2,3,1],[3,3,1],[4,3,1],[5,3,1],[6,3,1],[7,3,1],[8,3,1],[9,3,1],
+      [0,4,1],[1,4,1],[2,4,1],[3,4,1],[4,4,1],[5,4,1],[6,4,1],[7,4,1],[8,4,1],[9,4,1],
+               [1,5,1],[2,5,1],[3,5,1],[4,5,1],[5,5,1],[6,5,1],[7,5,1],[8,5,1],
+                        [2,6,1],[3,6,1],[4,6,1],[5,6,1],[6,6,1],[7,6,1],
+                                 [3,7,1],[4,7,1],[5,7,1],[6,7,1]
+    ],
+    "layer_z2": [
+                                 [3,0,2],[4,0,2],[5,0,2],[6,0,2],
+                        [2,1,2],[3,1,2],[4,1,2],[5,1,2],[6,1,2],[7,1,2],
+               [1,2,2],[2,2,2],[3,2,2],                  [6,2,2],[7,2,2],[8,2,2],
+      [0,3,2],[1,3,2],         [3,3,2],[4,3,2],[5,3,2],[6,3,2],         [8,3,2],[9,3,2],
+      [0,4,2],[1,4,2],         [3,4,2],[4,4,2],[5,4,2],[6,4,2],         [8,4,2],[9,4,2],
+               [1,5,2],[2,5,2],[3,5,2],                  [6,5,2],[7,5,2],[8,5,2],
+                        [2,6,2],[3,6,2],[4,6,2],[5,6,2],[6,6,2],[7,6,2],
+                                 [3,7,2],[4,7,2],[5,7,2],[6,7,2]
+    ],
+    "layer_z3": [
+                                 [3,0,3],[4,0,3],[5,0,3],[6,0,3],
+                        [2,1,3],[3,1,3],[4,1,3],[5,1,3],[6,1,3],[7,1,3],
+               [1,2,3],[2,2,3],[3,2,3],                  [6,2,3],[7,2,3],[8,2,3],
+      [0,3,3],[1,3,3],         [3,3,3],[4,3,3],[5,3,3],[6,3,3],         [8,3,3],[9,3,3],
+      [0,4,3],[1,4,3],         [3,4,3],[4,4,3],[5,4,3],[6,4,3],         [8,4,3],[9,4,3],
+               [1,5,3],[2,5,3],[3,5,3],                  [6,5,3],[7,5,3],[8,5,3],
+                        [2,6,3],[3,6,3],[4,6,3],[5,6,3],[6,6,3],[7,6,3],
+                                 [3,7,3],[4,7,3],[5,7,3],[6,7,3]
+    ],
+    "layer_z4": [
+                                 [3,0,4],[4,0,4],[5,0,4],[6,0,4],
+                        [2,1,4],[3,1,4],[4,1,4],[5,1,4],[6,1,4],[7,1,4],
+               [1,2,4],[2,2,4],[3,2,4],[4,2,4],[5,2,4],[6,2,4],[7,2,4],[8,2,4],
+      [0,3,4],[1,3,4],[2,3,4],[3,3,4],[4,3,4],[5,3,4],[6,3,4],[7,3,4],[8,3,4],[9,3,4],
+      [0,4,4],[1,4,4],[2,4,4],[3,4,4],[4,4,4],[5,4,4],[6,4,4],[7,4,4],[8,4,4],[9,4,4],
+               [1,5,4],[2,5,4],[3,5,4],[4,5,4],[5,5,4],[6,5,4],[7,5,4],[8,5,4],
+                        [2,6,4],[3,6,4],[4,6,4],[5,6,4],[6,6,4],[7,6,4],
+                                 [3,7,4],[4,7,4],[5,7,4],[6,7,4]
+    ],
+    "layer_z5": [
+                                 [3,0,5],[4,0,5],[5,0,5],[6,0,5],
+                        [2,1,5],[3,1,5],[4,1,5],[5,1,5],[6,1,5],[7,1,5],
+               [1,2,5],[2,2,5],[3,2,5],[4,2,5],[5,2,5],[6,2,5],[7,2,5],[8,2,5],
+      [0,3,5],[1,3,5],[2,3,5],[3,3,5],[4,3,5],[5,3,5],[6,3,5],[7,3,5],[8,3,5],[9,3,5],
+      [0,4,5],[1,4,5],[2,4,5],[3,4,5],[4,4,5],[5,4,5],[6,4,5],[7,4,5],[8,4,5],[9,4,5],
+               [1,5,5],[2,5,5],[3,5,5],[4,5,5],[5,5,5],[6,5,5],[7,5,5],[8,5,5],
+                        [2,6,5],[3,6,5],[4,6,5],[5,6,5],[6,6,5],[7,6,5],
+                                 [3,7,5],[4,7,5],[5,7,5],[6,7,5]
+    ]
+  },
+  "match_box1": {
+    "layer_z1": [
+      [0,0,1],[1,0,1],[2,0,1],
+      [0,1,1],[1,1,1],[2,1,1]
+    ],
+    "layer_z2": [
+      [0,0,2],[1,0,2],[2,0,2],
+      [0,1,2],[1,1,2],[2,1,2]
+    ],
+    "layer_z3": [
+      [0,0,3],[1,0,3],[2,0,3],
+      [0,1,3],[1,1,3],[2,1,3]
+    ]
+  },
+  "match_box2": {
+    "layer_z1": [
+      [0,0,1],[1,0,1],[2,0,1],
+      [0,1,1],[1,1,1],[2,1,1]
+    ],
+    "layer_z2": [
+      [0,0,2],[1,0,2],[2,0,2],
+      [0,1,2],[1,1,2],[2,1,2]
+    ],
+    "layer_z3": [
+      [0,0,3],[1,0,3],[2,0,3],
+      [0,1,3],[1,1,3],[2,1,3]
+    ]
+  },
+  "match_box3": {
+    "layer_z1": [
+      [0,0,1],[1,0,1],[2,0,1],
+      [0,1,1],[1,1,1],[2,1,1]
+    ],
+    "layer_z2": [
+      [0,0,2],[1,0,2],[2,0,2],
+      [0,1,2],[1,1,2],[2,1,2]
+    ],
+    "layer_z3": [
+      [0,0,3],[1,0,3],[2,0,3],
+      [0,1,3],[1,1,3],[2,1,3]
+    ]
+  },
+  "match_box4": {
+    "layer_z1": [
+      [0,0,1],[1,0,1],[2,0,1],
+      [0,1,1],[1,1,1],[2,1,1]
+    ],
+    "layer_z2": [
+      [0,0,2],[1,0,2],[2,0,2],
+      [0,1,2],[1,1,2],[2,1,2]
+    ],
+    "layer_z3": [
+      [0,0,3],[1,0,3],[2,0,3],
+      [0,1,3],[1,1,3],[2,1,3]
+    ]
+  }
+}
+
+[?2004huser@9732490332b2:~$ cat << 'EOF' > summarize.py
+[?2004l[?2004h> import json
+[?2004l[?2004h> with open('/task/objects.json') as f:
+[?2004l[?2004h>     objs = json.load(f)
+[?2004l[?2004h> for name, obj in objs.items():
+[?2004l[?2004h>     voxels = []
+[?2004l[?2004h>     for layer in obj.values():
+[?2004l[?2004h>         voxels.extend(layer)
+[?2004l[?2004h>     min_x = min(v[0] for v in voxels)
+[?2004l[?2004h>     max_x = max(v[0] for v in voxels)
+[?2004l[?2004h>     min_y = min(v[1] for v in voxels)
+[?2004l[?2004h>     max_y = max(v[1] for v in voxels)
+[?2004l[?2004h>     min_z = min(v[2] for v in voxels)
+[?2004l[?2004h>     max_z = max(v[2] for v in voxels)
+[?2004l[?2004h>     print(f"{name}: {max_x - min_x + 1}x{max_y - min_y + 1}x{max_z - min_z + 1}, voxels: {len(voxels)}")
+[?2004l[?2004h> EOF
+[?2004l[?2004huser@9732490332b2:~$ python3 summarize.py
+[?2004lbowl1: 12x4x6, voxels: 108
+bowl2: 12x4x6, voxels: 108
+bowl3: 12x4x6, voxels: 108
+bowl4: 12x4x6, voxels: 108
+bowl5: 12x4x6, voxels: 108
+chocolate: 6x4x1, voxels: 24
+donut1: 8x4x1, voxels: 28
+donut2: 6x4x1, voxels: 20
+ball: 10x8x6, voxels: 320
+match_box1: 3x2x3, voxels: 18
+match_box2: 3x2x3, voxels: 18
+match_box3: 3x2x3, voxels: 18
+match_box4: 3x2x3, voxels: 18
+[?2004huser@9732490332b2:~$ cat << 'EOF' > visualize.py
+[?2004l[?2004h> import json
+[?2004l[?2004h> with open('/task/objects.json') as f:
+[?2004l[?2004h>     objs = json.load(f)
+[?2004l[?2004h> 
+[?2004l[?2004h> def print_obj(name):
+[?2004l[?2004h>     print(f"--- {name} ---")
+[?2004l[?2004h>     voxels = []
+[?2004l[?2004h>     for layer in objs[name].values():
+[?2004l[?2004h>         voxels.extend(layer)
+[?2004l[?2004h>     if not voxels: return
+[?2004l[?2004h>     min_x = min(v[0] for v in voxels)
+[?2004l[?2004h>     max_x = max(v[0] for v in voxels)
+[?2004l[?2004h>     min_y = min(v[1] for v in voxels)
+[?2004l[?2004h>     max_y = max(v[1] for v in voxels)
+[?2004l[?2004h>     min_z = min(v[2] for v in voxels)
+[?2004l[?2004h>     max_z = max(v[2] for v in voxels)
+[?2004l[?2004h>     
+[?2004l[?2004h>     for z in range(min_z, max_z + 1):
+[?2004l[?2004h>         print(f"z={z}")
+[?2004l[?2004h>         for y in range(min_y, max_y + 1):
+[?2004l[?2004h>             row = ""
+[?2004l[?2004h>             for x in range(min_x, max_x + 1):
+[?2004l[?2004h>                 if [x, y, z] in voxels or [x, y, z] in voxels:
+[?2004l[?2004h>                     row += "X"
+[?2004l[?2004h>                 else:
+[?2004l[?2004h>                     row += "."
+[?2004l[?2004h>             print(row)
+[?2004l[?2004h> 
+[?2004l[?2004h> for name in ['bowl1', 'ball', 'chocolate', 'donut1', 'donut2', 'match_box1']:
+[?2004l[?2004h>     print_obj(name)
+[?2004l[?2004h> EOF
+[?2004l[?2004huser@9732490332b2:~$ python3 visualize.py
+[?2004l--- bowl1 ---
+z=1
+XX........XX
+.XX......XX.
+..XX....XX..
+...XXXXXX...
+z=2
+XX........XX
+.XX......XX.
+..XX....XX..
+...XXXXXX...
+z=3
+XX........XX
+.XX......XX.
+..XX....XX..
+...XXXXXX...
+z=4
+XX........XX
+.XX......XX.
+..XX....XX..
+...XXXXXX...
+z=5
+XX........XX
+.XX......XX.
+..XX....XX..
+...XXXXXX...
+z=6
+XX........XX
+.XX......XX.
+..XX....XX..
+...XXXXXX...
+--- ball ---
+z=0
+...XXXX...
+..XXXXXX..
+.XXXXXXXX.
+XXXXXXXXXX
+XXXXXXXXXX
+.XXXXXXXX.
+..XXXXXX..
+...XXXX...
+z=1
+...XXXX...
+..XXXXXX..
+.XXXXXXXX.
+XXXXXXXXXX
+XXXXXXXXXX
+.XXXXXXXX.
+..XXXXXX..
+...XXXX...
+z=2
+...XXXX...
+..XXXXXX..
+.XXX..XXX.
+XX.XXXX.XX
+XX.XXXX.XX
+.XXX..XXX.
+..XXXXXX..
+...XXXX...
+z=3
+...XXXX...
+..XXXXXX..
+.XXX..XXX.
+XX.XXXX.XX
+XX.XXXX.XX
+.XXX..XXX.
+..XXXXXX..
+...XXXX...
+z=4
+...XXXX...
+..XXXXXX..
+.XXXXXXXX.
+XXXXXXXXXX
+XXXXXXXXXX
+.XXXXXXXX.
+..XXXXXX..
+...XXXX...
+z=5
+...XXXX...
+..XXXXXX..
+.XXXXXXXX.
+XXXXXXXXXX
+XXXXXXXXXX
+.XXXXXXXX.
+..XXXXXX..
+...XXXX...
+--- chocolate ---
+z=0
+XXXXXX
+XXXXXX
+XXXXXX
+XXXXXX
+--- donut1 ---
+z=0
+XXXXXXXX
+XXX..XXX
+XXX..XXX
+XXXXXXXX
+--- donut2 ---
+z=0
+XXXXXX
+XX..XX
+XX..XX
+XXXXXX
+--- match_box1 ---
+z=1
+XXX
+XXX
+z=2
+XXX
+XXX
+z=3
+XXX
+XXX
+[?2004huser@9732490332b2:~$ cat << 'EOF' > pack_bowls.py
+[?2004l[?2004h> import json
+[?2004l[?2004h> import numpy as np
+[?2004l[?2004h> 
+[?2004l[?2004h> with open('/task/objects.json') as f:
+[?2004l[?2004h>     objs = json.load(f)
+[?2004l[?2004h> 
+[?2004l[?2004h> def get_voxels(name):
+[?2004l[?2004h>     voxels = []
+[?2004l[?2004h>     for layer in objs[name].values():
+[?2004l[?2004h>         voxels.extend(layer)
+[?2004ls
+
+bowl_syms = get_symmetries(bowl)
+print(f"Bowl has {len(bowl_syms)} unique symmetries")
+
+# Find best shift for 2 bowls
+best_vol = 100000
+best_pair = None
+
+v1_set = set(map(tuple, bowl))
+
+for sym_idx, v2 in enumerate(bowl_syms):
+    for dx in range(-12, 13):
+        for dy in range(-12, 13):
+            for dz in range(-12, 13):
+                v2_shifted = v2 + [dx, dy, dz]
+                v2_set = set(map(tuple, v2_shifted))
+                if not v1_set.intersection(v2_set):
+                    # valid placement
+                    all_v = np.vstack((bowl, v2_shifted))
+                    min_c = all_v.min(axis=0)
+                    max_c = all_v.max(axis=0)
+                    vol = np.prod(max_c - min_c + 1)
+                    if vol < best_vol:
+                        best_vol = vol
+                        best_pair = (sym_idx, dx, dy, dz)
+
+print(f"Best 2-bowl volume: {best_vol} at shift {best_pair}")
+EOF
+python3 pack_bowls.py
+[?2004h>     return np.array(voxels)
+[?2004l[?2004h> 
+[?2004l[?2004h> bowl = get_voxels('bowl1')
+[?2004l[?2004h> 
+[?2004l[?2004h> # Try to find valid shifts for a second bowl that doesn't collide
+[?2004l[?2004h> # We will keep the first bowl at origin.
+[?2004l[?2004h> # A second bowl can be rotated or not.
+[?2004l[?2004h> 
+[?2004l[?2004h> def get_symmetries(voxels):
+[?2004l[?2004h>     syms = []
+[?2004l[?2004h>     for perm in [(0,1,2), (0,2,1), (1,0,2), (1,2,0), (2,0,1), (2,1,0)]:
+[?2004l[?2004h>         for signs in [(1,1,1), (1,1,-1), (1,-1,1), (1,-1,-1), (-1,1,1), (-1,1,-1), (-1,-1,1), (-1,-1,-1)]:
+[?2004l[?2004h>             v = voxels[:, perm] * signs
+[?2004l[?2004h>             v = v - v.min(axis=0)
+[?2004l[?2004h>             # check if unique
+[?2004l[?2004h>             is_new = True
+[?2004l[?2004h>             for s in syms:
+[?2004l[?2004h>                 if v.shape == s.shape and set(map(tuple, v)) == set(map(tuple, s)):
+[?2004l[?2004h>                     is_new = False
+[?2004l[?2004h>                     break
+[?2004l[?2004h>             if is_new:
+[?2004l[?2004h>                 syms.append(v)
+[?2004l[?2004h>     return syms
+[?2004l[?2004h> 
+[?2004l[?2004h> bowl_syms = get_symmetries(bowl)
+[?2004l[?2004h> print(f"Bowl has {len(bowl_syms)} unique symmetries")
+[?2004l[?2004h> 
+[?2004l[?2004h> # Find best shift for 2 bowls
+[?2004l[?2004h> best_vol = 100000
+[?2004l[?2004h> best_pair = None
+[?2004l[?2004h> 
+[?2004l[?2004h> v1_set = set(map(tuple, bowl))
+[?2004l[?2004h> 
+[?2004l[?2004h> for sym_idx, v2 in enumerate(bowl_syms):
+[?2004l[?2004h>     for dx in range(-12, 13):
+[?2004l[?2004h>         for dy in range(-12, 13):
+[?2004l[?2004h>             for dz in range(-12, 13):
+[?2004l[?2004h>                 v2_shifted = v2 + [dx, dy, dz]
+[?2004l[?2004h>                 v2_set = set(map(tuple, v2_shifted))
+[?2004l[?2004h>                 if not v1_set.intersection(v2_set):
+[?2004l[?2004h>                     # valid placement
+[?2004l[?2004h>                     all_v = np.vstack((bowl, v2_shifted))
+[?2004l[?2004h>                     min_c = all_v.min(axis=0)
+[?2004l[?2004h>                     max_c = all_v.max(axis=0)
+[?2004l[?2004h>                     vol = np.prod(max_c - min_c + 1)
+[?2004l[?2004h>                     if vol < best_vol:
+[?2004l[?2004h>                         best_vol = vol
+[?2004l[?2004h>                         best_pair = (sym_idx, dx, dy, dz)
+[?2004l[?2004h> 
+[?2004l[?2004h> print(f"Best 2-bowl volume: {best_vol} at shift {best_pair}")
+[?2004l[?2004h> EOF
+[?2004l[?2004huser@9732490332b2:~$ python3 pack_bowls.py
+[?2004lBowl has 12 unique symmetries
+Best 2-bowl volume: 432 at shift (0, 0, -2, 1)
+[?2004huser@9732490332b2:~$ cat << 'EOF' > pack_5_bowls.py
+[?2004l[?2004h> import json
+[?2004l[?2004h> import numpy as np
+[?2004l[?2004h> 
+[?2004l[?2004h> with open('/task/objects.json') as f:
+[?2004l[?2004h>     objs = json.load(f)
+[?2004l[?2004h> 
+[?2004l[?2004h> def get_voxels(name):
+[?2004l[?2004h>     voxels = []
+[?2004l[?2004h>     for layer in objs[name].values():
+[?2004l[?2004h>         voxels.extend(layer)
+[?2004l[?2004h>     return np.array(voxels)
+[?2004l[?2004h> 
+[?2004l[?2004h> bowl = get_voxels('bowl1')
+[?2004l[?2004h> 
+[?2004l[?2004h> def get_symmetries(voxels):
+[?2004l[?2004h>     syms = []
+[?2004l[?2004h>     for perm in [(0,1,2), (0,2,1), (1,0,2), (1,2,0), (2,0,1), (2,1,0)]:
+[?2004l[?2004h>         for signs in [(1,1,1), (1,1,-1), (1,-1,1), (1,-1,-1), (-1,1,1), (-1,1,-1), (-1,-1,1), (-1,-1,-1)]:
+[?2004l[?2004h>             v = voxels[:, perm] * signs
+[?2004l[?2004h>             v = v - v.min(axis=0)
+[?2004l[?2004h>             is_new = True
+[?2004l[?2004h>             for s in syms:
+[?2004l[?2004h>                 if v.shape == s.shape and set(map(tuple, v)) == set(map(tuple, s)):
+[?2004l[?2004h>                     is_new = False
+[?2004l[?2004h>                     break
+[?2004l[?2004h>             if is_new:
+[?2004l[?2004h>                 syms.append(v)
+[?2004l[?2004h>     return syms
+[?2004l[?2004h> 
+[?2004l[?2004h> bowl_syms = get_symmetries(bowl)
+[?2004l[?2004h> 
+[?2004l[?2004h> # We want to pack 5 bowls.
+[?2004l[?2004h> # Let's use a greedy search.
+[?2004l[?2004h> states = [(set(map(tuple, bowl)), [ (0, 0, 0, 0) ])] # (occupied_voxels, [(sym_idx, dx, dy, dz)])
+[?2004l[?2004h> 
+[?2004l[?2004h> for i in range(1, 5):
+[?2004l[?2004h>     new_states = []
+[?2004l[?2004h>     for occupied, placements in states:
+[?2004l[?2004h>         # Try to add another bowl
+[?2004l[?2004h>         for sym_idx, v2 in enumerate(bowl_syms):
+[?2004l[?2004h>             for dx in range(-6, 13):
+[?2004l[?2004h>                 for dy in range(-6, 13):
+[?2004l[?2004h>                     for dz in range(-6, 13):
+[?2004l[?2004h>                         v2_shifted = v2 + [dx, dy, dz]
+[?2004l[?2004h>                         v2_set = set(map(tuple, v2_shifted))
+[?2004l[?2004h>                         if not occupied.intersection(v2_set):
+[?2004l[?2004h>                             new_occupied = occupied.union(v2_set)
+[?2004l[?2004h>                             arr = np.array(list(new_occupied))
+[?2004l[?2004h>                             vol = np.prod(arr.max(axis=0) - arr.min(axis=0) + 1)
+[?2004l[?2004h>                             new_states.append((vol, new_occupied, placements + [(sym_idx, dx, dy, dz)]))
+[?2004l[?2004h>     # Keep top 100 states by volume
+[?2004l[?2004h>     new_states.sort(key=lambda x: x[0])
+[?2004l[?2004h>     states = [(s[1], s[2]) for s in new_states[:100]]
+[?2004l[?2004h>     print(f"Placed {i+1} bowls, best volume: {new_states[0][0]}")
+[?2004l[?2004h> 
+[?2004l[?2004h> best_vol, best_occupied, best_placements = new_states[0]
+[?2004l[?2004h> print(f"Best 5-bowl volume: {best_vol}")
+[?2004l[?2004h> for p in best_placements:
+[?2004l[?2004h>     print(p)
+[?2004l[?2004h> EOF
+[?2004l[?2004huser@9732490332b2:~$ python3 pack_5_bowls.py
+[?2004lPlaced 2 bowls, best volume: 432
+Killed
+[?2004huser@9732490332b2:~$ ^C[?2004l[?2004h[?2004l
+[?2004huser@9732490332b2:~$ cat << 'EOF' > check_stack.py
+[?2004l[?2004h> import json
+[?2004l[?2004h> import numpy as np
+[?2004l[?2004h> 
+[?2004l[?2004h> with open('/task/objects.json') as f:
+[?2004l[?2004h>     objs = json.load(f)
+[?2004l[?2004h> 
+[?2004l[?2004h> def get_voxels(name):
+[?2004l[?2004h>     voxels = []
+[?2004l[?2004h>     for layer in objs[name].values():
+[?2004l[?2004h>         voxels.extend(layer)
+[?2004l[?2004h>     return np.array(voxels)
+[?2004l[?2004h> 
+[?2004l[?2004h> bowl = get_voxels('bowl1')
+[?2004l[?2004h> 
+[?2004l[?2004h> occupied = set(map(tuple, bowl))
+[?2004l[?2004h> 
+[?2004l[?2004h> for i in range(1, 5):
+[?2004l[?2004h>     # Shift by dy = -2 * i
+[?2004l[?2004h>     shifted = bowl + [0, -2 * i, 0]
+[?2004l[?2004h>     occupied.update(map(tuple, shifted))
+[?2004l[?2004h> 
+[?2004l[?2004h> arr = np.array(list(occupied))
+[?2004l[?2004h> min_c = arr.min(axis=0)
+[?2004l[?2004h> max_c = arr.max(axis=0)
+[?2004l[?2004h> print(f"5 bowls bounding box: {max_c - min_c + 1}")
+[?2004l[?2004h> print(f"Volume: {np.prod(max_c - min_c + 1)}")
+[?2004l[?2004h> 
+[?2004l[?2004h> # Let's create a 3D grid of the bounding box and see the empty space
+[?2004l[?2004h> grid = np.zeros(max_c - min_c + 1, dtype=int)
+[?2004l[?2004h> for v in occupied:
+[?2004l[?2004h>     grid[tuple(v - min_c)] = 1
+[?2004l[?2004h> 
+[?2004l[?2004h> print(f"Empty voxels in bounding box: {(grid == 0).sum()}")
+[?2004l[?2004h> 
+[?2004l[?2004h> # Check if the ball can fit in the empty space
+[?2004l[?2004h> ball = get_voxels('ball')
+[?2004l[?2004h> ball_syms = []
+[?2004l[?2004h> for perm in [(0,1,2), (0,2,1), (1,0,2), (1,2,0), (2,0,1), (2,1,0)]:
+[?2004l[?2004h>     for signs in [(1,1,1), (1,1,-1), (1,-1,1), (1,-1,-1), (-1,1,1), (-1,1,-1), (-1,-1,1), (-1,-1,-1)]:
+[?2004l[?2004h>         v = ball[:, perm] * signs
+[?2004l[?2004h>         v = v - v.min(axis=0)
+[?2004l[?2004h>         ball_syms.append(v)
+[?2004l[?2004h> 
+[?2004l[?2004h> ball_fits = False
+[?2004l[?2004h> for sym in ball_syms:
+[?2004l[?2004h>     max_b = sym.max(axis=0)
+[?2004l[?2004h>     for dx in range(grid.shape[0] - max_b[0]):
+[?2004l[?2004h>         for dy in range(grid.shape[1] - max_b[1]):
+[?2004l[?2004h>             for dz in range(grid.shape[2] - max_b[2]):
+[?2004l[?2004h>                 shifted = sym + [dx, dy, dz]
+[?2004l[?2004h>                 collision = False
+[?2004l[?2004h>                 for v in shifted:
+[?2004l[?2004h>                     if grid[tuple(v)] == 1:
+[?2004l[?2004h>                         collision = True
+[?2004l[?2004h>                         break
+[?2004l[?2004h>                 if not collision:
+[?2004l[?2004h>                     ball_fits = True
+[?2004l[?2004h>                     print(f"Ball fits at {dx}, {dy}, {dz}!")
+[?2004l[?2004h>                     break
+[?2004l[?2004h>         if ball_fits: break
+[?2004l[?2004h>     if ball_fits: break
+[?2004l[?2004h> 
+[?2004l[?2004h> if not ball_fits:
+[?2004l[?2004h>     print("Ball does not fit in the 5-bowl bounding box.")
+[?2004l[?2004h> EOF
+[?2004l[?2004huser@9732490332b2:~$ python3 check_stack.py
+[?2004l5 bowls bounding box: [12 12  6]
+Volume: 864
+Empty voxels in bounding box: 324
+Ball does not fit in the 5-bowl bounding box.
+[?2004huser@9732490332b2:~$ cat << 'EOF' > solve.py
+[?2004l = v.max(axis=0)
+                obj_grid = np.zeros(max_c + 1, dtype=bool)
+                for voxel in v:
+                    obj_grid[tuple(voxel)] = True
+                    
+                syms.append((v, perm_str, signs_str, obj_grid))
+    return syms
+
+syms_dict = {name: get_symmetries(voxels) for name, voxels in objects.items()}
+
+ordered_names = sorted(objects.keys(), key=lambda name: len(objects[name]), reverse=True)
+
+for BOX_X, BOX_Y, BOX_Z in [(12, 12, 8), (12, 12, 9), (14, 12, 8), (14, 14, 8), (14, 14, 10)]:
+    print(f"Trying box {BOX_X}x{BOX_Y}x{BOX_Z}...")
+    grid = np.zeros((BOX_X, BOX_Y, BOX_Z), dtype=bool)
+    placements = {}
+
+    def solve(idx):
+        if idx == len(ordered_names):
+            return True
+        name = ordered_names[idx]
+        for sym_voxels, perm_str, signs_str, obj_grid in syms_dict[name]:
+            sx, sy, sz = obj_grid.shape
+            if sx > BOX_X or sy > BOX_Y or sz > BOX_Z:
+                continue
+            
+            positions = []
+            for x in[?2004h> import json
+[?2004l[?2004h> import numpy as np
+[?2004l[?2004h> import os
+[?2004l[?2004h> 
+[?2004l[?2004h> with open('/task/objects.json') as f:
+[?2004l[?2004h>     objs = json.load(f)
+[?2004l[?2004h> 
+[?2004l[?2004h> def get_voxels(name):
+[?2004l[?2004h>     voxels = []
+[?2004l[?2004h>     for layer in objs[name].values():
+[?2004l[?2004h>         voxels.extend(layer)
+[?2004l[?2004h>     return np.array(voxels)
+[?2004l[?2004h> 
+[?2004l[?2004h> objects = {name: get_voxels(name) for name in objs.keys()}
+[?2004l[?2004h> 
+[?2004l[?2004h> def get_symmetries(voxels):
+[?2004l[?2004h>     syms = []
+[?2004l[?2004h>     for perm in [(0,1,2), (0,2,1), (1,0,2), (1,2,0), (2,0,1), (2,1,0)]:
+[?2004l[?2004h>         for signs in [(1,1,1), (1,1,-1), (1,-1,1), (1,-1,-1), (-1,1,1), (-1,1,-1), (-1,-1,1), (-1,-1,-1)]:
+[?2004l[?2004h>             v = voxels[:, perm] * signs
+[?2004l[?2004h>             v = v - v.min(axis=0)
+[?2004l[?2004h>             is_new = True
+[?2004l[?2004h>             for s, _, _, _ in syms:
+[?2004l[?2004h>                 if v.shape == s.shape and set(map(tuple, v)) == set(map(tuple, s)):
+[?2004l[?2004h>                     is_new = False
+[?2004l[?2004h>                     break
+[?2004l[?2004h>             if is_new:
+[?2004l[?2004h>                 perm_str = "".join(["xyz"[i] for i in perm])
+[?2004l[?2004h>                 signs_str = "".join(["+" if s == 1 else "-" for s in signs])
+[?2004l[?2004h>                 
+[?2004l[?2004h>                 max_c = v.max(axis=0)
+[?2004l[?2004h>                 obj_grid = np.zeros(max_c + 1, dtype=bool)
+[?2004l[?2004h>                 for voxel in v:
+[?2004l[?2004h>                     obj_grid[tuple(voxel)] = True
+[?2004l[?2004h>                     
+[?2004l[?2004h>                 syms.append((v, perm_str, signs_str, obj_grid))
+[?2004l[?2004h>     return syms
+[?2004l[?2004h> 
+[?2004l[?2004h> syms_dict = {name: get_symmetries(voxels) for name, voxels in objects.items()}
+[?2004l[?2004h> 
+[?2004l[?2004h> ordered_names = sorted(objects.keys(), key=lambda name: len(objects[name]), reverse=True)
+[?2004l[?2004h> 
+[?2004l[?2004h> for BOX_X, BOX_Y, BOX_Z in [(12, 12, 8), (12, 12, 9), (14, 12, 8), (14, 14, 8), (14, 14, 10)]:
+[?2004l[?2004h>     print(f"Trying box {BOX_X}x{BOX_Y}x{BOX_Z}...")
+[?2004l[?2004h>     grid = np.zeros((BOX_X, BOX_Y, BOX_Z), dtype=bool)
+[?2004l[?2004h>     placements = {}
+[?2004l[?2004h> 
+[?2004l[?2004h>     def solve(idx):
+[?2004l[?2004h>         if idx == len(ordered_names):
+[?2004l[?2004h>             return True
+[?2004l[?2004h>         name = ordered_names[idx]
+[?2004l[?2004h>         for sym_voxels, perm_str, signs_str, obj_grid in syms_dict[name]:
+[?2004l[?2004h>             sx, sy, sz = obj_grid.shape
+[?2004l[?2004h>             if sx > BOX_X or sy > BOX_Y or sz > BOX_Z:
+[?2004l[?2004h>                 continue
+[?2004l[?2004h>             
+[?2004l[?2004h>             positions = []
+[?2004l[?2004h>             for x in range(BOX_X - sx + 1):
+[?2004l[?2004h>                 for y in range(BOX_Y - sy + 1):
+[?2004l[?2004h>                     for z in range(BOX_Z - sz + 1):
+[?2004l[?2004h>                         positions.append((x, y, z))
+[?2004l[?2004h>             positions.sort(key=lambda p: p[0] + p[1] + p[2])
+[?2004l[?2004h>             
+[?2004l[?2004h>             for x, y, z in positions:
+[?2004l[?2004h>                 if not np.any(grid[x:x+sx, y:y+sy, z:z+sz] & obj_grid):
+[?2004l[?2004h>                     grid[x:x+sx, y:y+sy, z:z+sz] |= obj_grid
+[?2004l[?2004h>                     placements[name] = (perm_str, signs_str, x, y, z)
+[?2004l[?2004h>                     
+[?2004l[?2004h>                     if solve(idx + 1):
+[?2004l[?2004h>                         return True
+[?2004l[?2004h>                     
+[?2004l[?2004h>                     grid[x:x+sx, y:y+sy, z:z+sz] ^= obj_grid
+[?2004l[?2004h>                     del placements[name]
+[?2004l[?2004h>         return False
+[?2004l[?2004h> 
+[?2004l[?2004h>     if solve(0):
+[?2004l[?2004h>         print(f"Found solution in {BOX_X}x{BOX_Y}x{BOX_Z}!")
+[?2004l[?2004h>         with open('solution_cmds.sh', 'w') as f:
+[?2004l[?2004h>             for name in ordered_names:
+[?2004l[?2004h>                 perm, signs, x, y, z = placements[name]
+[?2004l[?2004h>                 f.write(f"python3 /task/tools/place_object.py {name} {perm} {signs} {x} {y} {z}\n")
+[?2004l[?2004h>             f.write("python3 /task/tools/finalize.py\n")
+[?2004l[?2004h>         break
+[?2004l[?2004h> EOF
+[?2004l[?2004huser@9732490332b2:~$ python3 solve.py
+[?2004lTrying box 12x12x8...
+Trying box 12x12x9...
+Trying box 14x12x8...
+^CTraceback (most recent call last):
+  File "/home/user/solve.py", line 76, in <module>
+    if solve(0):
+  File "/home/user/solve.py", line 69, in solve
+    if solve(idx + 1):
+  File "/home/user/solve.py", line 69, in solve
+    if solve(idx + 1):
+  File "/home/user/solve.py", line 69, in solve
+    if solve(idx + 1):
+  File "/home/user/solve.py", line 65, in solve
+    if not np.any(grid[x:x+sx, y:y+sy, z:z+sz] & obj_grid):
+  File "<__array_function__ internals>", line 2, in any
+KeyboardInterrupt
+
+[?2004huser@9732490332b2:~$ cat << 'EOF' > greedy_pack.py
+[?2004lmax_c = v.max(axis=0)
+                obj_grid = np.zeros(max_c + 1, dtype=bool)
+                for voxel in v:
+                    obj_grid[tuple(voxel)] = True
+                syms.append((v, perm_str, signs_str, obj_grid))
+    return syms
+
+syms_dict = {name: get_symmetries(voxels) for name, voxels in objects.items()}
+ordered_names = sorted(objects.keys(), key=lambda name: len(objects[name]), reverse=True)
+
+best_vol = float('inf')
+best_placements = None
+
+start_time = time.time()
+iterations = 0
+
+BOX_X, BOX_Y, BOX_Z = 14, 14, 10
+
+while time.time() - start_time < 20:
+    iterations += 1
+    grid = np.zeros((BOX_X, BOX_Y, BOX_Z), dtype=bool)
+    placements = {}
+    success = True
+    
+    # Randomize order slightly, but keep big objects first
+    names = ordered_names[:6] + random.sample(ordered_names[6:], len(ordered_names)-6)
+    
+    for name in names:
+        placed = False
+        syms = syms_dict[name]
+        random.shuffle(syms)
+        
+        for sym_voxels, perm_str, signs_str, obj_grid in syms:
+  [?2004h> import json
+[?2004l[?2004h> import numpy as np
+[?2004l[?2004h> import random
+[?2004l[?2004h> import time
+[?2004l[?2004h> 
+[?2004l[?2004h> with open('/task/objects.json') as f:
+[?2004l[?2004h>     objs = json.load(f)
+[?2004l[?2004h> 
+[?2004l[?2004h> def get_voxels(name):
+[?2004l[?2004h>     voxels = []
+[?2004l[?2004h>     for layer in objs[name].values():
+[?2004l[?2004h>         voxels.extend(layer)
+[?2004l[?2004h>     return np.array(voxels)
+[?2004l[?2004h> 
+[?2004l[?2004h> objects = {name: get_voxels(name) for name in objs.keys()}
+[?2004l[?2004h> 
+[?2004l[?2004h> def get_symmetries(voxels):
+[?2004l[?2004h>     syms = []
+[?2004l[?2004h>     for perm in [(0,1,2), (0,2,1), (1,0,2), (1,2,0), (2,0,1), (2,1,0)]:
+[?2004l[?2004h>         for signs in [(1,1,1), (1,1,-1), (1,-1,1), (1,-1,-1), (-1,1,1), (-1,1,-1), (-1,-1,1), (-1,-1,-1)]:
+[?2004l[?2004h>             v = voxels[:, perm] * signs
+[?2004l[?2004h>             v = v - v.min(axis=0)
+[?2004l[?2004h>             is_new = True
+[?2004l[?2004h>             for s, _, _, _ in syms:
+[?2004l[?2004h>                 if v.shape == s.shape and set(map(tuple, v)) == set(map(tuple, s)):
+[?2004l[?2004h>                     is_new = False
+[?2004l[?2004h>                     break
+[?2004l[?2004h>             if is_new:
+[?2004l[?2004h>                 perm_str = "".join(["xyz"[i] for i in perm])
+[?2004l[?2004h>                 signs_str = "".join(["+" if s == 1 else "-" for s in signs])
+[?2004l[?2004h>                 max_c = v.max(axis=0)
+[?2004l[?2004h>                 obj_grid = np.zeros(max_c + 1, dtype=bool)
+[?2004l[?2004h>                 for voxel in v:
+[?2004l[?2004h>                     obj_grid[tuple(voxel)] = True
+[?2004l[?2004h>                 syms.append((v, perm_str, signs_str, obj_grid))
+[?2004l[?2004h>     return syms
+[?2004l[?2004h> 
+[?2004l[?2004h> syms_dict = {name: get_symmetries(voxels) for name, voxels in objects.items()}
+[?2004l[?2004h> ordered_names = sorted(objects.keys(), key=lambda name: len(objects[name]), reverse=True)
+[?2004l[?2004h> 
+[?2004l[?2004h> best_vol = float('inf')
+[?2004l[?2004h> best_placements = None
+[?2004l[?2004h> 
+[?2004l[?2004h> start_time = time.time()
+[?2004l[?2004h> iterations = 0
+[?2004l[?2004h> 
+[?2004l[?2004h> BOX_X, BOX_Y, BOX_Z = 14, 14, 10
+[?2004l[?2004h> 
+[?2004l[?2004h> while time.time() - start_time < 20:
+[?2004l[?2004h>     iterations += 1
+[?2004l[?2004h>     grid = np.zeros((BOX_X, BOX_Y, BOX_Z), dtype=bool)
+[?2004l[?2004h>     placements = {}
+[?2004l[?2004h>     success = True
+[?2004l[?2004h>     
+[?2004l[?2004h>     # Randomize order slightly, but keep big objects first
+[?2004l[?2004h>     names = ordered_names[:6] + random.sample(ordered_names[6:], len(ordered_names)-6)
+[?2004l[?2004h>     
+[?2004l[?2004h>     for name in names:
+[?2004l[?2004h>         placed = False
+[?2004l[?2004h>         syms = syms_dict[name]
+[?2004l[?2004h>         random.shuffle(syms)
+[?2004l[?2004h>         
+[?2004l[?2004h>         for sym_voxels, perm_str, signs_str, obj_grid in syms:
+[?2004l[?2004h>             sx, sy, sz = obj_grid.shape
+[?2004l[?2004h>             if sx > BOX_X or sy > BOX_Y or sz > BOX_Z:
+[?2004l[?2004h>                 continue
+[?2004l[?2004h>                 
+[?2004l[?2004h>             # Find all valid positions
+[?2004l[?2004h>             valid_positions = []
+[?2004l[?2004h>             for x in range(BOX_X - sx + 1):
+[?2004l[?2004h>                 for y in range(BOX_Y - sy + 1):
+[?2004l[?2004h>                     for z in range(BOX_Z - sz + 1):
+[?2004l[?2004h>                         if not np.any(grid[x:x+sx, y:y+sy, z:z+sz] & obj_grid):
+[?2004l[?2004h>                             valid_positions.append((x, y, z))
+[?2004l[?2004h>             
+[?2004l[?2004h>             if valid_positions:
+[?2004l[?2004h>                 # Pick a position that minimizes max bounds (to keep volume small)
+[?2004l[?2004h>                 # or just pick randomly among the best ones
+[?2004l[?2004h>                 valid_positions.sort(key=lambda p: max(p[0]+sx, p[1]+sy, p[2]+sz))
+[?2004l[?2004h>                 x, y, z = random.choice(valid_positions[:5])
+[?2004l[?2004h>                 
+[?2004l[?2004h>                 grid[x:x+sx, y:y+sy, z:z+sz] |= obj_grid
+[?2004l[?2004h>                 placements[name] = (perm_str, signs_str, x, y, z)
+[?2004l[?2004h>                 placed = True
+[?2004l[?2004h>                 break
+[?2004l[?2004h>                 
+[?2004l[?2004h>         if not placed:
+[?2004l[?2004h>             success = False
+[?2004l[?2004h>             break
+[?2004l[?2004h>             
+[?2004l[?2004h>     if success:
+[?2004l[?2004h>         # Calculate actual volume
+[?2004l[?2004h>         max_x = max_y = max_z = 0
+[?2004l[?2004h>         for name, (perm, signs, x, y, z) in placements.items():
+[?2004l[?2004h>             sx, sy, sz = syms_dict[name][0][3].shape # approximate, actual shape depends on sym
+[?2004l[?2004h>             # Let's just use the grid to find max bounds
+[?2004l[?2004h>         coords = np.argwhere(grid)
+[?2004l[?2004h>         if len(coords) > 0:
+[?2004l[?2004h>             max_bounds = coords.max(axis=0)
+[?2004l[?2004h>             vol = (max_bounds[0] + 1) * (max_bounds[1] + 1) * (max_bounds[2] + 1)
+[?2004l[?2004h>             if vol < best_vol:
+[?2004l[?2004h>                 best_vol = vol
+[?2004l[?2004h>                 best_placements = placements
+[?2004l[?2004h>                 print(f"Iteration {iterations}: Found packing with volume {vol}")
+[?2004l[?2004h> 
+[?2004l[?2004h> if best_placements:
+[?2004l[?2004h>     print(f"Best volume found: {best_vol}")
+[?2004l[?2004h>     with open('solution_cmds.sh', 'w') as f:
+[?2004l[?2004h>         for name, (perm, signs, x, y, z) in best_placements.items():
+[?2004l[?2004h>             f.write(f"python3 /task/tools/place_object.py {name} {perm} {signs} {x} {y} {z}\n")
+[?2004l[?2004h>         f.write("python3 /task/tools/finalize.py\n")
+[?2004l[?2004h> else:
+[?2004l[?2004h>     print("No solution found.")
+[?2004l[?2004h> EOF
+[?2004l[?2004huser@9732490332b2:~$ python3 greedy_pack.py
+[?2004lIteration 31: Found packing with volume 1960
+Iteration 55: Found packing with volume 1820
+Iteration 1493: Found packing with volume 1680
+Best volume found: 1680
+[?2004huser@9732490332b2:~$ cat << 'EOF' > better_pack.py
+[?2004l[?2004h> import json
+[?2004l[?2004h> import numpy as np
+[?2004l[?2004h> import random
+[?2004l[?2004h> import time
+[?2004l[?2004h> 
+[?2004l[?2004h> with open('/task/objects.json') as f:
+[?2004l[?2004h>     objs = json.load(f)
+[?2004l[?2004h> 
+[?2004l[?2004h> def get_voxels(name):
+[?2004l[?2004h>     voxels = []
+[?2004l[?2004h>     for layer in objs[name].values():
+[?2004l[?2004h>         voxels.extend(layer)
+[?2004l[?2004h>     return np.array(voxels)
+[?2004l[?2004h> 
+[?2004l[?2004h> objects = {name: get_voxels(name) for name in objs.keys()}
+[?2004l[?2004h> 
+[?2004l[?2004h> def get_symmetries(voxels):
+[?2004l            print(f"  Found packing in {iterations} iterations!")
+            return placements
+    return None
+
+best_placements = None
+best_vol = float('inf')
+
+for box in [(12, 12, 10), (12, 12, 9), (12, 11, 9), (12, 10, 9), (12, 12, 8), (12, 11, 8), (12, 10, 8)]:
+    print(f"Trying {box}...")
+    placements = try_pack(*box, timeout=15)
+    if placements:
+        vol = box[0] * box[1] * box[2]
+        print(f"Success! Volume: {vol}")
+        if vol < best_vol:
+            best_vol = vol
+            best_placements = placements
+            with open('solution_cmds.sh', 'w') as f:
+                for name, (perm, signs, x, y, z) in best_placements.items():
+                    f.write(f"python3 /task/tools/place_object.py {name} {perm} {signs} {x} {y} {z}\n")
+                f.write("python3 /task/tools/finalize.py\n")
+    else:
+        print("Failed.")
+EOF
+python3 better_pack.py
+[?2004h>     syms = []
+[?2004l[?2004h>     for perm in [(0,1,2), (0,2,1), (1,0,2), (1,2,0), (2,0,1), (2,1,0)]:
+[?2004l[?2004h>         for signs in [(1,1,1), (1,1,-1), (1,-1,1), (1,-1,-1), (-1,1,1), (-1,1,-1), (-1,-1,1), (-1,-1,-1)]:
+[?2004l[?2004h>             v = voxels[:, perm] * signs
+[?2004l[?2004h>             v = v - v.min(axis=0)
+[?2004l[?2004h>             is_new = True
+[?2004l[?2004h>             for s, _, _, _ in syms:
+[?2004l[?2004h>                 if v.shape == s.shape and set(map(tuple, v)) == set(map(tuple, s)):
+[?2004l[?2004h>                     is_new = False
+[?2004l[?2004h>                     break
+[?2004l[?2004h>             if is_new:
+[?2004l[?2004h>                 perm_str = "".join(["xyz"[i] for i in perm])
+[?2004l[?2004h>                 signs_str = "".join(["+" if s == 1 else "-" for s in signs])
+[?2004l[?2004h>                 max_c = v.max(axis=0)
+[?2004l[?2004h>                 obj_grid = np.zeros(max_c + 1, dtype=bool)
+[?2004l[?2004h>                 for voxel in v:
+[?2004l[?2004h>                     obj_grid[tuple(voxel)] = True
+[?2004l[?2004h>                 syms.append((v, perm_str, signs_str, obj_grid))
+[?2004l[?2004h>     return syms
+[?2004l[?2004h> 
+[?2004l[?2004h> syms_dict = {name: get_symmetries(voxels) for name, voxels in objects.items()}
+[?2004l[?2004h> ordered_names = sorted(objects.keys(), key=lambda name: len(objects[name]), reverse=True)
+[?2004l[?2004h> 
+[?2004l[?2004h> def try_pack(BOX_X, BOX_Y, BOX_Z, timeout=15):
+[?2004l[?2004h>     start_time = time.time()
+[?2004l[?2004h>     iterations = 0
+[?2004l[?2004h>     while time.time() - start_time < timeout:
+[?2004l[?2004h>         iterations += 1
+[?2004l[?2004h>         grid = np.zeros((BOX_X, BOX_Y, BOX_Z), dtype=bool)
+[?2004l[?2004h>         placements = {}
+[?2004l[?2004h>         success = True
+[?2004l[?2004h>         
+[?2004l[?2004h>         names = ordered_names[:6] + random.sample(ordered_names[6:], len(ordered_names)-6)
+[?2004l[?2004h>         
+[?2004l[?2004h>         for name in names:
+[?2004l[?2004h>             placed = False
+[?2004l[?2004h>             syms = syms_dict[name]
+[?2004l[?2004h>             random.shuffle(syms)
+[?2004l[?2004h>             
+[?2004l[?2004h>             for sym_voxels, perm_str, signs_str, obj_grid in syms:
+[?2004l[?2004h>                 sx, sy, sz = obj_grid.shape
+[?2004l[?2004h>                 if sx > BOX_X or sy > BOX_Y or sz > BOX_Z:
+[?2004l[?2004h>                     continue
+[?2004l[?2004h>                     
+[?2004l[?2004h>                 valid_positions = []
+[?2004l[?2004h>                 for x in range(BOX_X - sx + 1):
+[?2004l[?2004h>                     for y in range(BOX_Y - sy + 1):
+[?2004l[?2004h>                         for z in range(BOX_Z - sz + 1):
+[?2004l[?2004h>                             if not np.any(grid[x:x+sx, y:y+sy, z:z+sz] & obj_grid):
+[?2004l[?2004h>                                 valid_positions.append((x, y, z))
+[?2004l[?2004h>                 
+[?2004l[?2004h>                 if valid_positions:
+[?2004l[?2004h>                     valid_positions.sort(key=lambda p: max(p[0]+sx, p[1]+sy, p[2]+sz))
+[?2004l[?2004h>                     x, y, z = random.choice(valid_positions[:3])
+[?2004l[?2004h>                     
+[?2004l[?2004h>                     grid[x:x+sx, y:y+sy, z:z+sz] |= obj_grid
+[?2004l[?2004h>                     placements[name] = (perm_str, signs_str, x, y, z)
+[?2004l[?2004h>                     placed = True
+[?2004l[?2004h>                     break
+[?2004l[?2004h>                     
+[?2004l[?2004h>             if not placed:
+[?2004l[?2004h>                 success = False
+[?2004l[?2004h>                 break
+[?2004l[?2004h>                 
+[?2004l[?2004h>         if success:
+[?2004l[?2004h>             print(f"  Found packing in {iterations} iterations!")
+[?2004l[?2004h>             return placements
+[?2004l[?2004h>     return None
+[?2004l[?2004h> 
+[?2004l[?2004h> best_placements = None
+[?2004l[?2004h> best_vol = float('inf')
+[?2004l[?2004h> 
+[?2004l[?2004h> for box in [(12, 12, 10), (12, 12, 9), (12, 11, 9), (12, 10, 9), (12, 12, 8), (12, 11, 8), (12, 10, 8)]:
+[?2004l[?2004h>     print(f"Trying {box}...")
+[?2004l[?2004h>     placements = try_pack(*box, timeout=15)
+[?2004l[?2004h>     if placements:
+[?2004l[?2004h>         vol = box[0] * box[1] * box[2]
+[?2004l[?2004h>         print(f"Success! Volume: {vol}")
+[?2004l[?2004h>         if vol < best_vol:
+[?2004l[?2004h>             best_vol = vol
+[?2004l[?2004h>             best_placements = placements
+[?2004l[?2004h>             with open('solution_cmds.sh', 'w') as f:
+[?2004l[?2004h>                 for name, (perm, signs, x, y, z) in best_placements.items():
+[?2004l[?2004h>                     f.write(f"python3 /task/tools/place_object.py {name} {perm} {signs} {x} {y} {z}\n")
+[?2004l[?2004h>                 f.write("python3 /task/tools/finalize.py\n")
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         print("Failed.")
+[?2004l[?2004h> EOF
+[?2004l[?2004huser@9732490332b2:~$ python3 better_pack.py
+[?2004lTrying (12, 12, 10)...
+  Found packing in 235 iterations!
+Success! Volume: 1440
+Trying (12, 12, 9)...
+Failed.
+Trying (12, 11, 9)...
+Failed.
+Trying (12, 10, 9)...
+Failed.
+Trying (12, 12, 8)...
+Failed.
+Trying (12, 11, 8)...
+Failed.
+Trying (12, 10, 8)...
+Failed.
+[?2004huser@9732490332b2:~$ sh solution_cmds.sh
+[?2004lPLACED ball
+  Transform : perm=xzy signs=+++ offset=(0,0,0)
+  Voxels    : 320
+  Range     : x=[0,9] y=[0,5] z=[0,7]
+  Bounding box so far: 10 x 6 x 8 = 480
+Bounding box: 10 x 6 x 8 = 480
+Placed   (1): ball
+Unplaced (12): bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+PLACED bowl1
+  Transform : perm=xzy signs=++- offset=(0,6,2)
+  Voxels    : 108
+  Range     : x=[0,11] y=[6,11] z=[2,5]
+  Bounding box so far: 12 x 12 x 8 = 1152
+Bounding box: 12 x 12 x 8 = 1152
+Placed   (2): ball, bowl1
+Unplaced (11): bowl2, bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+PLACED bowl2
+  Transform : perm=xzy signs=+++ offset=(0,0,6)
+  Voxels    : 108
+  Range     : x=[0,11] y=[0,5] z=[6,9]
+  Bounding box so far: 12 x 12 x 10 = 1440
+Bounding box: 12 x 12 x 10 = 1440
+Placed   (3): ball, bowl1, bowl2
+Unplaced (10): bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+PLACED bowl3
+  Transform : perm=xzy signs=++- offset=(0,6,4)
+  Voxels    : 108
+  Range     : x=[0,11] y=[6,11] z=[4,7]
+  Bounding box so far: 12 x 12 x 10 = 1440
+Bounding box: 12 x 12 x 10 = 1440
+Placed   (4): ball, bowl1, bowl2, bowl3
+Unplaced (9): bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+PLACED bowl4
+  Transform : perm=xzy signs=++- offset=(0,6,0)
+  Voxels    : 108
+  Range     : x=[0,11] y=[6,11] z=[0,3]
+  Bounding box so far: 12 x 12 x 10 = 1440
+Bounding box: 12 x 12 x 10 = 1440
+Placed   (5): ball, bowl1, bowl2, bowl3, bowl4
+Unplaced (8): bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+PLACED bowl5
+  Transform : perm=xzy signs=++- offset=(0,6,6)
+  Voxels    : 108
+  Range     : x=[0,11] y=[6,11] z=[6,9]
+  Bounding box so far: 12 x 12 x 10 = 1440
+Bounding box: 12 x 12 x 10 = 1440
+Placed   (6): ball, bowl1, bowl2, bowl3, bowl4, bowl5
+Unplaced (7): chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+PLACED match_box3
+  Transform : perm=xzy signs=+++ offset=(5,6,7)
+  Voxels    : 18
+  Range     : x=[5,7] y=[6,8] z=[7,8]
+  Bounding box so far: 12 x 12 x 10 = 1440
+Bounding box: 12 x 12 x 10 = 1440
+Placed   (7): ball, bowl1, bowl2, bowl3, bowl4, bowl5, match_box3
+Unplaced (6): chocolate, donut1, donut2, match_box1, match_box2, match_box4
+PLACED match_box4
+  Transform : perm=yxz signs=+++ offset=(9,2,0)
+  Voxels    : 18
+  Range     : x=[9,10] y=[2,4] z=[0,2]
+  Bounding box so far: 12 x 12 x 10 = 1440
+Bounding box: 12 x 12 x 10 = 1440
+Placed   (8): ball, bowl1, bowl2, bowl3, bowl4, bowl5, match_box3, match_box4
+Unplaced (5): chocolate, donut1, donut2, match_box1, match_box2
+PLACED donut1
+  Transform : perm=xyz signs=+++ offset=(2,7,9)
+  Voxels    : 28
+  Range     : x=[2,9] y=[7,10] z=[9,9]
+  Bounding box so far: 12 x 12 x 10 = 1440
+Bounding box: 12 x 12 x 10 = 1440
+Placed   (9): ball, bowl1, bowl2, bowl3, bowl4, bowl5, donut1, match_box3, match_box4
+Unplaced (4): chocolate, donut2, match_box1, match_box2
+PLACED chocolate
+  Transform : perm=yxz signs=+++ offset=(4,0,8)
+  Voxels    : 24
+  Range     : x=[4,7] y=[0,5] z=[8,8]
+  Bounding box so far: 12 x 12 x 10 = 1440
+Bounding box: 12 x 12 x 10 = 1440
+Placed   (10): ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut1, match_box3, match_box4
+Unplaced (3): donut2, match_box1, match_box2
+PLACED match_box1
+  Transform : perm=xzy signs=+++ offset=(5,9,7)
+  Voxels    : 18
+  Range     : x=[5,7] y=[9,11] z=[7,8]
+  Bounding box so far: 12 x 12 x 10 = 1440
+Bounding box: 12 x 12 x 10 = 1440
+Placed   (11): ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut1, match_box1, match_box3, match_box4
+Unplaced (2): donut2, match_box2
+PLACED match_box2
+  Transform : perm=yxz signs=+++ offset=(10,1,3)
+  Voxels    : 18
+  Range     : x=[10,11] y=[1,3] z=[3,5]
+  Bounding box so far: 12 x 12 x 10 = 1440
+Bounding box: 12 x 12 x 10 = 1440
+Placed   (12): ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut1, match_box1, match_box2, match_box3, match_box4
+Unplaced (1): donut2
+PLACED donut2
+  Transform : perm=yxz signs=+++ offset=(4,6,5)
+  Voxels    : 20
+  Range     : x=[4,7] y=[6,11] z=[5,5]
+  Bounding box so far: 12 x 12 x 10 = 1440
+Bounding box: 12 x 12 x 10 = 1440
+Placed   (13): ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+Unplaced (0): —
+=== Finalized Solution ===
+All 13 objects placed.
+Bounding box: 12 x 12 x 10
+Volume: 1440
+Total voxels: 1004
+Solution written to /home/user/solution.json
+
+Box [12, 12, 10]
+Volume: 1440
+[?2004huser@9732490332b2:~$ 

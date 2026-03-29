@@ -1,0 +1,72 @@
+{
+    "id": "363deaee-ac82-4779-9ac7-6f5f47df16c4",
+    "started_at": "2026-03-28T22:39:44.777409",
+    "finished_at": "2026-03-28T23:18:47.957615",
+    "n_total_trials": 6,
+    "stats": {
+        "n_trials": 6,
+        "n_errors": 0,
+        "evals": {
+            "terminus-2__openai-gpt-5.4__adhoc": {
+                "n_trials": 2,
+                "n_errors": 0,
+                "metrics": [
+                    {
+                        "mean": 0.7886500000000001
+                    }
+                ],
+                "reward_stats": {
+                    "reward": {
+                        "0.8": [
+                            "harbor-task__6e55sva"
+                        ],
+                        "0.7773": [
+                            "harbor-task__5GEh2LW"
+                        ]
+                    }
+                },
+                "exception_stats": {}
+            },
+            "terminus-2__anthropic-claude-opus-4.6__adhoc": {
+                "n_trials": 2,
+                "n_errors": 0,
+                "metrics": [
+                    {
+                        "mean": 0.8654999999999999
+                    }
+                ],
+                "reward_stats": {
+                    "reward": {
+                        "0.8421": [
+                            "harbor-task__XWgY7X9"
+                        ],
+                        "0.8889": [
+                            "harbor-task__BkZ6RKr"
+                        ]
+                    }
+                },
+                "exception_stats": {}
+            },
+            "terminus-2__google-gemini-3.1-pro-preview__adhoc": {
+                "n_trials": 2,
+                "n_errors": 0,
+                "metrics": [
+                    {
+                        "mean": 0.8706
+                    }
+                ],
+                "reward_stats": {
+                    "reward": {
+                        "0.9412": [
+                            "harbor-task__63mBPxB"
+                        ],
+                        "0.8": [
+                            "harbor-task__fLGjfWw"
+                        ]
+                    }
+                },
+                "exception_stats": {}
+            }
+        }
+    }
+}

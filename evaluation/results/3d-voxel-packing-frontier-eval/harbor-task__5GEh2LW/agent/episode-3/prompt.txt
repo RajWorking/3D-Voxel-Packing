@@ -1,0 +1,51 @@
+New Terminal Output:
+
+user@65dade1cf33c:~$ python3 - <<'PY'
+> import json, itertools, math
+> from collections import defaultdict
+> with open('/task/objects.json') as f:
+>     data=json.load(f)
+> objs={}
+> for name,obj in data.items():
+>     pts=[]
+>     for g,arr in obj.items():
+>         pts.extend(map(tuple,arr))
+>     objs[name]=sorted(set(pts))
+> perms=['xyz','xzy','yxz','yzx','zxy','zyx']
+> sign_opts=list(itertools.product([1,-1], repeat=3))
+>
+> def tr(pt,perm,sgn):
+>     d={'x':pt[0],'y':pt[1],'z':pt[2]}
+>     q=[sgn[i]*d[perm[i]] for i in range(3)]
+>     return tuple(q)
+>
+> def norm(pts):
+>     mins=[min(p[i] for p in pts) for i in range(3)]
+>     return tuple(sorted((p[0]-mins[0],p[1]-mins[1],p[2]-mins[2]) for p in pts))
+>
+> orients={}
+> for name,pts in objs.items():
+>     seen={}
+>     for perm in perms:
+>         for sgn in sign_opts:
+>             n=norm([tr(p,perm,sgn) for p in pts])
+>             if n not in seen:
+>                 mx=[max(p[i] for p in n)+1 for i in range(3)]
+>                 seen[n]=(perm,''.join('+' if x==1 else '-' for x in sgn),mx,n)
+>     orients[name]=list(seen.values())
+>     print(name, 'unique_orients', len(orients[name]), 'dims', sorted(set(tuple(v[2]) for v in orients[name])))
+> PY
+bowl1 unique_orients 12 dims [(4, 6, 12), (4, 12, 6), (6, 4, 12), (6, 12, 4), (12, 4, 6), (12, 6, 4)]
+bowl2 unique_orients 12 dims [(4, 6, 12), (4, 12, 6), (6, 4, 12), (6, 12, 4), (12, 4, 6), (12, 6, 4)]
+bowl3 unique_orients 12 dims [(4, 6, 12), (4, 12, 6), (6, 4, 12), (6, 12, 4), (12, 4, 6), (12, 6, 4)]
+bowl4 unique_orients 12 dims [(4, 6, 12), (4, 12, 6), (6, 4, 12), (6, 12, 4), (12, 4, 6), (12, 6, 4)]
+bowl5 unique_orients 12 dims [(4, 6, 12), (4, 12, 6), (6, 4, 12), (6, 12, 4), (12, 4, 6), (12, 6, 4)]
+chocolate unique_orients 6 dims [(1, 4, 6), (1, 6, 4), (4, 1, 6), (4, 6, 1), (6, 1, 4), (6, 4, 1)]
+donut1 unique_orients 6 dims [(1, 4, 8), (1, 8, 4), (4, 1, 8), (4, 8, 1), (8, 1, 4), (8, 4, 1)]
+donut2 unique_orients 6 dims [(1, 4, 6), (1, 6, 4), (4, 1, 6), (4, 6, 1), (6, 1, 4), (6, 4, 1)]
+ball unique_orients 6 dims [(6, 8, 10), (6, 10, 8), (8, 6, 10), (8, 10, 6), (10, 6, 8), (10, 8, 6)]
+match_box1 unique_orients 3 dims [(2, 3, 3), (3, 2, 3), (3, 3, 2)]
+match_box2 unique_orients 3 dims [(2, 3, 3), (3, 2, 3), (3, 3, 2)]
+match_box3 unique_orients 3 dims [(2, 3, 3), (3, 2, 3), (3, 3, 2)]
+match_box4 unique_orients 3 dims [(2, 3, 3), (3, 2, 3), (3, 3, 2)]
+user@65dade1cf33c:~$

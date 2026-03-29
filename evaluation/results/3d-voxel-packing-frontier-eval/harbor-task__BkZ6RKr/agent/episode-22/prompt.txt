@@ -1,0 +1,41 @@
+Current Terminal Screen:
+>                         found = True
+>
+> if not found:
+>     print("No placement of 5th bowl improves on 1440 within the 4-bowl+ball bbox")
+>
+> # Also try: ball at y=10 but shifted in x
+> print("\nTrying ball at different x offsets with 4-bowl stack:")
+> for ball_ox in range(3):
+>     ball_s = set((x+ball_ox, y+10, z) for x,y,z in ball)
+>     if stack4 & ball_s:
+>         continue
+>     base2 = stack4 | ball_s
+>     mx2 = [max(v[i] for v in base2)+1 for i in range(3)]
+>     print(f"  Ball at ox={ball_ox}: bbox={mx2[0]}x{mx2[1]}x{mx2[2]}={mx2[0]*mx2[1]*mx2[2]}")
+>
+>     for pi, p in enumerate(perms_list):
+>         bowl5 = apply_perm(bowl, p)
+>         rdims = [max(v[i] for v in bowl5)+1 for i in range(3)]
+>         for ox in range(mx2[0] - rdims[0] + 1):
+>             for oy in range(mx2[1] - rdims[1] + 1):
+>                 for oz in range(mx2[2] - rdims[2] + 1):
+>                     placed = set((v[0]+ox, v[1]+oy, v[2]+oz) for v in bowl5)
+>                     if not (placed & base2):
+>                         union = base2 | placed
+>                         umx = [max(v[i] for v in union)+1 for i in range(3)]
+>                         vol = umx[0]*umx[1]*umx[2]
+>                         if vol < 1440:
+>                             print(f"    Bowl5 perm={perm_names[pi]} offset=({ox},{oy},{oz}): bbox={umx[0]}x{umx[1]}x{umx[2]}={vol}")
+>
+> PYEOF
+user@a85be64098f5:~$ python3 /tmp/solve7.py
+4 bowls + ball: 752 voxels
+Bbox: 12x18x6 = 1296
+No placement of 5th bowl improves on 1440 within the 4-bowl+ball bbox
+
+Trying ball at different x offsets with 4-bowl stack:
+  Ball at ox=0: bbox=12x18x6=1296
+  Ball at ox=1: bbox=12x18x6=1296
+  Ball at ox=2: bbox=12x18x6=1296
+user@a85be64098f5:~$

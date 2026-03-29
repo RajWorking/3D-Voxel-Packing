@@ -20,7 +20,7 @@ import json
 import sys
 from itertools import permutations, product
 
-DEFAULT_REFERENCE_VOLUME = 490  # overridden by task.toml [scoring].reference_volume
+DEFAULT_REFERENCE_VOLUME = 24 * 8 * 6  # overridden by task.toml [scoring].reference_volume
 
 
 def load_reference_volume(task_toml_path="/task/task.toml"):

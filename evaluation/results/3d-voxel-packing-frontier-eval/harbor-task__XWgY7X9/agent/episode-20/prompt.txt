@@ -1,0 +1,41 @@
+Current Terminal Screen:
+  Would be 4x1x6 solid block
+  Fits at x=4..7, y=8, z=0..5 (bowl gap)
+
+Donut1 as 4x1x8 (perm=yzx):
+  Size: 4x1x8
+  z=0: ####
+  z=1: ####
+  z=2: ####
+  z=3: #..#
+  z=4: #..#
+  z=5: ####
+  z=6: ####
+  z=7: ####
+
+Donut2 as 4x1x6 (perm=yzx):
+  Size: 4x1x6
+  z=0: ####
+  z=1: ####
+  z=2: #..#
+  z=3: #..#
+  z=4: ####
+  z=5: ####
+
+=== Alternative: extend x to fit more objects ===
+
+Small objects to fit:
+  chocolate: 24 voxels (6x4x1 solid)
+  donut1: 28 voxels (8x4x1 with 2x2 hole)
+  donut2: 20 voxels (6x4x1 with 2x2 hole)
+  4 match_boxes: 72 voxels (3x2x3 solid each)
+  Total: 144 voxels
+  Available: 436 voxels in 12x18x6
+  But shapes must fit!
+  Donut1 orientation: 8x4x1 (perm=xyz, signs=+++)
+  Donut1 orientation: 8x1x4 (perm=xzy, signs=+++)
+  Donut1 orientation: 4x8x1 (perm=yxz, signs=+++)
+  Donut1 orientation: 4x1x8 (perm=yzx, signs=+++)
+  Donut1 orientation: 1x8x4 (perm=zxy, signs=+++)
+  Donut1 orientation: 1x4x8 (perm=zyx, signs=+++)
+user@a968081b7478:~$

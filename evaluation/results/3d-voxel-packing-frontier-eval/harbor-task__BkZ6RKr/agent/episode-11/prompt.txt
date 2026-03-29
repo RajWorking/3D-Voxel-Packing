@@ -1,0 +1,150 @@
+New Terminal Output:
+
+user@a85be64098f5:~$ cat > /tmp/nest3.py << 'PYEOF'
+> import json
+terior_hole = set()
+for x,y,z in ball_empty:
+    if z in [2,3]:
+        interior_hole.add((x,y,z))
+print(f"\nBall interior hole (z=2,3): {len(interior_hole)} voxels")
+
+# Exterior empty (corners of bbox not in ball)
+exterior_empty = ball_empty - interior_hole
+print(f"Ball exterior empty (corners): {len(exterior_empty)} voxels")
+
+# What are the exterior empty cells per z-layer?
+for z in range(6):
+    ext = [(x,y) for x,y,zz in exterior_empty if zz == z]
+    intr = [(x,y) for x,y,zz in interior_hole if zz == z]
+    print(f"  z={z}: exterior={len(ext)}, interior={len(intr)}")
+
+# Can match_boxes fit in the ball's interior hole?
+# Interior hole at z=2: positions where ball is empty
+hole_z2 = set((x,y) for x,y,z in ball_empty if z == 2)
+print(f"\nHole at z=2 (2D): {sorted(hole_z2)}")
+hole_z3 = set((x,y) for x,y,z in ball_empty if z == 3)
+print(f"Hole at z=3 (2D): {sorted(hole_z3)}")
+
+# The hole is the same at z=2 and z=3
+if hole_z2 == hole_z3:
+    print("Holes at z=2 and z=3 are identical")
+    print(f"Hole shape: {len(hole_z2)} cells")
+    for y in range(8):
+        row = ''.join('O' if (x,y) in hole_z2 else '.' for x in range(10))
+        if 'O' in row:
+            print(f"  y={y}: {row}")
+
+PYEOF
+python3 /tmp/nest3.py
+>
+> with open('/task/objects.json') as f:
+>     data = json.load(f)
+>
+> def get_voxels(name):
+>     voxels = set()
+>     for group in data[name].values():
+>         for v in group:
+>             voxels.add(tuple(v))
+>     min_x = min(v[0] for v in voxels)
+>     min_y = min(v[1] for v in voxels)
+>     min_z = min(v[2] for v in voxels)
+>     return set((x-min_x, y-min_y, z-min_z) for x,y,z in voxels)
+>
+> bowl = get_voxels('bowl1')
+> ball = get_voxels('ball')
+>
+> # Ball interior analysis
+> ball_bbox = (10, 8, 6)
+> full_ball = set((x,y,z) for x in range(10) for y in range(8) for z in range(6))
+> ball_empty = full_ball - ball
+> print(f"Ball empty voxels: {len(ball_empty)}")
+>
+> # What's the interior cavity of the ball?
+> # At z=2,3, the ball has holes
+> for z in [2, 3]:
+>     print(f"\nBall holes at z={z}:")
+>     for y in range(8):
+>         row = ''.join('O' if (x,y,z) not in ball and 0<=x<10 else ('.' if (x,y,z) in ball else ' ') for x in range(10))
+>         print(f"  y={y}: {row}")
+>
+> # The ball's interior hole at z=2,3
+> interior_hole = set()
+> for x,y,z in ball_empty:
+>     if z in [2,3]:
+>         interior_hole.add((x,y,z))
+> print(f"\nBall interior hole (z=2,3): {len(interior_hole)} voxels")
+>
+> # Exterior empty (corners of bbox not in ball)
+> exterior_empty = ball_empty - interior_hole
+> print(f"Ball exterior empty (corners): {len(exterior_empty)} voxels")
+>
+> # What are the exterior empty cells per z-layer?
+> for z in range(6):
+>     ext = [(x,y) for x,y,zz in exterior_empty if zz == z]
+>     intr = [(x,y) for x,y,zz in interior_hole if zz == z]
+>     print(f"  z={z}: exterior={len(ext)}, interior={len(intr)}")
+>
+> # Can match_boxes fit in the ball's interior hole?
+> # Interior hole at z=2: positions where ball is empty
+> hole_z2 = set((x,y) for x,y,z in ball_empty if z == 2)
+> print(f"\nHole at z=2 (2D): {sorted(hole_z2)}")
+> hole_z3 = set((x,y) for x,y,z in ball_empty if z == 3)
+> print(f"Hole at z=3 (2D): {sorted(hole_z3)}")
+>
+> # The hole is the same at z=2 and z=3
+> if hole_z2 == hole_z3:
+>     print("Holes at z=2 and z=3 are identical")
+>     print(f"Hole shape: {len(hole_z2)} cells")
+>     for y in range(8):
+>         row = ''.join('O' if (x,y) in hole_z2 else '.' for x in range(10))
+>         if 'O' in row:
+>             print(f"  y={y}: {row}")
+>
+> PYEOF
+user@a85be64098f5:~$ python3 /tmp/nest3.py
+Ball empty voxels: 160
+
+Ball holes at z=2:
+  y=0: OOO....OOO
+  y=1: OO......OO
+  y=2: O...OO...O
+  y=3: ..O....O..
+  y=4: ..O....O..
+  y=5: O...OO...O
+  y=6: OO......OO
+  y=7: OOO....OOO
+
+Ball holes at z=3:
+  y=0: OOO....OOO
+  y=1: OO......OO
+  y=2: O...OO...O
+  y=3: ..O....O..
+  y=4: ..O....O..
+  y=5: O...OO...O
+  y=6: OO......OO
+  y=7: OOO....OOO
+
+Ball interior hole (z=2,3): 64 voxels
+Ball exterior empty (corners): 96 voxels
+  z=0: exterior=24, interior=0
+  z=1: exterior=24, interior=0
+  z=2: exterior=0, interior=32
+  z=3: exterior=0, interior=32
+  z=4: exterior=24, interior=0
+  z=5: exterior=24, interior=0
+
+Hole at z=2 (2D): [(0, 0), (0, 1), (0, 2), (0, 5), (0, 6), (0, 7), (1, 0), (1, 1), (1, 6), (1, 7), (2, 0), (2, 3), (2, 4), (2, 7), (4, 2), (4, 5), (5, 2), (5, 5
+), (7, 0), (7, 3), (7, 4), (7, 7), (8, 0), (8, 1), (8, 6), (8, 7), (9, 0), (9, 1), (9, 2), (9, 5), (9, 6), (9, 7)]
+Hole at z=3 (2D): [(0, 0), (0, 1), (0, 2), (0, 5), (0, 6), (0, 7), (1, 0), (1, 1), (1, 6), (1, 7), (2, 0), (2, 3), (2, 4), (2, 7), (4, 2), (4, 5), (5, 2), (5, 5
+), (7, 0), (7, 3), (7, 4), (7, 7), (8, 0), (8, 1), (8, 6), (8, 7), (9, 0), (9, 1), (9, 2), (9, 5), (9, 6), (9, 7)]
+Holes at z=2 and z=3 are identical
+Hole shape: 32 cells
+  y=0: OOO....OOO
+  y=1: OO......OO
+  y=2: O...OO...O
+  y=3: ..O....O..
+  y=4: ..O....O..
+  y=5: O...OO...O
+  y=6: OO......OO
+  y=7: OOO....OOO
+user@a85be64098f5:~$

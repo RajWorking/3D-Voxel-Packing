@@ -1,0 +1,63 @@
+New Terminal Output:
+
+user@a85be64098f5:~$ python3 -c "
+> import json
+> with open('/task/objects.json') as f:
+>     data = json.load(f)
+>
+> # Analyze bowl cross-section (same for all z)
+mpty} empty cells per z-layer')
+"
+> bowl_voxels = set()
+> for group in data['bowl1'].values():
+>     for v in group:
+>         bowl_voxels.add(tuple(v))
+> min_x = min(v[0] for v in bowl_voxels)
+> min_y = min(v[1] for v in bowl_voxels)
+> min_z = min(v[2] for v in bowl_voxels)
+> bowl = set((x-min_x, y-min_y, z-min_z) for x,y,z in bowl_voxels)
+>
+> print('Bowl XY cross-section (same for all z):')
+> for y in range(4):
+>     row = ''
+>     for x in range(12):
+>         if (x,y,0) in bowl:
+>             row += '#'
+>         else:
+>             row += '.'
+>     print(f'  y={y}: {row}')
+>
+> print()
+> print('Bowl interior (empty space inside bbox):')
+> for y in range(4):
+>     row = ''
+>     for x in range(12):
+>         if (x,y,0) not in bowl:
+>             row += 'O'
+>         else:
+>             row += '#'
+>     print(f'  y={y}: {row}')
+>
+> # Count empty per row
+> print()
+> for y in range(4):
+>     empty = sum(1 for x in range(12) if (x,y,0) not in bowl)
+>     print(f'  y={y}: {empty} empty cells per z-layer')
+> "
+Bowl XY cross-section (same for all z):
+  y=0: ##........##
+  y=1: .##......##.
+  y=2: ..##....##..
+  y=3: ...######...
+
+Bowl interior (empty space inside bbox):
+  y=0: ##OOOOOOOO##
+  y=1: O##OOOOOO##O
+  y=2: OO##OOOO##OO
+  y=3: OOO######OOO
+
+  y=0: 8 empty cells per z-layer
+  y=1: 8 empty cells per z-layer
+  y=2: 8 empty cells per z-layer
+  y=3: 6 empty cells per z-layer
+user@a85be64098f5:~$

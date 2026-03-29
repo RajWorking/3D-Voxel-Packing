@@ -1,0 +1,757 @@
+[?2004huser@36710be3486f:~$ asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004huser@36710be3486f:~$ clear
+[?2004l[H[J[?2004huser@36710be3486f:~$ python3 /task/tools/check_state.py
+[?2004l=== Workspace State ===
+Bounding box   : none (no objects placed yet)
+Total voxels   : 0
+Placed   ( 0) : —
+Unplaced (13) : ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+[?2004huser@36710be3486f:~$ cat << 'EOF' > inspect_all.py
+[?2004l[?2004h> import json
+[?2004l[?2004h> with open('/task/objects.json') as f:
+[?2004l[?2004h>     objs = json.load(f)
+[?2004l[?2004h> for name, obj in objs.items():
+[?2004l[?2004h>     voxels = []
+[?2004l[?2004h>     for group in obj.values():
+[?2004l[?2004h>         voxels.extend(group)
+[?2004l[?2004h>     min_x = min(v[0] for v in voxels)
+[?2004l[?2004h>     max_x = max(v[0] for v in voxels)
+[?2004l[?2004h>     min_y = min(v[1] for v in voxels)
+[?2004l[?2004h>     max_y = max(v[1] for v in voxels)
+[?2004l[?2004h>     min_z = min(v[2] for v in voxels)
+[?2004l[?2004h>     max_z = max(v[2] for v in voxels)
+[?2004l[?2004h>     print(f"{name:12}: {max_x-min_x+1}x{max_y-min_y+1}x{max_z-min_z+1} (vol: {(max_x-min_x+1)*(max_y-min_y+1)*(max_z-min_z+1)}), voxels: {len(voxels)}")
+[?2004l[?2004h> EOF
+[?2004l[?2004huser@36710be3486f:~$ python3 inspect_all.py
+[?2004lbowl1       : 12x4x6 (vol: 288), voxels: 108
+bowl2       : 12x4x6 (vol: 288), voxels: 108
+bowl3       : 12x4x6 (vol: 288), voxels: 108
+bowl4       : 12x4x6 (vol: 288), voxels: 108
+bowl5       : 12x4x6 (vol: 288), voxels: 108
+chocolate   : 6x4x1 (vol: 24), voxels: 24
+donut1      : 8x4x1 (vol: 32), voxels: 28
+donut2      : 6x4x1 (vol: 24), voxels: 20
+ball        : 10x8x6 (vol: 480), voxels: 320
+match_box1  : 3x2x3 (vol: 18), voxels: 18
+match_box2  : 3x2x3 (vol: 18), voxels: 18
+match_box3  : 3x2x3 (vol: 18), voxels: 18
+match_box4  : 3x2x3 (vol: 18), voxels: 18
+[?2004huser@36710be3486f:~$ cat << 'EOF' > show_slices.py
+[?2004l[?2004h> import json
+[?2004l[?2004h> import sys
+[?2004l[?2004h> with open('/task/objects.json') as f:
+[?2004l[?2004h>     objs = json.load(f)
+[?2004l[?2004h> name = sys.argv[1]
+[?2004l[?2004h> obj = objs[name]
+[?2004l[?2004h> voxels = []
+[?2004l[?2004h> for group in obj.values():
+[?2004l[?2004h>     voxels.extend(group)
+[?2004l[?2004h> min_x = min(v[0] for v in voxels)
+[?2004l[?2004h> max_x = max(v[0] for v in voxels)
+[?2004l[?2004h> min_y = min(v[1] for v in voxels)
+[?2004l[?2004h> max_y = max(v[1] for v in voxels)
+[?2004l[?2004h> min_z = min(v[2] for v in voxels)
+[?2004l[?2004h> max_z = max(v[2] for v in voxels)
+[?2004l[?2004h> for z in range(min_z, max_z + 1):
+[?2004l[?2004h>     print(f"z = {z}")
+[?2004l[?2004h>     for y in range(min_y, max_y + 1):
+[?2004l[?2004h>         row = ""
+[?2004l[?2004h>         for x in range(min_x, max_x + 1):
+[?2004l[?2004h>             if [x, y, z] in voxels:
+[?2004l[?2004h>                 row += "#"
+[?2004l[?2004h>             else:
+[?2004l[?2004h>                 row += "."
+[?2004l[?2004h>         print(row)
+[?2004l[?2004h>     print()
+[?2004l[?2004h> EOF
+[?2004l[?2004huser@36710be3486f:~$ python3 show_slices.py bowl1
+[?2004lz = 1
+##........##
+.##......##.
+..##....##..
+...######...
+
+z = 2
+##........##
+.##......##.
+..##....##..
+...######...
+
+z = 3
+##........##
+.##......##.
+..##....##..
+...######...
+
+z = 4
+##........##
+.##......##.
+..##....##..
+...######...
+
+z = 5
+##........##
+.##......##.
+..##....##..
+...######...
+
+z = 6
+##........##
+.##......##.
+..##....##..
+...######...
+
+[?2004huser@36710be3486f:~$ python3 show_slices.py ball
+[?2004lz = 0
+...####...
+..######..
+.########.
+##########
+##########
+.########.
+..######..
+...####...
+
+z = 1
+...####...
+..######..
+.########.
+##########
+##########
+.########.
+..######..
+...####...
+
+z = 2
+...####...
+..######..
+.###..###.
+##.####.##
+##.####.##
+.###..###.
+..######..
+...####...
+
+z = 3
+...####...
+..######..
+.###..###.
+##.####.##
+##.####.##
+.###..###.
+..######..
+...####...
+
+z = 4
+...####...
+..######..
+.########.
+##########
+##########
+.########.
+..######..
+...####...
+
+z = 5
+...####...
+..######..
+.########.
+##########
+##########
+.########.
+..######..
+...####...
+
+[?2004huser@36710be3486f:~$ python3 show_slices.py donut1
+[?2004lz = 0
+########
+###..###
+###..###
+########
+
+[?2004huser@36710be3486f:~$ python3 show_slices.py donut2
+[?2004lz = 0
+######
+##..##
+##..##
+######
+
+[?2004huser@36710be3486f:~$ python3 show_slices.py chocolate
+[?2004lz = 0
+######
+######
+######
+######
+
+[?2004huser@36710be3486f:~$ python3 show_slices.py match_box1
+[?2004lz = 1
+###
+###
+
+z = 2
+###
+###
+
+z = 3
+###
+###
+
+[?2004huser@36710be3486f:~$ cat << 'EOF' > test_bowls.py
+[?2004l[?2004h> import json
+[?2004l[?2004h> with open('/task/objects.json') as f:
+[?2004l[?2004h>     objs = json.load(f)
+[?2004l[?2004h> 
+[?2004l[?2004h> bowl = objs['bowl1']['group_0']
+[?2004l[?2004h> 
+[?2004l[?2004h> # Function to apply transform
+[?2004l[?2004h> def transform(voxels, perm, signs):
+[?2004l[?2004h>     res = []
+[?2004l[?2004h>     for v in voxels:
+[?2004l[?2004h>         nx = v[perm[0]] * signs[0]
+[?2004l[?2004h>         ny = v[perm[1]] * signs[1]
+[?2004l[?2004h>         nz = v[perm[2]] * signs[2]
+[?2004l[?2004h>         res.append([nx, ny, nz])
+[?2004l[?2004h>     # normalize
+[?2004l[?2004h>     min_x = min(v[0] for v in res)
+[?2004l[?2004h>     min_y = min(v[1] for v in res)
+[?2004l[?2004h>     min_z = min(v[2] for v in res)
+[?2004l[?2004h>     return [[v[0]-min_x, v[1]-min_y, v[2]-min_z] for v in res]
+[?2004l[?2004h> 
+[?2004l[?2004h> bowl1 = transform(bowl, [0,1,2], [1,1,1])
+[?2004l[?2004h> set1 = set(tuple(v) for v in bowl1)
+[?2004l[?2004h> 
+[?2004l[?2004h> perms = [[0,1,2], [0,2,1], [1,0,2], [1,2,0], [2,0,1], [2,1,0]]
+[?2004l[?2004h> signs_list = [[1,1,1], [1,1,-1], [1,-1,1], [1,-1,-1], [-1,1,1], [-1,1,-1], [-1,-1,1], [-1,-1,-1]]
+[?2004l[?2004h> 
+[?2004l[?2004h> best_vol = 10000
+[?2004l[?2004h> best_configs = []
+[?2004l[?2004h> 
+[?2004l[?2004h> for p in perms:
+[?2004l[?2004h>     for s in signs_list:
+[?2004l[?2004h>         bowl2 = transform(bowl, p, s)
+[?2004l[?2004h>         # Try offsets
+[?2004l[?2004h>         for dx in range(-12, 13):
+[?2004l[?2004h>             for dy in range(-12, 13):
+[?2004l[?2004h>                 for dz in range(-12, 13):
+[?2004l[?2004h>                     conflict = False
+[?2004l[?2004h>                     for v in bowl2:
+[?2004l[?2004h>                         if (v[0]+dx, v[1]+dy, v[2]+dz) in set1:
+[?2004l[?2004h>                             conflict = True
+[?2004l[?2004h>                             break
+[?2004l[?2004h>                     if not conflict:
+[?2004l[?2004h>                         # Calculate bounding box
+[?2004l[?2004h>                         all_v = list(set1) + [(v[0]+dx, v[1]+dy, v[2]+dz) for v in bowl2]
+[?2004l[?2004h>                         min_x = min(v[0] for v in all_v)
+[?2004l[?2004h>                         max_x = max(v[0] for v in all_v)
+[?2004l[?2004h>                         min_y = min(v[1] for v in all_v)
+[?2004l[?2004h>                         max_y = max(v[1] for v in all_v)
+[?2004l[?2004h>                         min_z = min(v[2] for v in all_v)
+[?2004l[?2004h>                         max_z = max(v[2] for v in all_v)
+[?2004l[?2004h>                         vol = (max_x-min_x+1)*(max_y-min_y+1)*(max_z-min_z+1)
+[?2004l[?2004h>                         if vol < best_vol:
+[?2004l[?2004h>                             best_vol = vol
+[?2004l[?2004h>                             best_configs = [(p, s, dx, dy, dz, max_x-min_x+1, max_y-min_y+1, max_z-min_z+1)]
+[?2004l[?2004h>                         elif vol == best_vol:
+[?2004l[?2004h>                             best_configs.append((p, s, dx, dy, dz, max_x-min_x+1, max_y-min_y+1, max_z-min_z+1))
+[?2004l[?2004h> 
+[?2004l[?2004h> print(f"Best volume for 2 bowls: {best_vol}")
+[?2004l[?2004h> for c in best_configs[:5]:
+[?2004l[?2004h>     print(c)
+[?2004l[?2004h> EOF
+[?2004l[?2004huser@36710be3486f:~$ python3 test_bowls.py
+[?2004lTraceback (most recent call last):
+  File "/home/user/test_bowls.py", line 5, in <module>
+    bowl = objs['bowl1']['group_0']
+KeyError: 'group_0'
+[?2004huser@36710be3486f:~$ cat << 'EOF' > solver.py
+[?2004l[?2004h> import json
+[?2004l[?2004h> import sys
+[?2004l[?2004h> import time
+[?2004l[?2004h> 
+[?2004l[?2004h> W = int(sys.argv[1])
+[?2004l[?2004h> H = int(sys.argv[2])
+[?2004l[?2004h> D = int(sys.argv[3])
+[?2004l[?2004h> 
+[?2004l[?2004h> with open('/task/objects.json') as f:
+[?2004l[?2004h>     objs = json.load(f)
+[?2004l[?2004h> 
+[?2004l[?2004h> flat_objs = {}
+[?2004l[?2004h> for name, obj in objs.items():
+[?2004l[?2004h>     voxels = []
+[?2004l[?2004h>     for group in obj.values():
+[?2004l[?2004h>         voxels.extend(group)
+[?2004l[?2004h>     flat_objs[name] = voxels
+[?2004l[?2004h> 
+[?2004l[?2004h> def get_orientations(voxels):
+[?2004l[?2004h>     perms = [
+[?2004l[?2004h>         (0,1,2), (0,2,1), (1,0,2), (1,2,0), (2,0,1), (2,1,0)
+[?2004l[?2004h>     ]
+[?2004l[?2004h>     signs = [
+[?2004l[?2004h>         (1,1,1), (1,1,-1), (1,-1,1), (1,-1,-1),
+[?2004l[?2004h>         (-1,1,1), (-1,1,-1), (-1,-1,1), (-1,-1,-1)
+[?2004l[?2004h>     ]
+[?2004l[?2004h>     
+[?2004l[?2004h>     unique_shapes = set()
+[?2004l[?2004h>     orientations = []
+[?2004l[?2004h>     
+[?2004l[?2004h>     for p in perms:
+[?2004l[?2004h>         for s in signs:
+[?2004l[?2004h>             res = []
+[?2004l[?2004h>             for v in voxels:
+[?2004l[?2004h>                 nx = v[p[0]] * s[0]
+[?2004l[?2004h>                 ny = v[p[1]] * s[1]
+[?2004l[?2004h>                 nz = v[p[2]] * s[2]
+[?2004l[?2004h>                 res.append((nx, ny, nz))
+[?2004l[?2004h>             
+[?2004l[?2004h>             min_x = min(v[0] for v in res)
+[?2004l'x': x_off,
+                            'y': y_off,
+                            'z': z_off
+                        }
+                        
+                        if solve(idx + 1):
+                            return True
+                        
+                        for z_m, y_dict in mask.items():
+                            gz = z_off + z_m
+                            for y_m, x_mask in y_dict.items():
+                                gy = y_off + y_m
+                                grid[gz][gy] &= ~(x_mask << x_off)
+    return False
+
+start = time.time()
+if solve(0):
+    print(f"Found solution for {W}x{H}x{D} in {time.time()-start:.2f}s")
+    with open('solution_cmds.sh', 'w') as f:
+        for name in ordered_names:
+            s = solution[name]
+            f.write(f"python3 /task/tools/place_object.py {name} {s['perm']} {s['signs']} {s['x']} {s['y']} {s['z']}\n")
+    sys.exit(0)
+else:
+    print(f"No so[?2004h>             min_y = min(v[1] for v in res)
+[?2004l[?2004h>             min_z = min(v[2] for v in res)
+[?2004l[?2004h>             
+[?2004lr.py 12 12 12[?2004h>             norm = tuple(sorted((v[0]-min_x, v[1]-min_y, v[2]-min_z) for v in res))
+[?2004l[?2004h>             if norm not in unique_shapes:
+[?2004l[?2004h>                 unique_shapes.add(norm)
+[?2004l[?2004h>                 
+[?2004l[?2004h>                 max_x = max(v[0] for v in norm)
+[?2004l[?2004h>                 max_y = max(v[1] for v in norm)
+[?2004l[?2004h>                 max_z = max(v[2] for v in norm)
+[?2004l[?2004h>                 
+[?2004l[?2004h>                 if max_x >= W or max_y >= H or max_z >= D:
+[?2004l[?2004h>                     continue
+[?2004l[?2004h>                 
+[?2004l[?2004h>                 mask_dict = {}
+[?2004l[?2004h>                 for v in norm:
+[?2004l[?2004h>                     z, y, x = v[2], v[1], v[0]
+[?2004l[?2004h>                     if z not in mask_dict:
+[?2004l[?2004h>                         mask_dict[z] = {}
+[?2004l[?2004h>                     if y not in mask_dict[z]:
+[?2004l[?2004h>                         mask_dict[z][y] = 0
+[?2004l[?2004h>                     mask_dict[z][y] |= (1 << x)
+[?2004l[?2004h>                 
+[?2004l[?2004h>                 perm_chars = ['x', 'y', 'z']
+[?2004l[?2004h>                 perm_str = "".join(perm_chars[i] for i in p)
+[?2004l[?2004h>                 sign_chars = {1: '+', -1: '-'}
+[?2004l[?2004h>                 signs_str = "".join(sign_chars[i] for i in s)
+[?2004l[?2004h>                 
+[?2004l[?2004h>                 orientations.append({
+[?2004l[?2004h>                     'perm': perm_str,
+[?2004l[?2004h>                     'signs': signs_str,
+[?2004l[?2004h>                     'mask': mask_dict,
+[?2004l[?2004h>                     'dx': max_x + 1,
+[?2004l[?2004h>                     'dy': max_y + 1,
+[?2004l[?2004h>                     'dz': max_z + 1
+[?2004l[?2004h>                 })
+[?2004l[?2004h>     return orientations
+[?2004l[?2004h> 
+[?2004l[?2004h> obj_orientations = {name: get_orientations(voxels) for name, voxels in flat_objs.items()}
+[?2004l[?2004h> 
+[?2004l[?2004h> ordered_names = sorted(flat_objs.keys(), key=lambda k: len(flat_objs[k]), reverse=True)
+[?2004l[?2004h> 
+[?2004l[?2004h> for name in ordered_names:
+[?2004l[?2004h>     if not obj_orientations[name]:
+[?2004l[?2004h>         print(f"Object {name} cannot fit in {W}x{H}x{D}")
+[?2004l[?2004h>         sys.exit(1)
+[?2004l[?2004h> 
+[?2004l[?2004h> grid = [[0] * H for _ in range(D)]
+[?2004l[?2004h> solution = {}
+[?2004l[?2004h> 
+[?2004l[?2004h> def solve(idx):
+[?2004l[?2004h>     if idx == len(ordered_names):
+[?2004l[?2004h>         return True
+[?2004l[?2004h>     
+[?2004l[?2004h>     name = ordered_names[idx]
+[?2004l[?2004h>     for ori in obj_orientations[name]:
+[?2004l[?2004h>         mask = ori['mask']
+[?2004l[?2004h>         dx, dy, dz = ori['dx'], ori['dy'], ori['dz']
+[?2004l[?2004h>         
+[?2004l[?2004h>         for z_off in range(D - dz + 1):
+[?2004l[?2004h>             for y_off in range(H - dy + 1):
+[?2004l[?2004h>                 for x_off in range(W - dx + 1):
+[?2004l[?2004h>                     collision = False
+[?2004l[?2004h>                     for z_m, y_dict in mask.items():
+[?2004l[?2004h>                         gz = z_off + z_m
+[?2004l[?2004h>                         for y_m, x_mask in y_dict.items():
+[?2004l[?2004h>                             gy = y_off + y_m
+[?2004l[?2004h>                             if grid[gz][gy] & (x_mask << x_off):
+[?2004l[?2004h>                                 collision = True
+[?2004l[?2004h>                                 break
+[?2004l[?2004h>                         if collision:
+[?2004l[?2004h>                             break
+[?2004l[?2004h>                     
+[?2004l[?2004h>                     if not collision:
+[?2004l[?2004h>                         for z_m, y_dict in mask.items():
+[?2004l[?2004h>                             gz = z_off + z_m
+[?2004l[?2004h>                             for y_m, x_mask in y_dict.items():
+[?2004l[?2004h>                                 gy = y_off + y_m
+[?2004l[?2004h>                                 grid[gz][gy] |= (x_mask << x_off)
+[?2004l[?2004h>                         
+[?2004l[?2004h>                         solution[name] = {
+[?2004l[?2004h>                             'perm': ori['perm'],
+[?2004l[?2004h>                             'signs': ori['signs'],
+[?2004l[?2004h>                             'x': x_off,
+[?2004l[?2004h>                             'y': y_off,
+[?2004l[?2004h>                             'z': z_off
+[?2004l[?2004h>                         }
+[?2004l[?2004h>                         
+[?2004l[?2004h>                         if solve(idx + 1):
+[?2004l[?2004h>                             return True
+[?2004l[?2004h>                         
+[?2004l[?2004h>                         for z_m, y_dict in mask.items():
+[?2004l[?2004h>                             gz = z_off + z_m
+[?2004l[?2004h>                             for y_m, x_mask in y_dict.items():
+[?2004l[?2004h>                                 gy = y_off + y_m
+[?2004l[?2004h>                                 grid[gz][gy] &= ~(x_mask << x_off)
+[?2004l[?2004h>     return False
+[?2004l[?2004h> 
+[?2004l[?2004h> start = time.time()
+[?2004l[?2004h> if solve(0):
+[?2004l[?2004h>     print(f"Found solution for {W}x{H}x{D} in {time.time()-start:.2f}s")
+[?2004l[?2004h>     with open('solution_cmds.sh', 'w') as f:
+[?2004l[?2004h>         for name in ordered_names:
+[?2004l[?2004h>             s = solution[name]
+[?2004l[?2004h>             f.write(f"python3 /task/tools/place_object.py {name} {s['perm']} {s['signs']} {s['x']} {s['y']} {s['z']}\n")
+[?2004l[?2004h>     sys.exit(0)
+[?2004l[?2004h> else:
+[?2004l[?2004h>     print(f"No solution for {W}x{H}x{D} in {time.time()-start:.2f}s")
+[?2004l[?2004h>     sys.exit(1)
+[?2004l[?2004h> EOF
+[?2004l[?2004huser@36710be3486f:~$ python3 solver.py 12 12 12
+[?2004lFound solution for 12x12x12 in 0.00s
+[?2004huser@36710be3486f:~$ python3 solver.py 12 10 10
+[?2004lNo solution for 12x10x10 in 0.31s
+[?2004huser@36710be3486f:~$ python3 solver.py 12 9 10
+[?2004lNo solution for 12x9x10 in 0.04s
+[?2004huser@36710be3486f:~$ python3 solver.py 12 8 11
+[?2004lNo solution for 12x8x11 in 0.04s
+[?2004huser@36710be3486f:~$ for h in {8..12}; do
+[?2004l[?2004h>   for d in {8..12}; do
+[?2004l[?2004h>     if [ $h -ge $d ]; then
+[?2004l[?2004h>       vol=$((12 * h * d))
+[?2004l[?2004h>       if [ $vol -ge 1004 ]; then
+[?2004l[?2004h>         echo "Trying 12x${h}x${d} (vol $vol)"
+[?2004l[?2004h>         python3 solver.py 12 $h $d
+[?2004l[?2004h>       fi
+[?2004l[?2004h>     fi
+[?2004l[?2004h>   done
+[?2004l[?2004h> done
+[?2004lTrying 12x10x9 (vol 1080)
+No solution for 12x10x9 in 0.04s
+Trying 12x10x10 (vol 1200)
+No solution for 12x10x10 in 0.26s
+Trying 12x11x8 (vol 1056)
+No solution for 12x11x8 in 0.10s
+Trying 12x11x9 (vol 1188)
+No solution for 12x11x9 in 0.19s
+Trying 12x11x10 (vol 1320)
+No solution for 12x11x10 in 1.24s
+Trying 12x11x11 (vol 1452)
+No solution for 12x11x11 in 6.69s
+Trying 12x12x8 (vol 1152)
+No solution for 12x12x8 in 0.73s
+Trying 12x12x9 (vol 1296)
+No solution for 12x12x9 in 3.85s
+Trying 12x12x10 (vol 1440)
+Found solution for 12x12x10 in 1.11s
+Trying 12x12x11 (vol 1584)
+Found solution for 12x12x11 in 5.40s
+Trying 12x12x12 (vol 1728)
+Found solution for 12x12x12 in 0.00s
+[?2004huser@36710be3486f:~$ ^C[?2004l[?2004h[?2004l
+[?2004huser@36710be3486f:~$ cat << 'EOF' > find_best.py
+[?2004l[?2004h> import subprocess
+[?2004l[?2004h> import sys
+[?2004l[?2004h> 
+[?2004l[?2004h> dims = []
+[?2004l[?2004h> for w in range(12, 25):
+[?2004l[?2004h>     for h in range(6, w + 1):
+[?2004l[?2004h>         for d in range(6, h + 1):
+[?2004l[?2004h>             vol = w * h * d
+[?2004l[?2004h>             if 1004 <= vol < 1440:
+[?2004l[?2004h>                 dims.append((vol, w, h, d))
+[?2004l[?2004h> 
+[?2004l[?2004h> dims.sort()
+[?2004l[?2004h> 
+[?2004l[?2004h> for vol, w, h, d in dims:
+[?2004l[?2004h>     print(f"Testing {w}x{h}x{d} (vol {vol})...", flush=True)
+[?2004l[?2004h>     res = subprocess.run(["python3", "solver.py", str(w), str(h), str(d)], capture_output=True, text=True)
+[?2004l[?2004h>     if "Found solution" in res.stdout:
+[?2004l[?2004h>         print(f"\nFound better solution: {w}x{h}x{d} (vol {vol})")
+[?2004l[?2004h>         sys.exit(0)
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         print(f" No ({res.stdout.strip().split()[-1] if res.stdout.strip() else 'error'})")
+[?2004l[?2004h> EOF
+[?2004l[?2004huser@36710be3486f:~$ python3 find_best.py
+[?2004lTesting 12x12x7 (vol 1008)...
+ No (0.13s)
+Testing 14x9x8 (vol 1008)...
+ No (0.01s)
+Testing 14x12x6 (vol 1008)...
+ No (0.21s)
+Testing 16x9x7 (vol 1008)...
+ No (0.01s)
+Testing 18x8x7 (vol 1008)...
+ No (0.00s)
+Testing 21x8x6 (vol 1008)...
+ No (0.01s)
+Testing 24x7x6 (vol 1008)...
+ No (24x7x6)
+Testing 13x13x6 (vol 1014)...
+ No (0.21s)
+Testing 17x10x6 (vol 1020)...
+ No (0.01s)
+Testing 16x8x8 (vol 1024)...
+ No (0.00s)
+Testing 19x9x6 (vol 1026)...
+ No (0.00s)
+Testing 21x7x7 (vol 1029)...
+ No (21x7x7)
+Testing 13x10x8 (vol 1040)...
+ No (0.03s)
+Testing 15x10x7 (vol 1050)...
+ No (0.03s)
+Testing 13x9x9 (vol 1053)...
+ No (0.02s)
+Testing 12x11x8 (vol 1056)...
+ No (0.05s)
+Testing 16x11x6 (vol 1056)...
+ No (0.02s)
+Testing 22x8x6 (vol 1056)...
+ No (0.04s)
+Testing 19x8x7 (vol 1064)...
+ No (0.01s)
+Testing 17x9x7 (vol 1071)...
+ No (0.01s)
+Testing 14x11x7 (vol 1078)...
+ No (0.06s)
+Testing 22x7x7 (vol 1078)...
+ No (22x7x7)
+Testing 12x10x9 (vol 1080)...
+ No (0.04s)
+Testing 15x9x8 (vol 1080)...
+ No (0.01s)
+Testing 15x12x6 (vol 1080)...
+ No (0.66s)
+Testing 18x10x6 (vol 1080)...
+ No (0.01s)
+Testing 20x9x6 (vol 1080)...
+ No (0.02s)
+Testing 17x8x8 (vol 1088)...
+ No (0.01s)
+Testing 13x12x7 (vol 1092)...
+ No (0.61s)
+Testing 14x13x6 (vol 1092)...
+ No (0.95s)
+Testing 23x8x6 (vol 1104)...
+ No (0.08s)
+Testing 14x10x8 (vol 1120)...
+ No (0.07s)
+Testing 16x10x7 (vol 1120)...
+ No (0.03s)
+Testing 20x8x7 (vol 1120)...
+ No (0.02s)
+Testing 17x11x6 (vol 1122)...
+ No (0.03s)
+Testing 23x7x7 (vol 1127)...
+ No (23x7x7)
+Testing 14x9x9 (vol 1134)...
+ No (0.03s)
+Testing 18x9x7 (vol 1134)...
+ No (0.02s)
+Testing 21x9x6 (vol 1134)...
+ No (0.06s)
+Testing 19x10x6 (vol 1140)...
+ No (0.05s)
+Testing 13x11x8 (vol 1144)...
+ No (0.17s)
+Testing 12x12x8 (vol 1152)...
+ No (0.72s)
+Testing 16x9x8 (vol 1152)...
+ No (0.02s)
+Testing 16x12x6 (vol 1152)...
+ No (3.55s)
+Testing 18x8x8 (vol 1152)...
+ No (0.01s)
+Testing 24x8x6 (vol 1152)...
+ No (0.19s)
+Testing 15x11x7 (vol 1155)...
+ No (0.12s)
+Testing 13x10x9 (vol 1170)...
+ No (0.14s)
+Testing 15x13x6 (vol 1170)...
+ No (4.29s)
+Testing 14x12x7 (vol 1176)...
+ No (4.35s)
+Testing 14x14x6 (vol 1176)...
+ No (4.70s)
+Testing 21x8x7 (vol 1176)...
+ No (0.07s)
+Testing 24x7x7 (vol 1176)...
+ No (24x7x7)
+Testing 13x13x7 (vol 1183)...
+ No (3.52s)
+Testing 12x11x9 (vol 1188)...
+ No (0.16s)
+Testing 18x11x6 (vol 1188)...
+ No (0.08s)
+Testing 22x9x6 (vol 1188)...
+ No (0.24s)
+Testing 17x10x7 (vol 1190)...
+ No (0.05s)
+Testing 19x9x7 (vol 1197)...
+ No (0.06s)
+Testing 12x10x10 (vol 1200)...
+ No (0.27s)
+Testing 15x10x8 (vol 1200)...
+ No (0.12s)
+Testing 20x10x6 (vol 1200)...
+ No (0.33s)
+Testing 15x9x9 (vol 1215)...
+ No (0.05s)
+Testing 19x8x8 (vol 1216)...
+ No (0.04s)
+Testing 17x9x8 (vol 1224)...
+ No (0.03s)
+Testing 17x12x6 (vol 1224)...
+
+Found better solution: 17x12x6 (vol 1224)
+[?2004huser@36710be3486f:~$ bash solution_cmds.sh
+[?2004lPLACED ball
+  Transform : perm=xyz signs=+++ offset=(2,0,0)
+  Voxels    : 320
+  Range     : x=[2,11] y=[0,7] z=[0,5]
+  Bounding box so far: 10 x 8 x 6 = 480
+Bounding box: 10 x 8 x 6 = 480
+Placed   (1): ball
+Unplaced (12): bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+PLACED bowl1
+  Transform : perm=xyz signs=+++ offset=(1,5,0)
+  Voxels    : 108
+  Range     : x=[1,12] y=[5,8] z=[0,5]
+  Bounding box so far: 12 x 9 x 6 = 648
+Bounding box: 12 x 9 x 6 = 648
+Placed   (2): ball, bowl1
+Unplaced (11): bowl2, bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+PLACED bowl2
+  Transform : perm=xyz signs=+++ offset=(1,7,0)
+  Voxels    : 108
+  Range     : x=[1,12] y=[7,10] z=[0,5]
+  Bounding box so far: 12 x 11 x 6 = 792
+Bounding box: 12 x 11 x 6 = 792
+Placed   (3): ball, bowl1, bowl2
+Unplaced (10): bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+PLACED bowl3
+  Transform : perm=yxz signs=+++ offset=(10,0,0)
+  Voxels    : 108
+  Range     : x=[10,13] y=[0,11] z=[0,5]
+  Bounding box so far: 13 x 12 x 6 = 936
+Bounding box: 13 x 12 x 6 = 936
+Placed   (4): ball, bowl1, bowl2, bowl3
+Unplaced (9): bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+PLACED bowl4
+  Transform : perm=yxz signs=+++ offset=(12,0,0)
+  Voxels    : 108
+  Range     : x=[12,15] y=[0,11] z=[0,5]
+  Bounding box so far: 15 x 12 x 6 = 1080
+Bounding box: 15 x 12 x 6 = 1080
+Placed   (5): ball, bowl1, bowl2, bowl3, bowl4
+Unplaced (8): bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+PLACED bowl5
+  Transform : perm=yxz signs=-++ offset=(0,0,0)
+  Voxels    : 108
+  Range     : x=[0,3] y=[0,11] z=[0,5]
+  Bounding box so far: 16 x 12 x 6 = 1152
+Bounding box: 16 x 12 x 6 = 1152
+Placed   (6): ball, bowl1, bowl2, bowl3, bowl4, bowl5
+Unplaced (7): chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+PLACED donut1
+  Transform : perm=zxy signs=+++ offset=(16,2,0)
+  Voxels    : 28
+  Range     : x=[16,16] y=[2,9] z=[0,3]
+  Bounding box so far: 17 x 12 x 6 = 1224
+Bounding box: 17 x 12 x 6 = 1224
+Placed   (7): ball, bowl1, bowl2, bowl3, bowl4, bowl5, donut1
+Unplaced (6): chocolate, donut2, match_box1, match_box2, match_box3, match_box4
+PLACED chocolate
+  Transform : perm=xzy signs=+++ offset=(4,11,0)
+  Voxels    : 24
+  Range     : x=[4,9] y=[11,11] z=[0,3]
+  Bounding box so far: 17 x 12 x 6 = 1224
+Bounding box: 17 x 12 x 6 = 1224
+Placed   (8): ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut1
+Unplaced (5): donut2, match_box1, match_box2, match_box3, match_box4
+PLACED donut2
+  Transform : perm=yzx signs=+++ offset=(5,9,0)
+  Voxels    : 20
+  Range     : x=[5,8] y=[9,9] z=[0,5]
+  Bounding box so far: 17 x 12 x 6 = 1224
+Bounding box: 17 x 12 x 6 = 1224
+Placed   (9): ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut1, donut2
+Unplaced (4): match_box1, match_box2, match_box3, match_box4
+PLACED match_box1
+  Transform : perm=xyz signs=+++ offset=(14,0,0)
+  Voxels    : 18
+  Range     : x=[14,16] y=[0,1] z=[0,2]
+  Bounding box so far: 17 x 12 x 6 = 1224
+Bounding box: 17 x 12 x 6 = 1224
+Placed   (10): ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1
+Unplaced (3): match_box2, match_box3, match_box4
+PLACED match_box2
+  Transform : perm=xyz signs=+++ offset=(14,10,0)
+  Voxels    : 18
+  Range     : x=[14,16] y=[10,11] z=[0,2]
+  Bounding box so far: 17 x 12 x 6 = 1224
+Bounding box: 17 x 12 x 6 = 1224
+Placed   (11): ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2
+Unplaced (2): match_box3, match_box4
+PLACED match_box3
+  Transform : perm=xyz signs=+++ offset=(14,0,3)
+  Voxels    : 18
+  Range     : x=[14,16] y=[0,1] z=[3,5]
+  Bounding box so far: 17 x 12 x 6 = 1224
+Bounding box: 17 x 12 x 6 = 1224
+Placed   (12): ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3
+Unplaced (1): match_box4
+PLACED match_box4
+  Transform : perm=xyz signs=+++ offset=(14,10,3)
+  Voxels    : 18
+  Range     : x=[14,16] y=[10,11] z=[3,5]
+  Bounding box so far: 17 x 12 x 6 = 1224
+Bounding box: 17 x 12 x 6 = 1224
+Placed   (13): ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+Unplaced (0): —
+[?2004huser@36710be3486f:~$ python3 /task/tools/finalize.py
+[?2004l=== Finalized Solution ===
+All 13 objects placed.
+Bounding box: 17 x 12 x 6
+Volume: 1224
+Total voxels: 1004
+Solution written to /home/user/solution.json
+
+Box [17, 12, 6]
+Volume: 1224
+[?2004huser@36710be3486f:~$ 

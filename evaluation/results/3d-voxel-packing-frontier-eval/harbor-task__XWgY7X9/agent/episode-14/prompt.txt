@@ -1,0 +1,162 @@
+New Terminal Output:
+
+user@a968081b7478:~$ python3 << 'EOF'
+> import json
+> with open('/task/objects.json') as f:
+>     data = json.load(f)
+>
+> # Get all voxels for each object type
+> def get_voxels(name):
+>     voxels = set()
+>     for group in data[name].values():
+>         for v in group:
+>             voxels.add(tuple(v))
+>     return voxels
+>
+> bowl_v = get_voxels('bowl1')  # All bowls are identical
+> ball_v = get_voxels('ball')
+>
+> # Bowl is uniform in z (same XY at every z=0..5)
+> # Ball varies by z
+>
+> # What if ball is at z=0..5 and bowls at z=6..11?
+> # Then they can overlap in XY freely
+> # Ball bbox: 10x8x6, bowls nested: 12x12x6
+> # Total: 12x12x12 = 1728 (bad)
+>
+> # What if ball is at z=0..5 and bowls at z=4..9 (overlap z=4,5)?
+> # At z=4,5: ball has full circle (56 voxels), bowls have their XY pattern
+> # They CAN'T overlap in XY at z=4,5
+> # At z=0..3: only ball
+ at each z
+print("\nXY footprints per z-slice:")
+for z in range(max_z+1):
+    layer = set((x,y) for x,y,zz in bowl_zyx if zz==z)
+    count = len(layer)
+    print(f"  z={z}: {count} voxels")
+EOF
+> # At z=6..9: only bowls
+> # Total z range: 0..9 = 10
+> # XY: need to contain both ball and bowls
+> # If ball and bowls don't overlap in XY at z=4,5:
+> #   Same constraint as before - they need separate XY space at those z levels
+>
+> # What if ball is at z=6..11 and bowls at z=0..5?
+> # Same as side by side in z: 12x12x12 = 1728
+>
+> # What about putting bowls at z=0..5 and ball at z=2..7?
+> # Overlap at z=2..5
+> # At z=2..5, ball and bowls must not share XY positions
+> # Ball at z=2,3 has 48 voxels (with holes), at z=4,5 has 56 voxels
+> # Bowls have 18*5=90 XY positions (nested)
+> # Ball has up to 56 XY positions
+> # Total needed: up to 146 XY positions at z=4,5
+> # At z=0,1: only bowls (90 positions in 12x12)
+> # At z=6,7: only ball (56 positions in 10x8)
+> # Bounding box: max(12,ball_x) x max(12,ball_y) x 8
+>
+> # Hmm, z=8 is worse than z=6.
+>
+> # Let me try a completely different approach.
+> # What if I orient bowls with their 6-unit dimension along z,
+> # and their 12-unit along x, 4-unit along y?
+> # Then nest 5 bowls in y with dy=2: 12x12x6
+> # This is the same as before.
+>
+> # What about orienting bowls with 12 along z?
+> # Bowl becomes 4x6x12 (perm=xzy would swap y,z)
+> # Actually let me think about this carefully.
+> # Original bowl: x=0..11, y=0..3, z=0..5, uniform in z
+> # If I do perm=xzy: new_x=x, new_y=z, new_z=y
+> # So new shape: x=0..11, y=0..5, z=0..3
+> # This is a 12x6x4 solid slab (since original was uniform in z)
+> # Not useful for nesting.
+>
+> # perm=zxy: new_x=z, new_y=x, new_z=y
+> # new shape: x=0..5, y=0..11, z=0..3
+> # This is a 6x12x4 solid slab. Same issue.
+>
+> # The only way to preserve the U-shape for nesting is to keep
+> # the bowl's opening direction as one of the XY axes.
+>
+> # So bowls must be oriented with their U-shape in XY plane.
+> # The U-shape is 12x4 (or 4x12 if rotated).
+> # Extrusion is always along z.
+>
+> # Unless... I orient the U-shape in XZ or YZ plane!
+> # perm=xyz, but with the extrusion along y instead of z.
+> # Original: uniform in z. If I swap y and z:
+> # perm=xzy: new_x=x, new_y=z, new_z=y
+> # Shape: 12x6x4. Cross-section in XY is 12x6 SOLID. Not a U-shape.
+>
+> # What if I swap x and z?
+> # perm=zyx: new_x=z, new_y=y, new_z=x
+> # Shape: 6x4x12. Cross-section in XY is 6x4 SOLID (since original was uniform in z).
+> # Extrusion along new_z (=old x) for 12 units.
+> # But the cross-section varies with old x! The bowl is NOT uniform in x.
+> # So this gives a 6x4x12 shape where each z-slice is different.
+>
+> # Actually this is interesting! Let me compute what this looks like.
+> print("Bowl with perm=zyx (swap x and z):")
+> bowl_zyx = set()
+> for x,y,z in bowl_v:
+>     bowl_zyx.add((z, y, x))  # new_x=z, new_y=y, new_z=x
+>
+> # Normalize
+> min_x = min(v[0] for v in bowl_zyx)
+> min_y = min(v[1] for v in bowl_zyx)
+> min_z = min(v[2] for v in bowl_zyx)
+> bowl_zyx = set((x-min_x, y-min_y, z-min_z) for x,y,z in bowl_zyx)
+>
+> max_x = max(v[0] for v in bowl_zyx)
+> max_y = max(v[1] for v in bowl_zyx)
+> max_z = max(v[2] for v in bowl_zyx)
+> print(f"Size: {max_x+1}x{max_y+1}x{max_z+1}")
+>
+> for z in range(max_z+1):
+>     layer = set((x,y) for x,y,zz in bowl_zyx if zz==z)
+>     print(f"  z={z}: ", end='')
+>     for y in range(max_y+1):
+>         row = ''
+>         for x in range(max_x+1):
+>             row += '#' if (x,y) in layer else '.'
+>         print(row + ' ', end='')
+>     print()
+>
+> # This gives us a 6x4x12 shape. Can two of these nest?
+> # Check XY footprint at each z
+> print("\nXY footprints per z-slice:")
+> for z in range(max_z+1):
+>     layer = set((x,y) for x,y,zz in bowl_zyx if zz==z)
+>     count = len(layer)
+>     print(f"  z={z}: {count} voxels")
+> EOF
+Bowl with perm=zyx (swap x and z):
+Size: 6x4x12
+  z=0: ###### ...... ...... ......
+  z=1: ###### ###### ...... ......
+  z=2: ...... ###### ###### ......
+  z=3: ...... ...... ###### ######
+  z=4: ...... ...... ...... ######
+  z=5: ...... ...... ...... ######
+  z=6: ...... ...... ...... ######
+  z=7: ...... ...... ...... ######
+  z=8: ...... ...... ###### ######
+  z=9: ...... ###### ###### ......
+  z=10: ###### ###### ...... ......
+  z=11: ###### ...... ...... ......
+
+XY footprints per z-slice:
+  z=0: 6 voxels
+  z=1: 12 voxels
+  z=2: 12 voxels
+  z=3: 12 voxels
+  z=4: 6 voxels
+  z=5: 6 voxels
+  z=6: 6 voxels
+  z=7: 6 voxels
+  z=8: 12 voxels
+  z=9: 12 voxels
+  z=10: 12 voxels
+  z=11: 6 voxels
+user@a968081b7478:~$

@@ -1,0 +1,41 @@
+Current Terminal Screen:
+>             for name in order:
+>                 obj = small_objects[name]
+>                 valid = find_placements(obj, remaining, bbox)
+>                 if valid:
+>                     p, ox, oy, oz, placed = valid[0]
+>                     remaining |= placed
+>                     placements[name] = (p, ox, oy, oz)
+>                 else:
+>                     success = False
+>                     break
+>
+>             if success:
+>                 vol = bbox[0]*bbox[1]*bbox[2]
+>                 if vol < best_vol:
+>                     best_vol = vol
+>                     best_config = (ball_ox, ball_oy, shift_y, bbox, placements, mn)
+>                     print(f"  Found: ball=({ball_ox},{ball_oy}), {bbox[0]}x{bbox[1]}x{bbox[2]}={vol}")
+>                 elif vol == best_vol and best_config is None:
+>                     best_config = (ball_ox, ball_oy, shift_y, bbox, placements, mn)
+>                     print(f"  Found: ball=({ball_ox},{ball_oy}), {bbox[0]}x{bbox[1]}x{bbox[2]}={vol}")
+>                 break
+>
+> if best_config:
+>     ball_ox, ball_oy, shift_y, bbox, placements, orig_mn = best_config
+>     print(f"\n=== BEST: {bbox[0]}x{bbox[1]}x{bbox[2]}={best_vol} ===")
+>     print(f"Ball: xyz +++ offset=({ball_ox-orig_mn[0]},{-orig_mn[1]},{-orig_mn[2]})")
+>     for i in range(5):
+>         print(f"Bowl{i+1}: xyz +++ offset=({-orig_mn[0]},{shift_y+2*i-orig_mn[1]},{-orig_mn[2]})")
+>     for name in ['donut1','chocolate','donut2','match_box1','match_box2','match_box3','match_box4']:
+>         p, ox, oy, oz = placements[name]
+>         pname = perm_names[perms_list.index(p)]
+>         print(f"{name}: {pname} +++ offset=({ox},{oy},{oz})")
+> else:
+>     print("No solution found <= 1296")
+>
+> PYEOF
+user@a85be64098f5:~$ python3 /tmp/solve15.py
+Searching for best arrangement with vol <= 1296...
+No solution found <= 1296
+user@a85be64098f5:~$

@@ -1,0 +1,41 @@
+Current Terminal Screen:
+> print("5 bowls at y=6,8,10,12,14")
+> print("Donut1 at y=18, x=2..9, z=0..3 (8x1x4)")
+> print("Remaining: chocolate, donut2, 4 match_boxes")
+> print("Available space: ball corners + bowl gaps")
+>
+> # Actually wait - donut1 as 8x1x4 has holes!
+> # At x=5,6 (old y=1,2), z=... let me recheck
+> # Donut1 original: 8x4x1
+> # ########  y=0
+> # ###..###  y=1
+> # ###..###  y=2
+> # ########  y=3
+> # As 8x1x4 (perm=xzy): new_x=x, new_y=z, new_z=y
+> # new shape: 8x1x4
+> # At new_z=0 (old y=0): all 8 filled
+> # At new_z=1 (old y=1): x=0,1,2,5,6,7 filled, x=3,4 empty
+> # At new_z=2 (old y=2): same
+> # At new_z=3 (old y=3): all 8 filled
+> # So it's 8x1x4 with holes at (3,0,1),(4,0,1),(3,0,2),(4,0,2)
+>
+> # This fits at y=18, x=0..7, z=0..3 (within 12x19x6)
+> # The holes at z=1,2 are fine - they're just empty space
+>
+> print("Donut1 as 8x1x4 fits at x=0..7, y=18, z=0..3")
+> print("  (with holes at x=3,4 for z=1,2)")
+> print("  Extends y to 18, total 12x19x6 = 1368")
+> EOF
+3 bowls at y=6,8,10 overlap with ball: 0
+3 bowls + ball: 12x14
+
+=== Layout: 12x19x6 = 1368 ===
+Ball at (0,0,0)
+5 bowls at y=6,8,10,12,14
+Donut1 at y=18, x=2..9, z=0..3 (8x1x4)
+Remaining: chocolate, donut2, 4 match_boxes
+Available space: ball corners + bowl gaps
+Donut1 as 8x1x4 fits at x=0..7, y=18, z=0..3
+  (with holes at x=3,4 for z=1,2)
+  Extends y to 18, total 12x19x6 = 1368
+user@a968081b7478:~$

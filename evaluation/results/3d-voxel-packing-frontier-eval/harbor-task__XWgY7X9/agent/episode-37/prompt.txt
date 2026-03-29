@@ -1,0 +1,41 @@
+Current Terminal Screen:
+> # 3 bowls nested: 12x8x6 (with ball)
+> # 2 bowls at z=6..11: 12x6x6
+> # Combined: 12x max(8+ball,6) x 12
+> # Ball+3bowls: 12x14x6 (ball y=0..7, bowls y=6,8,10)
+> # 2 bowls at z=6: 12x6x6 at y=0..5
+> # Total: 12x14x12 = 2016 (worse)
+>
+> # I'm convinced 1368 is hard to beat. Let me check one more thing:
+> # What if I use 12x18x6 with a different bowl nesting that creates
+> # an 8-wide gap?
+>
+> # Bowl XY:
+> # y=0: ##........##  (x=0,1,10,11)
+> # y=1: .##......##.  (x=1,2,9,10)
+> # y=2: ..##....##..  (x=2,3,8,9)
+> # y=3: ...######...  (x=3,4,5,6,7,8)
+>
+> # Interior at y=0: x=2..9 (8 cells!)
+> # If I could place donut1 at the bowl interior y=0 row...
+> # But the ball occupies x=0..9 at y=6 (ball's y=6: x=2..7)
+> # And bowl1 at y=6 has y=0 row at y=6: x=0,1,10,11
+> # So at y=6: ball has x=2..7, bowl has x=0,1,10,11
+> # Empty at y=6: x=8,9 only (2 cells)
+>
+> # What if I shift the ball in x? Ball at x=4..13?
+> # Then at y=6: ball has x=6..11, bowl has x=0,1,10,11
+> # Overlap at x=10,11! Can't do that.
+>
+> # Ball at x=2..11: at y=6, ball has x=4..9, bowl has x=0,1,10,11
+> # No overlap! And at y=6, empty: x=2,3 (from ball gap)
+> # Hmm, still not 8 contiguous.
+>
+> print("Current solution: 12x19x6 = 1368")
+> print("This appears to be near-optimal for this object set.")
+> print("The bottleneck is donut1 (8x4x1) which needs 8 contiguous units.")
+> EOF
+Current solution: 12x19x6 = 1368
+This appears to be near-optimal for this object set.
+The bottleneck is donut1 (8x4x1) which needs 8 contiguous units.
+user@a968081b7478:~$

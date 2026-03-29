@@ -1,0 +1,105 @@
+New Terminal Output:
+
+user@a968081b7478:~$ python3 << 'EOF'
+> import json
+> with open('/task/objects.json') as f:
+>     data = json.load(f)
+>
+> bowl_xy = set()
+> for group in data['bowl1'].values():
+>     for v in group:
+>         bowl_xy.add((v[0], v[1]))
+>
+> # Flipped bowl (y -> 3-y)
+> flipped_xy = set((x, 3-y) for x,y in bowl_xy)
+>
+> # Try all dx, dy shifts to find compact interlocking
+> best = []
+> for dx in range(-15, 16):
+>     for dy in range(-8, 9):
+>         shifted = set((x+dx, y+dy) for x,y in flipped_xy)
+>         overlap = bowl_xy & shifted
+>         if not overlap:
+>             combined = bowl_xy | shifted
+>             min_x = min(x for x,y in combined)
+>             max_x = max(x for x,y in combined)
+>             min_y = min(y for x,y in combined)
+>             max_y = max(y for x,y in combined)
+>             w = max_x - min_x + 1
+>             h = max_y - min_y + 1
+>             area = w * h
+>             best.append((area, w, h, dx, dy))
+>
+> best.sort()
+> print("Top 20 two-bowl interlocking arrangements (by XY area):")
+> for area, w, h, dx, dy in best[:20]:
+>     print(f"  area={area} ({w}x{h}), dx={dx}, dy={dy}")
+>
+> # Also try same orientation (not flipped) with shifts
+> print("\nTwo same-orientation bowls:")
+> best2 = []
+> for dx in range(-15, 16):
+>     for dy in range(-8, 9):
+>         if dx == 0 and dy == 0:
+>             continue
+>         shifted = set((x+dx, y+dy) for x,y in bowl_xy)
+>         overlap = bowl_xy & shifted
+>         if not overlap:
+>             combined = bowl_xy | shifted
+>             min_x = min(x for x,y in combined)
+>             max_x = max(x for x,y in combined)
+>             min_y = min(y for x,y in combined)
+>             max_y = max(y for x,y in combined)
+>             w = max_x - min_x + 1
+>             h = max_y - min_y + 1
+>             area = w * h
+>             best2.append((area, w, h, dx, dy))
+>
+> best2.sort()
+> for area, w, h, dx, dy in best2[:20]:
+>     print(f"  area={area} ({w}x{h}), dx={dx}, dy={dy}")
+> EOF
+Top 20 two-bowl interlocking arrangements (by XY area):
+  area=80 (16x5), dx=-4, dy=-1
+  area=80 (16x5), dx=4, dy=-1
+  area=84 (21x4), dx=-9, dy=0
+  area=84 (21x4), dx=9, dy=0
+  area=85 (17x5), dx=-5, dy=-1
+  area=85 (17x5), dx=5, dy=-1
+  area=88 (22x4), dx=-10, dy=0
+  area=88 (22x4), dx=10, dy=0
+  area=90 (15x6), dx=-3, dy=-2
+  area=90 (15x6), dx=3, dy=-2
+  area=90 (18x5), dx=-6, dy=-1
+  area=90 (18x5), dx=6, dy=-1
+  area=92 (23x4), dx=-11, dy=0
+  area=92 (23x4), dx=11, dy=0
+  area=96 (12x8), dx=0, dy=-4
+  area=96 (12x8), dx=0, dy=4
+  area=96 (16x6), dx=-4, dy=-2
+  area=96 (16x6), dx=4, dy=-2
+  area=96 (24x4), dx=-12, dy=0
+  area=96 (24x4), dx=12, dy=0
+
+Two same-orientation bowls:
+  area=72 (12x6), dx=0, dy=-2
+  area=72 (12x6), dx=0, dy=2
+  area=84 (12x7), dx=0, dy=-3
+  area=84 (12x7), dx=0, dy=3
+  area=91 (13x7), dx=-1, dy=-3
+  area=91 (13x7), dx=-1, dy=3
+  area=91 (13x7), dx=1, dy=-3
+  area=91 (13x7), dx=1, dy=3
+  area=96 (12x8), dx=0, dy=-4
+  area=96 (12x8), dx=0, dy=4
+  area=96 (24x4), dx=-12, dy=0
+  area=96 (24x4), dx=12, dy=0
+  area=100 (25x4), dx=-13, dy=0
+  area=100 (25x4), dx=13, dy=0
+  area=104 (13x8), dx=-1, dy=-4
+  area=104 (13x8), dx=-1, dy=4
+  area=104 (13x8), dx=1, dy=-4
+  area=104 (13x8), dx=1, dy=4
+  area=104 (26x4), dx=-14, dy=0
+  area=104 (26x4), dx=14, dy=0
+user@a968081b7478:~$

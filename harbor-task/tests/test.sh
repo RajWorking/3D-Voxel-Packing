@@ -6,20 +6,22 @@ set -euo pipefail
 
 SOLUTION="/home/user/solution.json"
 OBJECTS="/task/objects.json"
-VERIFIER="/task/tests/verifier.py"
+VERIFIER="/tests/verifier.py"
+REWARD="/logs/verifier/reward.txt"
 
 # Check that the agent produced a solution file
 if [[ ! -f "$SOLUTION" ]]; then
     echo "[FAIL] No solution file found at $SOLUTION"
-    echo "valid=false" > /tmp/score.txt
-    echo "volume=0"    >> /tmp/score.txt
-    echo "score=0.0"   >> /tmp/score.txt
+    echo "0.0" > "$REWARD"
     exit 1
 fi
 
-# Run the verifier and capture its exit code
+# Run the verifier (writes score details to /tmp/score.txt)
 python3 "$VERIFIER" "$SOLUTION" "$OBJECTS"
 EXIT_CODE=$?
 
-# Forward verifier exit code to Harbor
+# Extract the float score and write to harbor's expected reward path
+SCORE=$(grep '^score=' /tmp/score.txt | cut -d= -f2)
+echo "${SCORE:-0.0}" > "$REWARD"
+
 exit $EXIT_CODE

@@ -1,0 +1,115 @@
+New Terminal Output:
+
+user@a968081b7478:~$ python3 -c "
+> import json
+> with open('/task/objects.json') as f:
+>     data = json.load(f)
+>
+> # Analyze bowl shape in XY (it's the same for all z)
+> bowl_voxels = []
+> for group in data['bowl1'].values():
+>     for v in group:
+>         bowl_voxels.append(tuple(v))
+>
+> # Get unique XY positions
+> xy = set()
+> for x,y,z in bowl_voxels:
+>     xy.add((x,y))
+>
+> print('Bowl XY footprint:')
+> for y in range(4):
+>     row = ''
+>     for x in range(12):
+>         if (x,y) in xy:
+>             row += '#'
+>         else:
+>             row += '.'
+>     print(f'  y={y}: {row}')
+>
+> # Analyze ball shape per layer
+> ball_voxels = []
+> for group in data['ball'].values():
+>     for v in group:
+>         ball_voxels.append(tuple(v))
+>
+> print(f'\nBall total voxels: {len(ball_voxels)}')
+> for z in range(6):
+>     layer = [(x,y) for x,y,zz in ball_voxels if zz==z]
+>     print(f'\nBall z={z} ({len(layer)} voxels):')
+>     for y in range(8):
+>         row = ''
+>         for x in range(10):
+>             if (x,y) in layer:
+>                 row += '#'
+>             else:
+>                 row += '.'
+>         print(f'  y={y}: {row}')
+> "
+Bowl XY footprint:
+  y=0: ##........##
+  y=1: .##......##.
+  y=2: ..##....##..
+  y=3: ...######...
+
+Ball total voxels: 320
+
+Ball z=0 (56 voxels):
+  y=0: ...####...
+  y=1: ..######..
+  y=2: .########.
+  y=3: ##########
+  y=4: ##########
+  y=5: .########.
+  y=6: ..######..
+  y=7: ...####...
+
+Ball z=1 (56 voxels):
+  y=0: ...####...
+  y=1: ..######..
+  y=2: .########.
+  y=3: ##########
+  y=4: ##########
+  y=5: .########.
+  y=6: ..######..
+  y=7: ...####...
+
+Ball z=2 (48 voxels):
+  y=0: ...####...
+  y=1: ..######..
+  y=2: .###..###.
+  y=3: ##.####.##
+  y=4: ##.####.##
+  y=5: .###..###.
+  y=6: ..######..
+  y=7: ...####...
+
+Ball z=3 (48 voxels):
+  y=0: ...####...
+  y=1: ..######..
+  y=2: .###..###.
+  y=3: ##.####.##
+  y=4: ##.####.##
+  y=5: .###..###.
+  y=6: ..######..
+  y=7: ...####...
+
+Ball z=4 (56 voxels):
+  y=0: ...####...
+  y=1: ..######..
+  y=2: .########.
+  y=3: ##########
+  y=4: ##########
+  y=5: .########.
+  y=6: ..######..
+  y=7: ...####...
+
+Ball z=5 (56 voxels):
+  y=0: ...####...
+  y=1: ..######..
+  y=2: .########.
+  y=3: ##########
+  y=4: ##########
+  y=5: .########.
+  y=6: ..######..
+  y=7: ...####...
+user@a968081b7478:~$

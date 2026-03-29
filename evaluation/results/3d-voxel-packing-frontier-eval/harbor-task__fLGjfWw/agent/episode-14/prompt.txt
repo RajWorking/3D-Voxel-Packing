@@ -1,0 +1,9 @@
+Previous response had warnings:
+WARNINGS: - Extra text detected before JSON object
+- Extra text detected after JSON object
+
+New Terminal Output:
+
+Trying box 12x12x9...
+Trying box 14x12x8...
+

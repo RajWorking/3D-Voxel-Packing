@@ -1,0 +1,120 @@
+New Terminal Output:
+
+user@a968081b7478:~$ python3 << 'EOF'
+> import json
+> from itertools import product
+>
+> with open('/task/objects.json') as f:
+>     data = json.load(f)
+>
+> def get_voxels(name):
+>     voxels = set()
+>     for group in data[name].values():
+>         for v in group:
+>             voxels.add(tuple(v))
+>     return voxels
+>
+> def transform_voxels(voxels, perm, signs):
+>     pmap = {'x':0, 'y':1, 'z':2}
+>     new_voxels = set()
+>     for v in voxels:
+>         nv = [0,0,0]
+>         for i, c in enumerate(perm):
+>             val = v[pmap[c]]
+>             if signs[i] == '-':
+>                 val = -val
+>             nv[i] = val
+>         new_voxels.add(tuple(nv))
+>     mx = min(v[0] for v in new_voxels)
+>     my = min(v[1] for v in new_voxels)
+>     mz = min(v[2] for v in new_voxels)
+>     return set((x-mx, y-my, z-mz) for x,y,z in new_voxels)
+>
+> # Build occupied set: ball + 5 bowls
+> bowl_v = get_voxels('bowl1')
+> ball_v = get_voxels('ball')
+>
+> occupied = set()
+> occupied |= ball_v
+> for i in range(5):
+>     for x,y,z in bowl_v:
+>         occupied.add((x, y + 6 + i*2, z))
+>
+> print(f"After ball + 5 bowls: {len(occupied)} voxels occupied")
+>
+> # Small objects to place
+> small_objects = ['donut1', 'donut2', 'chocolate', 'match_box1', 'match_box2', 'match_box3', 'match_box4']
+>
+> perms = ['xyz','xzy','yxz','yzx','zxy','zyx']
+>
+> def find_best_placement(obj_name, occupied_set, max_dims=(12,18,6)):
+>     """Find placement that fits within max_dims and doesn't collide."""
+>     obj_v = get_voxels(obj_name)
+>     best = None
+>     best_score = 99999
+>
+>     for perm in perms:
+>         for signs in product('+-', repeat=3):
+>             signs_str = ''.join(signs)
+>             transformed = transform_voxels(obj_v, perm, signs_str)
+>             sx = max(v[0] for v in transformed) + 1
+>             sy = max(v[1] for v in transformed) + 1
+>             sz = max(v[2] for v in transformed) + 1
+>
+>             if sx > max_dims[0] or sy > max_dims[1] or sz > max_dims[2]:
+>                 continue
+>
+>             for ox in range(max_dims[0] - sx + 1):
+>                 for oy in range(max_dims[1] - sy + 1):
+>                     for oz in range(max_dims[2] - sz + 1):
+>                         placed = set((x+ox, y+oy, z+oz) for x,y,z in transformed)
+>                         if not (placed & occupied_set):
+>                             # Score: prefer placements that use less new bounding box
+>                             score = ox + oy + oz  # simple heuristic
+>                             if score < best_score:
+>                                 best_score = score
+>                                 best = (perm, signs_str, ox, oy, oz, placed)
+>                                 # Early exit for first valid
+>                                 return best
+>     return best
+>
+> # Try placing objects in order (largest first)
+> for obj_name in ['donut1', 'chocolate', 'donut2', 'match_box1', 'match_box2', 'match_box3', 'match_box4']:
+>     result = find_best_placement(obj_name, occupied)
+>     if result:
+>         perm, signs, ox, oy, oz, placed = result
+>         occupied |= placed
+>         obj_v = get_voxels(obj_name)
+>         transformed = transform_voxels(obj_v, perm, signs)
+>         sx = max(v[0] for v in transformed) + 1
+>         sy = max(v[1] for v in transformed) + 1
+>         sz = max(v[2] for v in transformed) + 1
+>         print(f"{obj_name}: perm={perm} signs={signs} offset=({ox},{oy},{oz}) size={sx}x{sy}x{sz}")
+>     else:
+>         print(f"{obj_name}: DOES NOT FIT!")
+>
+> # Final check
+> min_x = min(v[0] for v in occupied)
+> max_x = max(v[0] for v in occupied)
+> min_y = min(v[1] for v in occupied)
+> max_y = max(v[1] for v in occupied)
+> min_z = min(v[2] for v in occupied)
+> max_z = max(v[2] for v in occupied)
+> w = max_x - min_x + 1
+> h = max_y - min_y + 1
+> d = max_z - min_z + 1
+> print(f"\nFinal bounding box: {w}x{h}x{d} = {w*h*d}")
+> print(f"Total voxels: {len(occupied)}")
+> EOF
+After ball + 5 bowls: 860 voxels occupied
+donut1: perm=xyz signs=+++ offset=(0,8,0) size=8x4x1
+chocolate: perm=xyz signs=+++ offset=(0,12,0) size=6x4x1
+donut2: perm=xyz signs=+++ offset=(6,12,0) size=6x4x1
+match_box1: perm=xyz signs=+++ offset=(8,0,0) size=3x2x3
+match_box2: perm=xyz signs=+++ offset=(8,0,3) size=3x2x3
+match_box3: perm=yxz signs=+++ offset=(10,2,0) size=2x3x3
+match_box4: perm=yxz signs=+++ offset=(10,2,3) size=2x3x3
+
+Final bounding box: 12x18x7 = 1512
+Total voxels: 1004
+user@a968081b7478:~$

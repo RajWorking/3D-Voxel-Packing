@@ -1,0 +1,30 @@
+New Terminal Output:
+
+user@a968081b7478:~$ python3 << 'EOF'
+> import json
+> with open('/task/objects.json') as f:
+>     data = json.load(f)
+>
+> def get_voxels(name):
+>     voxels = set()
+>     for group in data[name].values():
+>         for v in group:
+>             voxels.add(tuple(v))
+>     return voxels
+>
+> # Check raw z ranges
+> for name in ['ball', 'bowl1', 'chocolate', 'donut1', 'donut2', 'match_box1']:
+>     v = get_voxels(name)
+>     zmin = min(z for x,y,z in v)
+>     zmax = max(z for x,y,z in v)
+>     xmin = min(x for x,y,z in v)
+>     ymin = min(y for x,y,z in v)
+>     print(f"{name}: x_min={xmin}, y_min={ymin}, z_min={zmin}, z_max={zmax}")
+> EOF
+ball: x_min=0, y_min=0, z_min=0, z_max=5
+bowl1: x_min=0, y_min=0, z_min=1, z_max=6
+chocolate: x_min=0, y_min=0, z_min=0, z_max=0
+donut1: x_min=0, y_min=0, z_min=0, z_max=0
+donut2: x_min=0, y_min=0, z_min=0, z_max=0
+match_box1: x_min=0, y_min=0, z_min=1, z_max=3
+user@a968081b7478:~$

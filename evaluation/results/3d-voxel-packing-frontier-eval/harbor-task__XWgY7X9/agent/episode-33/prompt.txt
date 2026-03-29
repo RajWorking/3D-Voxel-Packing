@@ -1,0 +1,57 @@
+New Terminal Output:
+py
+user@a968081b7478:~$ python3 /task/tools/place_object.py ball xyz +++ 0 0 0
+PLACED ball
+  Transform : perm=xyz signs=+++ offset=(0,0,0)
+  Voxels    : 320
+  Range     : x=[0,9] y=[0,7] z=[0,5]
+  Bounding box so far: 10 x 8 x 6 = 480
+Bounding box: 10 x 8 x 6 = 480
+Placed   (1): ball
+Unplaced (12): bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+user@a968081b7478:~$ python3 /task/tools/place_object.py bowl1 xyz +++ 0 6 0
+PLACED bowl1
+  Transform : perm=xyz signs=+++ offset=(0,6,0)
+  Voxels    : 108
+  Range     : x=[0,11] y=[6,9] z=[0,5]
+  Bounding box so far: 12 x 10 x 6 = 720
+Bounding box: 12 x 10 x 6 = 720
+Placed   (2): ball, bowl1
+Unplaced (11): bowl2, bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+user@a968081b7478:~$ python3 /task/tools/place_object.py bowl2 xyz +++ 0 8 0
+PLACED bowl2
+  Transform : perm=xyz signs=+++ offset=(0,8,0)
+  Voxels    : 108
+  Range     : x=[0,11] y=[8,11] z=[0,5]
+  Bounding box so far: 12 x 12 x 6 = 864
+Bounding box: 12 x 12 x 6 = 864
+Placed   (3): ball, bowl1, bowl2
+Unplaced (10): bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+user@a968081b7478:~$ python3 /task/tools/place_object.py bowl3 xyz +++ 0 10 0
+PLACED bowl3
+  Transform : perm=xyz signs=+++ offset=(0,10,0)
+  Voxels    : 108
+  Range     : x=[0,11] y=[10,13] z=[0,5]
+  Bounding box so far: 12 x 14 x 6 = 1008
+Bounding box: 12 x 14 x 6 = 1008
+Placed   (4): ball, bowl1, bowl2, bowl3
+Unplaced (9): bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+user@a968081b7478:~$ python3 /task/tools/place_object.py bowl4 xyz +++ 0 12 0
+PLACED bowl4
+  Transform : perm=xyz signs=+++ offset=(0,12,0)
+  Voxels    : 108
+  Range     : x=[0,11] y=[12,15] z=[0,5]
+  Bounding box so far: 12 x 16 x 6 = 1152
+Bounding box: 12 x 16 x 6 = 1152
+Placed   (5): ball, bowl1, bowl2, bowl3, bowl4
+Unplaced (8): bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+user@a968081b7478:~$ python3 /task/tools/place_object.py bowl5 xyz +++ 0 14 0
+PLACED bowl5
+  Transform : perm=xyz signs=+++ offset=(0,14,0)
+  Voxels    : 108
+  Range     : x=[0,11] y=[14,17] z=[0,5]
+  Bounding box so far: 12 x 18 x 6 = 1296
+Bounding box: 12 x 18 x 6 = 1296
+Placed   (6): ball, bowl1, bowl2, bowl3, bowl4, bowl5
+Unplaced (7): chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+user@a968081b7478:~$

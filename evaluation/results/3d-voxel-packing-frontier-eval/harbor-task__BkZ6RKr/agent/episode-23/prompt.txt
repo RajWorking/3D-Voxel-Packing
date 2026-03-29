@@ -1,0 +1,41 @@
+Current Terminal Screen:
+>                     umx = [max(v[i] for v in union)+1 for i in range(3)]
+>                     vol = umx[0]*umx[1]*umx[2]
+>                     if vol < 1440:
+>                         print(f"  perm={p} at ({ox},{oy},{oz}): {umx[0]}x{umx[1]}x{umx[2]}={vol}")
+>                         count += 1
+>     if count == 0:
+>         print(f"  perm={p} ({rdims[0]}x{rdims[1]}x{rdims[2]}): no improvement")
+>
+> PYEOF
+user@a85be64098f5:~$ python3 /tmp/solve8.py
+4-bowl stack + ball at y=10, z=0:
+  y= 0: ##........##
+  y= 1: .##......##.
+  y= 2: ####....####
+  y= 3: .##########.
+  y= 4: ####....####
+  y= 5: .##########.
+  y= 6: ####....####
+  y= 7: .##########.
+  y= 8: ..##....##..
+  y= 9: ...######...
+  y=10: ...####.....
+  y=11: ..######....
+  y=12: .########...
+  y=13: ##########..
+  y=14: ##########..
+  y=15: .########...
+  y=16: ..######....
+  y=17: ...####.....
+
+Rotated bowl (yxz): 4x12x6
+
+Trying all orientations of 5th bowl in 12x18x6:
+  perm=(0, 1, 2) (12x4x6): no improvement
+  perm=(0, 2, 1) (12x6x4): no improvement
+  perm=(1, 0, 2) (4x12x6): no improvement
+  perm=(1, 2, 0) (4x6x12): no improvement
+  perm=(2, 0, 1) (6x12x4): no improvement
+  perm=(2, 1, 0) (6x4x12): no improvement
+user@a85be64098f5:~$

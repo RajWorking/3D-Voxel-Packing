@@ -1,0 +1,41 @@
+Current Terminal Screen:
+> # What about putting them in the ball's z=2,3 extra holes?
+>
+> print("\n=== Ball extra holes at z=2,3 ===")
+> ball_z2 = set((x,y) for x,y,z in get_voxels('ball') if z==2)
+> ball_z0 = set((x,y) for x,y,z in get_voxels('ball') if z==0)
+> extra_holes = ball_z0 - ball_z2
+> print(f"Extra empty at z=2,3 (vs z=0): {sorted(extra_holes)}")
+> print(f"Count: {len(extra_holes)}")
+> EOF
+Chocolate canonical: 6 x 4 x 1
+Donut1 canonical: 8 x 4 x 1
+Donut1 XY:
+  ########
+  ###..###
+  ###..###
+  ########
+Donut2 canonical: 6 x 4 x 1
+Donut2 XY:
+  ######
+  ##..##
+  ##..##
+  ######
+
+Empty columns (x fixed):
+  x=10: y=0..5 (length 6)
+  x=11: y=0..5 (length 6)
+
+Empty rows (y fixed):
+  y=0: x=7..11 (length 5)
+  y=1: x=8..11 (length 4)
+  y=8: x=4..7 (length 4)
+  y=10: x=4..7 (length 4)
+  y=12: x=4..7 (length 4)
+  y=14: x=4..7 (length 4)
+  y=16: x=4..7 (length 4)
+
+=== Ball extra holes at z=2,3 ===
+Extra empty at z=2,3 (vs z=0): [(2, 3), (2, 4), (4, 2), (4, 5), (5, 2), (5, 5), (7, 3), (7, 4)]
+Count: 8
+user@a968081b7478:~$

@@ -1,0 +1,120 @@
+New Terminal Output:
+
+BEST 1482 (13, 19, 6)
+bestvol 1482
+python3 /task/tools/place_object.py bowl1 xyz +++ 0 0 0
+python3 /task/tools/place_object.py ball xyz +++ 1 4 0
+python3 /task/tools/place_object.py bowl2 xyz +++ 0 9 0
+python3 /task/tools/place_object.py bowl3 xyz +++ 0 11 0
+python3 /task/tools/place_object.py bowl4 xyz +++ 0 13 0
+python3 /task/tools/place_object.py bowl5 xyz +++ 0 15 0
+python3 /task/tools/place_object.py donut1 zxy +++ 0 1 0
+python3 /task/tools/place_object.py chocolate yzx +++ 2 0 0
+python3 /task/tools/place_object.py donut2 yzx +++ 3 1 0
+python3 /task/tools/place_object.py match_box1 yxz +++ 1 3 0
+python3 /task/tools/place_object.py match_box2 yxz +++ 9 3 0
+python3 /task/tools/place_object.py match_box3 yxz +++ 11 1 0
+python3 /task/tools/place_object.py match_box4 yxz +++ 11 4 0
+user@65dade1cf33c:~$ python3 - <<'PY'
+> import json,time,sys
+> with open('/task/objects.json') as f:
+>     data=json.load(f)
+> objs={n:sorted(set(tuple(p) for g in obj.values() for p in g)) for n,obj in data.items()}
+>
+> def transf(pts,perm,signs):
+>     out=[]
+>     for p in pts:
+>         d={'x':p[0],'y':p[1],'z':p[2]}
+>         q=[(1 if signs[i]=='+' else -1)*d[perm[i]] for i in range(3)]
+>         out.append(tuple(q))
+>     mins=[min(a[i] for a in out) for i in range(3)]
+>     out=tuple(sorted((a[0]-mins[0],a[1]-mins[1],a[2]-mins[2]) for a in out))
+>     dims=(max(a[0] for a in out)+1,max(a[1] for a in out)+1,max(a[2] for a in out)+1)
+>     return set(out),dims
+> choices={
+>  'ball':[('xyz','+++'),('yxz','+++')],
+>  'bowl1':[('xyz','+++'),('yxz','+++')],
+>  'bowl2':[('xyz','+++'),('yxz','+++')],
+>  'bowl3':[('xyz','+++'),('yxz','+++')],
+>  'bowl4':[('xyz','+++'),('yxz','+++')],
+>  'bowl5':[('xyz','+++'),('yxz','+++')],
+>  'donut1':[('xyz','+++'),('yzx','+++'),('zxy','+++')],
+>  'donut2':[('xyz','+++'),('yzx','+++'),('zxy','+++')],
+>  'chocolate':[('xyz','+++'),('yzx','+++'),('zxy','+++')],
+>  'match_box1':[('xyz','+++'),('xzy','+++'),('yxz','+++')],
+>  'match_box2':[('xyz','+++'),('xzy','+++'),('yxz','+++')],
+>  'match_box3':[('xyz','+++'),('xzy','+++'),('yxz','+++')],
+>  'match_box4':[('xyz','+++'),('xzy','+++'),('yxz','+++')],
+> }
+> shapes={}
+> for n,opts in choices.items():
+>     arr=[]; seen=set()
+>     for perm,sgn in opts:
+>         vox,d=transf(objs[n],perm,sgn)
+>         key=tuple(sorted(vox))
+>         if key not in seen:
+>             seen.add(key); arr.append((perm,sgn,vox,d))
+>     shapes[n]=arr
+> W,H,D=24,20,6
+> occ=set(); placed=[]
+> def add(name,perm,sgn,vox,dims,off):
+>     ox,oy,oz=off
+>     pts={(x+ox,y+oy,z+oz) for x,y,z in vox}
+>     if ox<0 or oy<0 or oz<0 or ox+dims[0]>W or oy+dims[1]>H or oz+dims[2]>D or (occ & pts): return False
+>     occ.update(pts); placed.append((name,perm,sgn,ox,oy,oz,pts,dims)); return True
+> def rem():
+>     *_,pts,_=placed.pop(); occ.difference_update(pts)
+> def cur():
+>     xs=[p[0] for p in occ]; ys=[p[1] for p in occ]; zs=[p[2] for p in occ]
+>     return (max(xs)+1)*(max(ys)+1)*(max(zs)+1),(max(xs)+1,max(ys)+1,max(zs)+1)
+> assert add('bowl1','xyz','+++',shapes['bowl1'][0][2],shapes['bowl1'][0][3],(0,0,0))
+> assert add('ball','xyz','+++',shapes['ball'][0][2],shapes['ball'][0][3],(1,4,0))
+> order=['bowl2','bowl3','bowl4','bowl5','donut1','chocolate','donut2','match_box1','match_box2','match_box3','match_box4']
+> best=[10**9,None]
+> start=time.time()
+>
+> def rec(i):
+>     global best
+>     if time.time()-start>18: return
+>     vol,bb=cur()
+>     if vol>=best[0]: return
+>     if i==len(order):
+>         best=[vol,[(a,b,c,d,e,f) for a,b,c,d,e,f,*_ in placed]]
+>         return
+>     name=order[i]
+>     cand=[]
+>     for perm,sgn,vox,d in shapes[name]:
+>         for oy in range(0,min(H-d[1]+1,16)):
+>             for ox in range(0,min(W-d[0]+1,18)):
+>                 pts={(x+ox,y+oy,z) for x,y,z in vox}
+>                 if occ & pts: continue
+>                 new=occ|pts
+>                 xs=[p[0] for p in new]; ys=[p[1] for p in new]; zs=[p[2] for p in new]
+>                 bb=(max(xs)+1,max(ys)+1,max(zs)+1)
+>                 v=bb[0]*bb[1]*bb[2]
+>                 cand.append((v,bb[1],bb[0],ox,oy,perm,sgn,vox,d))
+>     cand.sort()
+>     for v,_,_,ox,oy,perm,sgn,vox,d in cand[:120]:
+>         if add(name,perm,sgn,vox,d,(ox,oy,0)):
+>             rec(i+1)
+>             rem()
+> rec(0)
+> print('BEST',best[0])
+> for cmd in best[1]:
+>     print('python3 /task/tools/place_object.py %s %s %s %d %d %d' % cmd)
+> PY
+BEST 1482
+python3 /task/tools/place_object.py bowl1 xyz +++ 0 0 0
+python3 /task/tools/place_object.py ball xyz +++ 1 4 0
+python3 /task/tools/place_object.py bowl2 xyz +++ 0 9 0
+python3 /task/tools/place_object.py bowl3 xyz +++ 0 11 0
+python3 /task/tools/place_object.py bowl4 xyz +++ 0 13 0
+python3 /task/tools/place_object.py bowl5 xyz +++ 0 15 0
+python3 /task/tools/place_object.py donut1 zxy +++ 0 1 0
+python3 /task/tools/place_object.py chocolate yzx +++ 2 0 0
+python3 /task/tools/place_object.py donut2 yzx +++ 3 1 0
+python3 /task/tools/place_object.py match_box1 yxz +++ 1 3 0
+python3 /task/tools/place_object.py match_box2 yxz +++ 9 3 0
+python3 /task/tools/place_object.py match_box3 yxz +++ 11 1 0
+python3 /task/tools/place_object.py match_box4 yxz +++ 11 4 0
+user@65dade1cf33c:~$

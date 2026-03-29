@@ -1,0 +1,41 @@
+Current Terminal Screen:
+>     if not placed:
+>         print(f"{obj_name}: DOES NOT FIT!")
+>
+> # Final check
+> min_x = min(v[0] for v in occupied)
+> max_x = max(v[0] for v in occupied)
+> min_y = min(v[1] for v in occupied)
+> max_y = max(v[1] for v in occupied)
+> min_z = min(v[2] for v in occupied)
+> max_z = max(v[2] for v in occupied)
+> w = max_x - min_x + 1
+> h = max_y - min_y + 1
+> d = max_z - min_z + 1
+> print(f"\nFinal bounding box: {w}x{h}x{d} = {w*h*d}")
+> print(f"Total voxels: {len(occupied)}")
+> print(f"\nPlacements summary:")
+> for name, (perm, signs, ox, oy, oz, sx, sy, sz) in placements.items():
+>     print(f"  {name}: perm={perm} signs={signs} offset=({ox},{oy},{oz})")
+> EOF
+Ball + 5 bowls: 860 voxels
+donut1: perm=xzy signs=+++ offset=(0,18,0) size=8x1x4
+donut2: perm=yzx signs=+++ offset=(4,8,0) size=4x1x6
+chocolate: perm=yzx signs=+++ offset=(4,10,0) size=4x1x6
+match_box1: perm=xyz signs=+++ offset=(8,0,0) size=3x2x3
+match_box2: perm=xyz signs=+++ offset=(8,0,3) size=3x2x3
+match_box3: perm=xyz signs=+++ offset=(9,17,0) size=3x2x3
+match_box4: perm=xyz signs=+++ offset=(9,17,3) size=3x2x3
+
+Final bounding box: 12x19x6 = 1368
+Total voxels: 1004
+
+Placements summary:
+  donut1: perm=xzy signs=+++ offset=(0,18,0)
+  donut2: perm=yzx signs=+++ offset=(4,8,0)
+  chocolate: perm=yzx signs=+++ offset=(4,10,0)
+  match_box1: perm=xyz signs=+++ offset=(8,0,0)
+  match_box2: perm=xyz signs=+++ offset=(8,0,3)
+  match_box3: perm=xyz signs=+++ offset=(9,17,0)
+  match_box4: perm=xyz signs=+++ offset=(9,17,3)
+user@a968081b7478:~$

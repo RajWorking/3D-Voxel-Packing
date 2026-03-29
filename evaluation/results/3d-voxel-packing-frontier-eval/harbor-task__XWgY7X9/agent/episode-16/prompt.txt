@@ -1,0 +1,143 @@
+New Terminal Output:
+4=2016
+user@a968081b7478:~$ python3 << 'EOF'
+> import json
+> with open('/task/objects.json') as f:
+>     data = json.load(f)
+>
+> def get_voxels(name):
+>     voxels = set()
+>     for group in data[name].values():
+>         for v in group:
+>             voxels.add(tuple(v))
+>     return voxels
+>
+> bowl_v = get_voxels('bowl1')
+> ball_v = get_voxels('ball')
+>
+> # Bowl XY footprint (18 cells in 12x4)
+> bowl_xy = set((x,y) for x,y,z in bowl_v)
+> # Rotated bowl XY (18 cells in 4x12)
+> bowl_rot_xy = set((y,x) for x,y in bowl_xy)
+>
+> # Ball XY at each z
+> ball_layers = {}
+> for x,y,z in ball_v:
+>     ball_layers.setdefault(z, set()).add((x,y))
+>
+> # All ball XY positions (union across all z)
+> ball_all_xy = set((x,y) for x,y,z in ball_v)
+>
+> # Strategy: place ball at origin (0,0,0)-(9,7,5)
+> # Then place bowls around it
+> # Bowl options: 12x4 or 4x12 in XY, 6 in z
+> # Bowls can be at same z (0-5) if XY doesn't overlap with ball
+> # Or at different z
+>
+> # Let's try: ball at (0,0,0), some bowls beside it at same z
+> # Ball occupies x=0..9, y=0..7 (with gaps at corners)
+> # A bowl (12x4) could go at y=8..11 (below ball): 12x12x6
+> # Or a rotated bowl (4x12) at x=10..13: 14x12x6
+>
+> # How many bowls fit at y>=8 (same z as ball)?
+> # y=8..11 is 4 units - one bowl fits (12x4 at y=8)
+> # y=8..13 is 6 units - can nest 2 bowls (12x4 at y=8 and y=10): 12x6
+> # y=8..15 is 8 units - can nest 3 bowls: 12x8
+> # y=8..17 is 10 units - can nest 4 bowls: 12x10
+> # y=8..19 is 12 units - can nest 5 bowls: 12x12
+>
+> # But ball only goes to y=7, so bowls at y=8 don't overlap
+> # Total: x=0..11, y=0..19, z=0..5 = 12x20x6 = 1440 for 5 bowls
+> # Or: x=0..11, y=0..17, z=0..5 = 12x18x6 = 1296 for 4 bowls
+>
+> # Wait - can bowls at y=8 overlap with ball in XY?
+> # Ball at y=7 has voxels at x=3,4,5,6. Bowl at y=8 has...
+> # Bowl (12x4) at y=8: occupies y=8..11. No overlap with ball (y=0..7).
+>
+> # But can the bowl tuck closer? Ball at y=7 only has x=3..6.
+> # Bowl at y=7: bowl's y=0 row is x=0,1,10,11. Ball at y=7 is x=3,4,5,6.
+> # No overlap! So bowl can start at y=7!
+>
+> print("Checking bowl at y=7 overlap with ball:")
+> bowl_at_y7 = set((x, y+7) for x,y in bowl_xy)
+> overlap = bowl_at_y7 & ball_all_xy
+> print(f"  Overlap: {len(overlap)} voxels: {sorted(overlap)[:10]}")
+>
+> if not overlap:
+>     print("  NO OVERLAP! Bowl can start at y=7")
+>     # 2 bowls nested: y=7 and y=9
+>     # 3 bowls: y=7, y=9, y=11
+>     # etc.
+>     for n in range(1, 6):
+>         all_bowl_xy = set()
+>         for i in range(n):
+>             for x,y in bowl_xy:
+>                 all_bowl_xy.add((x, y + 7 + i*2))
+>         combined = ball_all_xy | all_bowl_xy
+>         min_x = min(x for x,y in combined)
+>         max_x = max(x for x,y in combined)
+>         min_y = min(y for x,y in combined)
+>         max_y = max(y for x,y in combined)
+>         w = max_x - min_x + 1
+>         h = max_y - min_y + 1
+>         print(f"  {n} bowls at y=7+: {w}x{h}x6 = {w*h*6}")
+>
+> # Check y=6
+> print("\nChecking bowl at y=6 overlap with ball:")
+> bowl_at_y6 = set((x, y+6) for x,y in bowl_xy)
+> overlap = bowl_at_y6 & ball_all_xy
+> print(f"  Overlap: {len(overlap)} voxels")
+> if overlap:
+>     print(f"  Overlapping positions: {sorted(overlap)[:10]}")
+>
+> # What about flipped bowl (opening toward ball)?
+> # Flip y: bowl_xy with y -> 3-y, then shift
+> flipped_bowl_xy = set((x, 3-y) for x,y in bowl_xy)
+> print("\nFlipped bowl XY:")
+> for y in range(4):
+>     row = ''
+>     for x in range(12):
+>         row += '#' if (x,y) in flipped_bowl_xy else '.'
+>     print(f"  y={y}: {row}")
+>
+> # Flipped bowl at y=4 (so it occupies y=4..7)
+> print("\nChecking flipped bowl at y=4:")
+> flipped_at_y4 = set((x, y+4) for x,y in flipped_bowl_xy)
+> overlap = flipped_at_y4 & ball_all_xy
+> print(f"  Overlap: {len(overlap)} voxels")
+> if overlap:
+>     print(f"  {sorted(overlap)[:10]}")
+>
+> for dy in range(0, 10):
+>     shifted = set((x, y+dy) for x,y in flipped_bowl_xy)
+>     overlap = shifted & ball_all_xy
+>     if not overlap:
+>         combined = ball_all_xy | shifted
+>         w = max(x for x,y in combined) - min(x for x,y in combined) + 1
+>         h = max(y for x,y in combined) - min(y for x,y in combined) + 1
+>         print(f"  Flipped bowl at dy={dy}: {w}x{h}, no overlap")
+> EOF
+Checking bowl at y=7 overlap with ball:
+  Overlap: 0 voxels: []
+  NO OVERLAP! Bowl can start at y=7
+  1 bowls at y=7+: 12x11x6 = 792
+  2 bowls at y=7+: 12x13x6 = 936
+  3 bowls at y=7+: 12x15x6 = 1080
+  4 bowls at y=7+: 12x17x6 = 1224
+  5 bowls at y=7+: 12x19x6 = 1368
+
+Checking bowl at y=6 overlap with ball:
+  Overlap: 0 voxels
+
+Flipped bowl XY:
+  y=0: ...######...
+  y=1: ..##....##..
+  y=2: .##......##.
+  y=3: ##........##
+
+Checking flipped bowl at y=4:
+  Overlap: 10 voxels
+  [(2, 5), (2, 6), (3, 4), (3, 5), (4, 4), (5, 4), (6, 4), (7, 4), (8, 4), (8, 5)]
+  Flipped bowl at dy=8: 12x12, no overlap
+  Flipped bowl at dy=9: 12x13, no overlap
+user@a968081b7478:~$

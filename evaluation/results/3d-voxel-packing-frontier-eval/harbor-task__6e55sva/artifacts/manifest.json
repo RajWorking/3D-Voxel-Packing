@@ -1,0 +1,8 @@
+[
+  {
+    "source": "/home/user/solution.json",
+    "destination": "artifacts/solution.json",
+    "type": "file",
+    "status": "ok"
+  }
+]

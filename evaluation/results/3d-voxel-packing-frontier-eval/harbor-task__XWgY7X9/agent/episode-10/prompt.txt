@@ -1,0 +1,176 @@
+New Terminal Output:
+
+user@a968081b7478:~$ python3 << 'EOF'
+or x in range(12):
+            if (x,y) in all_positions:
+                row += '#'
+            else:
+                row += '.'
+        print(f"  y={y}: {row}")
+    print()
+
+# Also try dy=1 spacing
+print("\nTrying dy=1 spacing:")
+for n_bowls in range(2, 8):
+    all_positions = set()
+    collision = False
+    for i in range(n_bowls):
+        shifted = set((x, y + i*1) for x,y in bowl_xy)
+        if all_positions & shifted:
+            collision = True
+            overlap = all_positions & shifted
+            print(f"{n_bowls} bowls with dy=1: COLLISION at {sorted(list(overlap))[:5]}...")
+            break
+        all_positions |= shifted
+    if not collision:
+        min_y = min(y for x,y in all_positions)
+        max_y = max(y for x,y in all_positions)
+        h = max_y - min_y + 1
+        print(f"{n_bowls} bowls with dy=1: 12x{h}")
+EOF
+> import json
+> with open('/task/objects.json') as f:
+>     data = json.load(f)
+>
+> bowl_xy = set()
+> for group in data['bowl1'].values():
+>     for v in group:
+>         bowl_xy.add((v[0], v[1]))
+>
+> # Try nesting multiple bowls with dy=2 each
+> for n_bowls in range(2, 8):
+>     all_positions = set()
+>     collision = False
+>     for i in range(n_bowls):
+>         shifted = set((x, y + i*2) for x,y in bowl_xy)
+>         if all_positions & shifted:
+>             collision = True
+>             break
+>         all_positions |= shifted
+>     if collision:
+>         print(f"{n_bowls} bowls with dy=2 spacing: COLLISION")
+>         continue
+>     min_x = min(x for x,y in all_positions)
+>     max_x = max(x for x,y in all_positions)
+>     min_y = min(y for x,y in all_positions)
+>     max_y = max(y for x,y in all_positions)
+>     w = max_x - min_x + 1
+>     h = max_y - min_y + 1
+>     print(f"{n_bowls} bowls with dy=2 spacing: {w}x{h} = {w*h}, total voxels={len(all_positions)}")
+>     # Show the pattern
+>     for y in range(max_y+1):
+>         row = ''
+>         for x in range(12):
+>             if (x,y) in all_positions:
+>                 row += '#'
+>             else:
+>                 row += '.'
+>         print(f"  y={y}: {row}")
+>     print()
+>
+> # Also try dy=1 spacing
+> print("\nTrying dy=1 spacing:")
+> for n_bowls in range(2, 8):
+>     all_positions = set()
+>     collision = False
+>     for i in range(n_bowls):
+>         shifted = set((x, y + i*1) for x,y in bowl_xy)
+>         if all_positions & shifted:
+>             collision = True
+>             overlap = all_positions & shifted
+>             print(f"{n_bowls} bowls with dy=1: COLLISION at {sorted(list(overlap))[:5]}...")
+>             break
+>         all_positions |= shifted
+>     if not collision:
+>         min_y = min(y for x,y in all_positions)
+>         max_y = max(y for x,y in all_positions)
+>         h = max_y - min_y + 1
+>         print(f"{n_bowls} bowls with dy=1: 12x{h}")
+> EOF
+2 bowls with dy=2 spacing: 12x6 = 72, total voxels=36
+  y=0: ##........##
+  y=1: .##......##.
+  y=2: ####....####
+  y=3: .##########.
+  y=4: ..##....##..
+  y=5: ...######...
+
+3 bowls with dy=2 spacing: 12x8 = 96, total voxels=54
+  y=0: ##........##
+  y=1: .##......##.
+  y=2: ####....####
+  y=3: .##########.
+  y=4: ####....####
+  y=5: .##########.
+  y=6: ..##....##..
+  y=7: ...######...
+
+4 bowls with dy=2 spacing: 12x10 = 120, total voxels=72
+  y=0: ##........##
+  y=1: .##......##.
+  y=2: ####....####
+  y=3: .##########.
+  y=4: ####....####
+  y=5: .##########.
+  y=6: ####....####
+  y=7: .##########.
+  y=8: ..##....##..
+  y=9: ...######...
+
+5 bowls with dy=2 spacing: 12x12 = 144, total voxels=90
+  y=0: ##........##
+  y=1: .##......##.
+  y=2: ####....####
+  y=3: .##########.
+  y=4: ####....####
+  y=5: .##########.
+  y=6: ####....####
+  y=7: .##########.
+  y=8: ####....####
+  y=9: .##########.
+  y=10: ..##....##..
+  y=11: ...######...
+
+6 bowls with dy=2 spacing: 12x14 = 168, total voxels=108
+  y=0: ##........##
+  y=1: .##......##.
+  y=2: ####....####
+  y=3: .##########.
+  y=4: ####....####
+  y=5: .##########.
+  y=6: ####....####
+  y=7: .##########.
+  y=8: ####....####
+  y=9: .##########.
+  y=10: ####....####
+  y=11: .##########.
+  y=12: ..##....##..
+  y=13: ...######...
+
+7 bowls with dy=2 spacing: 12x16 = 192, total voxels=126
+  y=0: ##........##
+  y=1: .##......##.
+  y=2: ####....####
+  y=3: .##########.
+  y=4: ####....####
+  y=5: .##########.
+  y=6: ####....####
+  y=7: .##########.
+  y=8: ####....####
+  y=9: .##########.
+  y=10: ####....####
+  y=11: .##########.
+  y=12: ####....####
+  y=13: .##########.
+  y=14: ..##....##..
+  y=15: ...######...
+
+
+Trying dy=1 spacing:
+2 bowls with dy=1: COLLISION at [(1, 1), (2, 2), (3, 3), (8, 3), (9, 2)]...
+3 bowls with dy=1: COLLISION at [(1, 1), (2, 2), (3, 3), (8, 3), (9, 2)]...
+4 bowls with dy=1: COLLISION at [(1, 1), (2, 2), (3, 3), (8, 3), (9, 2)]...
+5 bowls with dy=1: COLLISION at [(1, 1), (2, 2), (3, 3), (8, 3), (9, 2)]...
+6 bowls with dy=1: COLLISION at [(1, 1), (2, 2), (3, 3), (8, 3), (9, 2)]...
+7 bowls with dy=1: COLLISION at [(1, 1), (2, 2), (3, 3), (8, 3), (9, 2)]...
+user@a968081b7478:~$

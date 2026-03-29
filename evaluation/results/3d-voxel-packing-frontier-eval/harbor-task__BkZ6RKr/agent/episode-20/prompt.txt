@@ -1,0 +1,21 @@
+New Terminal Output:
+x4
+user@a85be64098f5:~$ python3 /task/tools/place_object.py match_box3 xyz +++ 8 12 0
+PLACED match_box3
+  Transform : perm=xyz signs=+++ offset=(8,12,0)
+  Voxels    : 18
+  Range     : x=[8,10] y=[12,13] z=[0,2]
+  Bounding box so far: 12 x 20 x 6 = 1440
+Bounding box: 12 x 20 x 6 = 1440
+Placed   (12): ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3
+Unplaced (1): match_box4
+user@a85be64098f5:~$ python3 /task/tools/place_object.py match_box4 xyz +++ 8 12 3
+PLACED match_box4
+  Transform : perm=xyz signs=+++ offset=(8,12,3)
+  Voxels    : 18
+  Range     : x=[8,10] y=[12,13] z=[3,5]
+  Bounding box so far: 12 x 20 x 6 = 1440
+Bounding box: 12 x 20 x 6 = 1440
+Placed   (13): ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+Unplaced (0): —
+user@a85be64098f5:~$

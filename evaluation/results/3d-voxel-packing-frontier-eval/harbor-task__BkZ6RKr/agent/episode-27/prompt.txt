@@ -1,0 +1,41 @@
+Current Terminal Screen:
+>
+>     if vol > 1440:
+>         print("  Skipping (worse than current best)")
+>         continue
+>
+>     # Normalize to origin
+>     occupied = set((v[0]-mn[0], v[1]-mn[1], v[2]-mn[2]) for v in occupied)
+>     bbox_norm = (bbox[0], bbox[1], bbox[2])
+>
+>     # Try different orderings of small objects
+>     obj_names = ['donut1', 'chocolate', 'donut2', 'match_box1', 'match_box2', 'match_box3', 'match_box4']
+>
+>     result = try_place_all(occupied, bbox_norm, obj_names)
+>     if result:
+>         print(f"  SUCCESS! All objects placed.")
+>         for name in obj_names:
+>             p, ox, oy, oz = result[name]
+>             pname = perm_names[perms_list.index(p)]
+>             print(f"    {name}: perm={pname} offset=({ox},{oy},{oz})")
+>         break
+>     else:
+>         # Try reverse order
+>         obj_names_rev = list(reversed(obj_names))
+>         result = try_place_all(occupied, bbox_norm, obj_names_rev)
+>         if result:
+>             print(f"  SUCCESS (reverse order)! All objects placed.")
+>             for name in obj_names:
+>                 p, ox, oy, oz = result[name]
+>                 pname = perm_names[perms_list.index(p)]
+>                 print(f"    {name}: perm={pname} offset=({ox},{oy},{oz})")
+>             break
+>         else:
+>             print(f"  FAILED to place all objects")
+>
+> PYEOF
+user@a85be64098f5:~$ python3 /tmp/solve12.py
+
+=== Config: ball at (1,-5,0) - 12x17x6=1224 ===
+  Bbox: 12x17x6=1224, occupied=860
+

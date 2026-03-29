@@ -1,6 +1,6 @@
 job_name: "3d-voxel-packing-frontier-eval"
 jobs_dir: "evaluation/results"
-n_attempts: 3           # 3 independent runs per model (9 trials total)
+n_attempts: 2           # 2 independent runs per model (6 trials total)
 n_concurrent_trials: 3  # run all 3 concurrently (API calls are I/O-bound)
 
 tasks:
@@ -9,21 +9,24 @@ tasks:
 environment:
   type: "docker"
 
+artifacts:
+  - /home/user/solution.json
+
 agents:
   - name: "terminus-2"
     model_name: "openrouter/openai/gpt-5.4"
     kwargs:
-      max_turns: 40
+      max_turns: 50
       temperature: 0.0
 
   - name: "terminus-2"
     model_name: "openrouter/anthropic/claude-opus-4.6"
     kwargs:
-      max_turns: 40
+      max_turns: 50  
       temperature: 0.0
 
   - name: "terminus-2"
-    model_name: "openrouter/google/gemini-pro-1.5"
+    model_name: "openrouter/google/gemini-3.1-pro-preview"
     kwargs:
-      max_turns: 40
+      max_turns: 50
       temperature: 0.0

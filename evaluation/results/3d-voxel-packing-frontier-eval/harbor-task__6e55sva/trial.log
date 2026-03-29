@@ -1,0 +1,15 @@
+max_turns (f.k.a. max_episodes) artificially limited to 50. Consider removing this limit for better task completion.
+Parser warnings: - Extra text detected after JSON object
+Trajectory dumped to evaluation/results/3d-voxel-packing-frontier-eval/harbor-task__6e55sva/agent/trajectory.json
+Parser warnings: - Extra text detected after JSON object
+Trajectory dumped to evaluation/results/3d-voxel-packing-frontier-eval/harbor-task__6e55sva/agent/trajectory.json
+Trajectory dumped to evaluation/results/3d-voxel-packing-frontier-eval/harbor-task__6e55sva/agent/trajectory.json
+Trajectory dumped to evaluation/results/3d-voxel-packing-frontier-eval/harbor-task__6e55sva/agent/trajectory.json
+Trajectory dumped to evaluation/results/3d-voxel-packing-frontier-eval/harbor-task__6e55sva/agent/trajectory.json
+Trajectory dumped to evaluation/results/3d-voxel-packing-frontier-eval/harbor-task__6e55sva/agent/trajectory.json
+Trajectory dumped to evaluation/results/3d-voxel-packing-frontier-eval/harbor-task__6e55sva/agent/trajectory.json
+Trajectory dumped to evaluation/results/3d-voxel-packing-frontier-eval/harbor-task__6e55sva/agent/trajectory.json
+Trajectory dumped to evaluation/results/3d-voxel-packing-frontier-eval/harbor-task__6e55sva/agent/trajectory.json
+Trajectory dumped to evaluation/results/3d-voxel-packing-frontier-eval/harbor-task__6e55sva/agent/trajectory.json
+Trajectory dumped to evaluation/results/3d-voxel-packing-frontier-eval/harbor-task__6e55sva/agent/trajectory.json
+Trajectory dumped to evaluation/results/3d-voxel-packing-frontier-eval/harbor-task__6e55sva/agent/trajectory.json

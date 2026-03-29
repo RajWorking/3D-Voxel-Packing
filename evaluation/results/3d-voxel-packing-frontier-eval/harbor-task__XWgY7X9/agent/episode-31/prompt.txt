@@ -1,0 +1,41 @@
+Current Terminal Screen:
+>             for ox in range(w5 - sx + 1):
+>                 for oy in range(h5 - sy + 1):
+>                     for oz in range(6 - sz + 1):
+>                         placed = set((x+ox, y+oy, z+oz) for x,y,z in transformed)
+>                         if not (placed & occupied5):
+>                             count5 += 1
+>                             if count5 <= 3:
+>                                 print(f"    Donut1: perm={perm} signs={signs_str} offset=({ox},{oy},{oz}) size={sx}x{sy}x{sz}")
+>                             if count5 >= 3:
+>                                 break
+>                         if count5 >= 3:
+>                             break
+>                     if count5 >= 3:
+>                         break
+>                 if count5 >= 3:
+>                     break
+>             if count5 >= 3:
+>                 break
+>         if count5 >= 3:
+>             break
+>     print(f"    Donut1 positions in 12x20x6: {count5}")
+> EOF
+4 rot bowls + ball: 10x20x6 = 1200
+  Voxels: 752
+  Donut1: perm=zxy signs=+++ offset=(0,2,0) size=1x8x4
+  Donut1: perm=zxy signs=+++ offset=(0,2,1) size=1x8x4
+  Donut1: perm=zxy signs=+++ offset=(0,2,2) size=1x8x4
+  Donut1: perm=zxy signs=++- offset=(0,2,0) size=1x8x4
+  Donut1: perm=zxy signs=++- offset=(0,2,1) size=1x8x4
+  Donut1 positions: 5
+
+  But still need 5th bowl! 12x4 extends to 12x20x6=1440
+  Or 4x12 at x=10 extends to 14x20x6=1680
+
+  5 rot bowls + ball: 12x20x6 = 1440
+    Donut1: perm=zxy signs=+++ offset=(0,2,0) size=1x8x4
+    Donut1: perm=zxy signs=+++ offset=(0,2,1) size=1x8x4
+    Donut1: perm=zxy signs=+++ offset=(0,2,2) size=1x8x4
+    Donut1 positions in 12x20x6: 3
+user@a968081b7478:~$

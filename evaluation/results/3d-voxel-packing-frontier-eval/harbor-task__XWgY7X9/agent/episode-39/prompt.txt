@@ -1,0 +1,41 @@
+Current Terminal Screen:
+>         ball_max_y = ball_y + 7
+>         # Try different starting positions for below bowls
+>         for below_start in range(ball_max_y - 3, ball_max_y + 4):
+>             below_occ = set()
+>             ok = True
+>             for i in range(n_below):
+>                 for x,y,z in bowl_v:
+>                     below_occ.add((x, y + below_start + i*2, z))
+>             if below_occ & occupied:
+>                 continue
+>
+>             total = occupied | below_occ
+>
+>             # Add donut1 at y=0 interior
+>             donut1_placed = set((x+2, y+0, z+0) for x,y,z in donut1_t)
+>             if donut1_placed & total:
+>                 continue
+>             total |= donut1_placed
+>
+>             min_x = min(x for x,y,z in total)
+>             max_x = max(x for x,y,z in total)
+>             min_y = min(y for x,y,z in total)
+>             max_y = max(y for x,y,z in total)
+>             min_z = min(z for x,y,z in total)
+>             max_z = max(z for x,y,z in total)
+>             w = max_x - min_x + 1
+>             h = max_y - min_y + 1
+>             d = max_z - min_z + 1
+>             vol = w * h * d
+>
+>             if vol < best_vol:
+>                 best_vol = vol
+>                 best_config = f"n_above={n_above} ball_y={ball_y} below_start={below_start}: {w}x{h}x{d}={vol}"
+>                 print(f"  NEW BEST: {best_config}")
+>
+> print(f"\nBest: {best_vol} ({best_config})")
+> EOF
+
+Best: 1368 (current)
+user@a968081b7478:~$

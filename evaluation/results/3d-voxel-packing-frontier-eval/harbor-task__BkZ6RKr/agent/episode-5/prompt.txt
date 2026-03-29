@@ -1,0 +1,56 @@
+New Terminal Output:
+
+user@a85be64098f5:~$ python3 -c "
+> import json
+> with open('/task/objects.json') as f:
+>     data = json.load(f)
+>
+> # Get bowl1 voxels
+> bowl_voxels = set()
+> for group in data['bowl1'].values():
+>     for v in group:
+>         bowl_voxels.add(tuple(v))
+>
+> # Normalize
+> min_x = min(v[0] for v in bowl_voxels)
+> min_y = min(v[1] for v in bowl_voxels)
+> min_z = min(v[2] for v in bowl_voxels)
+> bowl_norm = set((x-min_x, y-min_y, z-min_z) for x,y,z in bowl_voxels)
+>
+> max_x = max(v[0] for v in bowl_norm)
+> max_y = max(v[1] for v in bowl_norm)
+> max_z = max(v[2] for v in bowl_norm)
+> print(f'Bowl bbox: {max_x+1}x{max_y+1}x{max_z+1}')
+> print(f'Bowl voxels: {len(bowl_norm)}')
+>
+> # Full block
+> full = set((x,y,z) for x in range(max_x+1) for y in range(max_y+1) for z in range(max_z+1))
+> print(f'Full block: {len(full)}')
+>
+> # Interior (not in bowl)
+> interior = full - bowl_norm
+> print(f'Interior voxels: {len(interior)}')
+>
+> # Flip y: new_y = max_y - y
+> bowl_flipped = set((x, max_y - y, z) for x,y,z in bowl_norm)
+> overlap = bowl_norm & bowl_flipped
+> print(f'Overlap with y-flipped: {len(overlap)}')
+> union = bowl_norm | bowl_flipped
+> print(f'Union: {len(union)}, Full: {len(full)}')
+> if union == full:
+>     print('Two bowls (normal + y-flipped) perfectly fill the 12x4x6 block!')
+> else:
+>     missing = full - union
+>     extra = union - full
+>     print(f'Missing from full: {len(missing)}')
+>     print(f'Extra: {len(extra)}')
+> "
+Bowl bbox: 12x4x6
+Bowl voxels: 108
+Full block: 288
+Interior voxels: 180
+Overlap with y-flipped: 24
+Union: 192, Full: 288
+Missing from full: 96
+Extra: 0
+user@a85be64098f5:~$

@@ -1,0 +1,43 @@
+New Terminal Output:
+, 5]]}
+user@a85be64098f5:~$ python3 -c "
+> import json
+> with open('/home/user/solution.json') as f:
+>     d = json.load(f)
+> print('Objects:', sorted(d.keys()))
+> total = 0
+> all_v = set()
+> for name, obj in d.items():
+>     voxels = obj['pos']
+>     total += len(voxels)
+>     for v in voxels:
+>         t = tuple(v)
+>         if t in all_v:
+>             print(f'DUPLICATE at {t}!')
+>         all_v.add(t)
+>     print(f'  {name}: {len(voxels)} voxels')
+> print(f'Total voxels: {total}')
+> print(f'Unique voxels: {len(all_v)}')
+> mx = [max(v[i] for v in all_v) for i in range(3)]
+> mn = [min(v[i] for v in all_v) for i in range(3)]
+> dims = [mx[i]-mn[i]+1 for i in range(3)]
+> print(f'Bbox: {dims[0]}x{dims[1]}x{dims[2]} = {dims[0]*dims[1]*dims[2]}')
+> "
+Objects: ['ball', 'bowl1', 'bowl2', 'bowl3', 'bowl4', 'bowl5', 'chocolate', 'donut1', 'donut2', 'match_box1', 'match_box2', 'match_box3', 'match_box4']
+  ball: 320 voxels
+  bowl1: 108 voxels
+  bowl2: 108 voxels
+  bowl3: 108 voxels
+  bowl4: 108 voxels
+  bowl5: 108 voxels
+  chocolate: 24 voxels
+  donut1: 28 voxels
+  donut2: 20 voxels
+  match_box1: 18 voxels
+  match_box2: 18 voxels
+  match_box3: 18 voxels
+  match_box4: 18 voxels
+Total voxels: 1004
+Unique voxels: 1004
+Bbox: 12x18x6 = 1296
+user@a85be64098f5:~$

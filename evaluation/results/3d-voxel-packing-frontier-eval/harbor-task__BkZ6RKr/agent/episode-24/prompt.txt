@@ -1,0 +1,88 @@
+New Terminal Output:
+
+user@a85be64098f5:~$ cat > /tmp/solve9.py << 'PYEOF'
+> import json
+>
+> with open('/task/objects.json') as f:
+>     data = json.load(f)
+>
+> def get_voxels(name):
+>     voxels = set()
+>     for group in data[name].values():
+>         for v in group:
+>             voxels.add(tuple(v))
+>     min_x = min(v[0] for v in voxels)
+>     min_y = min(v[1] for v in voxels)
+>     min_z = min(v[2] for v in voxels)
+>     return set((x-min_x, y-min_y, z-min_z) for x,y,z in voxels)
+>
+> def apply_perm(voxels, p):
+>     transformed = set((v[p[0]], v[p[1]], v[p[2]]) for v in voxels)
+>     mn = [min(v[i] for v in transformed) for i in range(3)]
+>     return set((v[0]-mn[0], v[1]-mn[1], v[2]-mn[2]) for v in transformed)
+>
+> bowl = get_voxels('bowl1')
+> ball = get_voxels('ball')
+> perms = [(0,1,2),(0,2,1),(1,0,2),(1,2,0),(2,0,1),(2,1,0)]
+>
+> # 5-bowl stack
+> stack5 = set()
+                 actual_vol *= (amx[i] - amn[i] + 1)
+
+                if actual_vol < best[0]:
+                    best = (actual_vol, (p, ox, oy, oz, [amx[i]-amn[i]+1 for i in range(3)]))
+                    print(f"  New best: vol={actual_vol}, perm={p}, offset=({ox},{oy},{oz}), dims={best[1][4]}")
+
+print(f"\nBest: {best[0]}")
+if best[1]:
+    print(f"  {best[1]}")
+
+PYEOF
+python3 /tmp/solve9.py
+> for i in range(5):
+>     for x,y,z in bowl:
+>         stack5.add((x, y + 2*i, z))
+>
+> # Try ball at various y-offsets (including < 12) and x-offsets
+> # Ball in all orientations
+> print("Trying ball placements overlapping with 5-bowl stack region:")
+> best = (1440, None)
+> for pi, p in enumerate(perms):
+>     ball_t = apply_perm(ball, p)
+>     bdims = [max(v[i] for v in ball_t)+1 for i in range(3)]
+>
+>     for ox in range(-2, 14):
+>         for oy in range(6, 14):  # Try y=6 to 13 (partially overlapping)
+>             for oz in range(-2, 8):
+>                 # Quick bbox check
+>                 mn = [min(0, ox), min(0, oy), min(0, oz)]
+>                 mx = [max(12, ox+bdims[0]), max(12, oy+bdims[1]), max(6, oz+bdims[2])]
+>                 vol = (mx[0]-mn[0]) * (mx[1]-mn[1]) * (mx[2]-mn[2])
+>                 if vol >= best[0]:
+>                     continue
+>
+>                 ball_s = set((v[0]+ox, v[1]+oy, v[2]+oz) for v in ball_t)
+>                 if ball_s & stack5:
+>                     continue
+>
+>                 union = stack5 | ball_s
+>                 amn = [min(v[i] for v in union) for i in range(3)]
+>                 amx = [max(v[i] for v in union) for i in range(3)]
+>                 actual_vol = 1
+>                 for i in range(3):
+>                     actual_vol *= (amx[i] - amn[i] + 1)
+>
+>                 if actual_vol < best[0]:
+>                     best = (actual_vol, (p, ox, oy, oz, [amx[i]-amn[i]+1 for i in range(3)]))
+>                     print(f"  New best: vol={actual_vol}, perm={p}, offset=({ox},{oy},{oz}), dims={best[1][4]}")
+>
+> print(f"\nBest: {best[0]}")
+> if best[1]:
+>     print(f"  {best[1]}")
+>
+> PYEOF
+user@a85be64098f5:~$ python3 /tmp/solve9.py
+Trying ball placements overlapping with 5-bowl stack region:
+
+Best: 1440
+user@a85be64098f5:~$

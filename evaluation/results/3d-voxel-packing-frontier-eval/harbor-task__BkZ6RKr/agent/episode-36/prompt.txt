@@ -1,0 +1,155 @@
+New Terminal Output:
+96
+user@a85be64098f5:~$ cat > /tmp/solve16.py << 'PYEOF'
+> import json
+> import random
+>
+> with open('/task/objects.json') as f:
+>     data = json.load(f)
+>
+> def get_voxels(name):
+>     voxels = set()
+>     for group in data[name].values():
+>         for v in group:
+>             voxels.add(tuple(v))
+>     min_x = min(v[0] for v in voxels)
+>     min_y = min(v[1] for v in voxels)
+>     min_z = min(v[2] for v in voxels)
+>     return set((x-min_x, y-min_y, z-min_z) for x,y,z in voxels)
+  >
+> def apply_perm(voxels, p):
+>     transformed = set((v[p[0]], v[p[1]], v[p[2]]) for v in voxels)
+   >     mn = [min(v[i] for v in transformed) for i in range(3)]
+>     return set((v[0]-mn[0], v[1]-mn[1], v[2]-mn[2]) for v in transformed)
+ >
+ > bowl_raw = get_voxels('bowl1')
+> ball_raw = get_voxels('ball')
+> perms_list = [(0,1,2),(0,2,1),(1,0,2),(1,2,0),(2,0,1),(2,1,0)]
+> perm_names = ['xyz','xzy','yxz','yzx','zxy','zyx']
+  >
+> small_objs = {n: get_voxels(n) for n in ['chocolate','donut1','donut2','match_box1','match_box2','match_box3','match_box4']}
+                   print(f"NEW BEST: {dims[0]}x{dims[1]}x{dims[2]}={actual_vol}, bowl_p={perm_names[bowl_pi]}, ball_p={perm_n> obj_names = ['donut1','chocolate'
+,'donut2','match_box1','match_box2','match_box3','match_box4']
+>
+> def find_placements(obj_voxels, occ, bbox):
+>     results = []
+>     for p in perms_list:
+>         rotated = apply_perm(obj_voxels, p)
+f"\n=== BEST: {dims[0]}x{dims[>         rdims = [max(v[i] for v in rotated)+1 for i in range(3)]
+>         if rdims[0]>bbox[0] or rdims[1]>bbox[1] or rdims[2]>bbox[2]:
+>             continue
+ pri>         for ox in range(bbox[0]-rdims[0]+1):
+>             for oy in range(bbox[1]-rdims[1]+1):
+>                 for oz in range(bbox[2]-rdims[2]+1):
+>                     placed = set((v[0]+ox,v[1]+oy,v[2]+oz) for v in rotated)
+>                     if not (placed & occ):
+>                         results.append((p,ox,oy,oz,placed))
+>     return results
+>
+ > best_vol = 1296
+> best_config = None
+>
+perm_names[perms_list.in> # Try all bowl orientations
+> for bowl_pi, bowl_p in enumerate(perms_list):
+>     bowl = apply_perm(bowl_raw, bowl_p)
+>     bdims = [max(v[i] for v in bowl)+1 for i in range(3)]
+>
+>     # Find nest axis (size 4)
+>     nest_ax = None
+>     for a in range(3):
+>         if bdims[a] == 4:
+>             nest_ax = a
+>             break
+>     if nest_ax is None:
+>         continue
+>
+>     # Build 5-bowl stack
+>     stack = set()
+>     for i in range(5):
+>         for v in bowl:
+>             nv = list(v)
+>             nv[nest_ax] += 2*i
+>             stack.add(tuple(nv))
+>     sdims = [max(v[i] for v in stack)+1 for i in range(3)]
+>
+>     # Try all ball orientations
+>     for ball_pi, ball_p in enumerate(perms_list):
+>         ball = apply_perm(ball_raw, ball_p)
+>         abdims = [max(v[i] for v in ball)+1 for i in range(3)]
+>
+>         # Try offsets
+>         for ox in range(-abdims[0]+1, sdims[0]):
+>             for oy in range(-abdims[1]+1, sdims[1]):
+>                 for oz in range(-abdims[2]+1, sdims[2]):
+>                     mn = [min(0,ox),min(0,oy),min(0,oz)]
+>                     mx = [max(sdims[0],ox+abdims[0]),max(sdims[1],oy+abdims[1]),max(sdims[2],oz+abdims[2])]
+>                     vol = (mx[0]-mn[0])*(mx[1]-mn[1])*(mx[2]-mn[2])
+>                     if vol >= best_vol:
+>                         continue
+>
+>                     ball_s = set((v[0]+ox,v[1]+oy,v[2]+oz) for v in ball)
+>                     if ball_s & stack:
+>                         continue
+>
+>                     # Valid! Now try to fit small objects
+>                     union = stack | ball_s
+>                     amn = [min(v[i] for v in union) for i in range(3)]
+>                     amx = [max(v[i] for v in union) for i in range(3)]
+>                     dims = [amx[i]-amn[i]+1 for i in range(3)]
+>                     actual_vol = dims[0]*dims[1]*dims[2]
+>                     if actual_vol >= best_vol:
+>                         continue
+>
+>                     # Normalize
+>                     norm_union = set((v[0]-amn[0],v[1]-amn[1],v[2]-amn[2]) for v in union)
+>                     bbox = tuple(dims)
+>
+>                     # Try to fit small objects
+>                     for trial in range(20):
+>                         order = obj_names[:]
+>                         if trial > 0:
+>                             random.shuffle(order)
+>
+>                         remaining = norm_union.copy()
+>                         placements = {}
+>                         ok = True
+>                         for name in order:
+>                             valid = find_placements(small_objs[name], remaining, bbox)
+>                             if valid:
+>                                 p2,ox2,oy2,oz2,placed = valid[0]
+>                                 remaining |= placed
+>                                 placements[name] = (p2,ox2,oy2,oz2)
+>                             else:
+>                                 ok = False
+>                                 break
+>
+>                         if ok:
+>                             best_vol = actual_vol
+>                             best_config = (bowl_pi, ball_pi, ox, oy, oz, dims, placements, amn, sdims, abdims, nest_ax)
+>                             print(f"NEW BEST: {dims[0]}x{dims[1]}x{dims[2]}={actual_vol}, bowl_p={perm_names[bowl_pi]}, ball_p={perm_names[ball_pi]}, offset=(
+{ox},{oy},{oz})")
+>                             break
+>
+> if best_config:
+>     bowl_pi, ball_pi, bx, by, bz, dims, placements, amn, sdims, abdims, nest_ax = best_config
+>     print(f"\n=== BEST: {dims[0]}x{dims[1]}x{dims[2]}={best_vol} ===")
+>     shift = [-amn[0],-amn[1],-amn[2]]
+>     print(f"Bowl perm={perm_names[bowl_pi]}, Ball perm={perm_names[ball_pi]}")
+>     print(f"Ball offset: ({bx+shift[0]},{by+shift[1]},{bz+shift[2]})")
+>     nest_offsets = [0]*3
+>     for i in range(5):
+>         o = [shift[0],shift[1],shift[2]]
+>         o[nest_ax] += 2*i
+>         print(f"Bowl{i+1} offset: ({o[0]},{o[1]},{o[2]})")
+>     for name in obj_names:
+>         if name in placements:
+>             p2,ox2,oy2,oz2 = placements[name]
+>             pn = perm_names[perms_list.index(p2)]
+>             print(f"{name}: perm={pn} offset=({ox2},{oy2},{oz2})")
+> else:
+>     print("No improvement found")
+>
+> PYEOF
+user@a85be64098f5:~$ python3 /tmp/solve16.py
+No improvement found
+user@a85be64098f5:~$

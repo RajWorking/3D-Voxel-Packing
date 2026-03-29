@@ -1,0 +1,2139 @@
+[?2004huser@61aa19fdb377:~$ asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004huser@61aa19fdb377:~$ clear
+[?2004l[H[J[?2004huser@61aa19fdb377:~$ python3 /task/tools/check_state.py
+[?2004l=== Workspace State ===
+Bounding box   : none (no objects placed yet)
+Total voxels   : 0
+Placed   ( 0) : —
+Unplaced (13) : ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+[?2004huser@61aa19fdb377:~$ python3 - <<'PY'
+[?2004l[?2004h> import json
+[?2004l[?2004h> from pprint import pprint
+[?2004l[?2004h> with open('/task/objects.json') as f:
+[?2004l[?2004h>     data=json.load(f)
+[?2004l[?2004h> print('objects:', list(data))
+[?2004l[?2004h> for name,obj in data.items():
+[?2004l[?2004h>     pts=[]
+[?2004l[?2004h>     for grp,arr in obj.items():
+[?2004l[?2004h>         pts.extend(map(tuple,arr))
+[?2004l[?2004h>     xs=[p[0] for p in pts]; ys=[p[1] for p in pts]; zs=[p[2] for p in pts]
+[?2004l[?2004h>     print(name, 'voxels', len(set(pts)), 'bbox', (max(xs)-min(xs)+1, max(ys)-min(ys)+1, max(zs)-min(zs)+1))
+[?2004l[?2004h> PY
+[?2004lobjects: ['bowl1', 'bowl2', 'bowl3', 'bowl4', 'bowl5', 'chocolate', 'donut1', 'donut2', 'ball', 'match_box1', 'match_box2', 'match_box3', 'match_box4']
+bowl1 voxels 108 bbox (12, 4, 6)
+bowl2 voxels 108 bbox (12, 4, 6)
+bowl3 voxels 108 bbox (12, 4, 6)
+bowl4 voxels 108 bbox (12, 4, 6)
+bowl5 voxels 108 bbox (12, 4, 6)
+chocolate voxels 24 bbox (6, 4, 1)
+donut1 voxels 28 bbox (8, 4, 1)
+donut2 voxels 20 bbox (6, 4, 1)
+ball voxels 320 bbox (10, 8, 6)
+match_box1 voxels 18 bbox (3, 2, 3)
+match_box2 voxels 18 bbox (3, 2, 3)
+match_box3 voxels 18 bbox (3, 2, 3)
+match_box4 voxels 18 bbox (3, 2, 3)
+[?2004huser@61aa19fdb377:~$ python3 /task/tools/inspect_object.py bowl1
+[?2004l=== bowl1 (canonical) ===
+Voxels (108):
+  [0,0,0]  [0,0,1]  [0,0,2]  [0,0,3]  [0,0,4]  [0,0,5]  [1,0,0]  [1,0,1]
+  [1,0,2]  [1,0,3]  [1,0,4]  [1,0,5]  [1,1,0]  [1,1,1]  [1,1,2]  [1,1,3]
+  [1,1,4]  [1,1,5]  [2,1,0]  [2,1,1]  [2,1,2]  [2,1,3]  [2,1,4]  [2,1,5]
+  [2,2,0]  [2,2,1]  [2,2,2]  [2,2,3]  [2,2,4]  [2,2,5]  [3,2,0]  [3,2,1]
+  [3,2,2]  [3,2,3]  [3,2,4]  [3,2,5]  [3,3,0]  [3,3,1]  [3,3,2]  [3,3,3]
+  [3,3,4]  [3,3,5]  [4,3,0]  [4,3,1]  [4,3,2]  [4,3,3]  [4,3,4]  [4,3,5]
+  [5,3,0]  [5,3,1]  [5,3,2]  [5,3,3]  [5,3,4]  [5,3,5]  [6,3,0]  [6,3,1]
+  [6,3,2]  [6,3,3]  [6,3,4]  [6,3,5]  [7,3,0]  [7,3,1]  [7,3,2]  [7,3,3]
+  [7,3,4]  [7,3,5]  [8,2,0]  [8,2,1]  [8,2,2]  [8,2,3]  [8,2,4]  [8,2,5]
+  [8,3,0]  [8,3,1]  [8,3,2]  [8,3,3]  [8,3,4]  [8,3,5]  [9,1,0]  [9,1,1]
+  [9,1,2]  [9,1,3]  [9,1,4]  [9,1,5]  [9,2,0]  [9,2,1]  [9,2,2]  [9,2,3]
+  [9,2,4]  [9,2,5]  [10,0,0]  [10,0,1]  [10,0,2]  [10,0,3]  [10,0,4]  [10,0,5]
+  [10,1,0]  [10,1,1]  [10,1,2]  [10,1,3]  [10,1,4]  [10,1,5]  [11,0,0]  [11,0,1]
+  [11,0,2]  [11,0,3]  [11,0,4]  [11,0,5]
+Bounding box: 12 x 4 x 6
+NOTE: identity transform — add (ox,oy,oz) when calling place_object.py
+[?2004huser@61aa19fdb377:~$ python3 /task/tools/inspect_object.py ball
+[?2004l=== ball (canonical) ===
+Voxels (320):
+  [0,3,0]  [0,3,1]  [0,3,2]  [0,3,3]  [0,3,4]  [0,3,5]  [0,4,0]  [0,4,1]
+  [0,4,2]  [0,4,3]  [0,4,4]  [0,4,5]  [1,2,0]  [1,2,1]  [1,2,2]  [1,2,3]
+  [1,2,4]  [1,2,5]  [1,3,0]  [1,3,1]  [1,3,2]  [1,3,3]  [1,3,4]  [1,3,5]
+  [1,4,0]  [1,4,1]  [1,4,2]  [1,4,3]  [1,4,4]  [1,4,5]  [1,5,0]  [1,5,1]
+  [1,5,2]  [1,5,3]  [1,5,4]  [1,5,5]  [2,1,0]  [2,1,1]  [2,1,2]  [2,1,3]
+  [2,1,4]  [2,1,5]  [2,2,0]  [2,2,1]  [2,2,2]  [2,2,3]  [2,2,4]  [2,2,5]
+  [2,3,0]  [2,3,1]  [2,3,4]  [2,3,5]  [2,4,0]  [2,4,1]  [2,4,4]  [2,4,5]
+  [2,5,0]  [2,5,1]  [2,5,2]  [2,5,3]  [2,5,4]  [2,5,5]  [2,6,0]  [2,6,1]
+  [2,6,2]  [2,6,3]  [2,6,4]  [2,6,5]  [3,0,0]  [3,0,1]  [3,0,2]  [3,0,3]
+  [3,0,4]  [3,0,5]  [3,1,0]  [3,1,1]  [3,1,2]  [3,1,3]  [3,1,4]  [3,1,5]
+  [3,2,0]  [3,2,1]  [3,2,2]  [3,2,3]  [3,2,4]  [3,2,5]  [3,3,0]  [3,3,1]
+  [3,3,2]  [3,3,3]  [3,3,4]  [3,3,5]  [3,4,0]  [3,4,1]  [3,4,2]  [3,4,3]
+  [3,4,4]  [3,4,5]  [3,5,0]  [3,5,1]  [3,5,2]  [3,5,3]  [3,5,4]  [3,5,5]
+  [3,6,0]  [3,6,1]  [3,6,2]  [3,6,3]  [3,6,4]  [3,6,5]  [3,7,0]  [3,7,1]
+  [3,7,2]  [3,7,3]  [3,7,4]  [3,7,5]  [4,0,0]  [4,0,1]  [4,0,2]  [4,0,3]
+  [4,0,4]  [4,0,5]  [4,1,0]  [4,1,1]  [4,1,2]  [4,1,3]  [4,1,4]  [4,1,5]
+  [4,2,0]  [4,2,1]  [4,2,4]  [4,2,5]  [4,3,0]  [4,3,1]  [4,3,2]  [4,3,3]
+  [4,3,4]  [4,3,5]  [4,4,0]  [4,4,1]  [4,4,2]  [4,4,3]  [4,4,4]  [4,4,5]
+  [4,5,0]  [4,5,1]  [4,5,4]  [4,5,5]  [4,6,0]  [4,6,1]  [4,6,2]  [4,6,3]
+  [4,6,4]  [4,6,5]  [4,7,0]  [4,7,1]  [4,7,2]  [4,7,3]  [4,7,4]  [4,7,5]
+  [5,0,0]  [5,0,1]  [5,0,2]  [5,0,3]  [5,0,4]  [5,0,5]  [5,1,0]  [5,1,1]
+  [5,1,2]  [5,1,3]  [5,1,4]  [5,1,5]  [5,2,0]  [5,2,1]  [5,2,4]  [5,2,5]
+  [5,3,0]  [5,3,1]  [5,3,2]  [5,3,3]  [5,3,4]  [5,3,5]  [5,4,0]  [5,4,1]
+  [5,4,2]  [5,4,3]  [5,4,4]  [5,4,5]  [5,5,0]  [5,5,1]  [5,5,4]  [5,5,5]
+  [5,6,0]  [5,6,1]  [5,6,2]  [5,6,3]  [5,6,4]  [5,6,5]  [5,7,0]  [5,7,1]
+  [5,7,2]  [5,7,3]  [5,7,4]  [5,7,5]  [6,0,0]  [6,0,1]  [6,0,2]  [6,0,3]
+  [6,0,4]  [6,0,5]  [6,1,0]  [6,1,1]  [6,1,2]  [6,1,3]  [6,1,4]  [6,1,5]
+  [6,2,0]  [6,2,1]  [6,2,2]  [6,2,3]  [6,2,4]  [6,2,5]  [6,3,0]  [6,3,1]
+  [6,3,2]  [6,3,3]  [6,3,4]  [6,3,5]  [6,4,0]  [6,4,1]  [6,4,2]  [6,4,3]
+  [6,4,4]  [6,4,5]  [6,5,0]  [6,5,1]  [6,5,2]  [6,5,3]  [6,5,4]  [6,5,5]
+  [6,6,0]  [6,6,1]  [6,6,2]  [6,6,3]  [6,6,4]  [6,6,5]  [6,7,0]  [6,7,1]
+  [6,7,2]  [6,7,3]  [6,7,4]  [6,7,5]  [7,1,0]  [7,1,1]  [7,1,2]  [7,1,3]
+  [7,1,4]  [7,1,5]  [7,2,0]  [7,2,1]  [7,2,2]  [7,2,3]  [7,2,4]  [7,2,5]
+  [7,3,0]  [7,3,1]  [7,3,4]  [7,3,5]  [7,4,0]  [7,4,1]  [7,4,4]  [7,4,5]
+  [7,5,0]  [7,5,1]  [7,5,2]  [7,5,3]  [7,5,4]  [7,5,5]  [7,6,0]  [7,6,1]
+  [7,6,2]  [7,6,3]  [7,6,4]  [7,6,5]  [8,2,0]  [8,2,1]  [8,2,2]  [8,2,3]
+  [8,2,4]  [8,2,5]  [8,3,0]  [8,3,1]  [8,3,2]  [8,3,3]  [8,3,4]  [8,3,5]
+  [8,4,0]  [8,4,1]  [8,4,2]  [8,4,3]  [8,4,4]  [8,4,5]  [8,5,0]  [8,5,1]
+  [8,5,2]  [8,5,3]  [8,5,4]  [8,5,5]  [9,3,0]  [9,3,1]  [9,3,2]  [9,3,3]
+  [9,3,4]  [9,3,5]  [9,4,0]  [9,4,1]  [9,4,2]  [9,4,3]  [9,4,4]  [9,4,5]
+Bounding box: 10 x 8 x 6
+NOTE: identity transform — add (ox,oy,oz) when calling place_object.py
+[?2004huser@61aa19fdb377:~$ python3 /task/tools/inspect_object.py chocolate
+[?2004l=== chocolate (canonical) ===
+Voxels (24):
+  [0,0,0]  [0,1,0]  [0,2,0]  [0,3,0]  [1,0,0]  [1,1,0]  [1,2,0]  [1,3,0]
+  [2,0,0]  [2,1,0]  [2,2,0]  [2,3,0]  [3,0,0]  [3,1,0]  [3,2,0]  [3,3,0]
+  [4,0,0]  [4,1,0]  [4,2,0]  [4,3,0]  [5,0,0]  [5,1,0]  [5,2,0]  [5,3,0]
+Bounding box: 6 x 4 x 1
+NOTE: identity transform — add (ox,oy,oz) when calling place_object.py
+[?2004huser@61aa19fdb377:~$ python3 /task/tools/inspect_object.py donut1
+[?2004l=== donut1 (canonical) ===
+Voxels (28):
+  [0,0,0]  [0,1,0]  [0,2,0]  [0,3,0]  [1,0,0]  [1,1,0]  [1,2,0]  [1,3,0]
+  [2,0,0]  [2,1,0]  [2,2,0]  [2,3,0]  [3,0,0]  [3,3,0]  [4,0,0]  [4,3,0]
+  [5,0,0]  [5,1,0]  [5,2,0]  [5,3,0]  [6,0,0]  [6,1,0]  [6,2,0]  [6,3,0]
+  [7,0,0]  [7,1,0]  [7,2,0]  [7,3,0]
+Bounding box: 8 x 4 x 1
+NOTE: identity transform — add (ox,oy,oz) when calling place_object.py
+[?2004huser@61aa19fdb377:~$ python3 /task/tools/inspect_object.py donut2
+[?2004l=== donut2 (canonical) ===
+Voxels (20):
+  [0,0,0]  [0,1,0]  [0,2,0]  [0,3,0]  [1,0,0]  [1,1,0]  [1,2,0]  [1,3,0]
+  [2,0,0]  [2,3,0]  [3,0,0]  [3,3,0]  [4,0,0]  [4,1,0]  [4,2,0]  [4,3,0]
+  [5,0,0]  [5,1,0]  [5,2,0]  [5,3,0]
+Bounding box: 6 x 4 x 1
+NOTE: identity transform — add (ox,oy,oz) when calling place_object.py
+[?2004huser@61aa19fdb377:~$ python3 /task/tools/inspect_object.py match_box1
+[?2004l=== match_box1 (canonical) ===
+Voxels (18):
+  [0,0,0]  [0,0,1]  [0,0,2]  [0,1,0]  [0,1,1]  [0,1,2]  [1,0,0]  [1,0,1]
+  [1,0,2]  [1,1,0]  [1,1,1]  [1,1,2]  [2,0,0]  [2,0,1]  [2,0,2]  [2,1,0]
+  [2,1,1]  [2,1,2]
+Bounding box: 3 x 2 x 3
+NOTE: identity transform — add (ox,oy,oz) when calling place_object.py
+[?2004huser@61aa19fdb377:~$ python3 - <<'PY'
+[?2004l[?2004h> import json,itertools
+[?2004l[?2004h> with open('/task/objects.json') as f:
+[?2004l[?2004h>     data=json.load(f)
+[?2004l[?2004h> perms=['xyz','xzy','yxz','yzx','zxy','zyx']
+[?2004l[?2004h> signs=[''.join(s) for s in itertools.product('+-', repeat=3)]
+[?2004l[?2004h> for name,obj in data.items():
+[?2004l[?2004h>     pts=[]
+[?2004l[?2004h>     for arr in obj.values():
+[?2004l[?2004h>         pts.extend(map(tuple,arr))
+[?2004l[?2004h>     seen={}
+[?2004l[?2004h>     for perm in perms:
+[?2004l[?2004h>         for sign in signs:
+[?2004l[?2004h>             out=[]
+[?2004l[?2004h>             for x,y,z in pts:
+[?2004l[?2004h>                 d={'x':x,'y':y,'z':z}
+[?2004l[?2004h>                 q=[d[perm[i]] for i in range(3)]
+[?2004l[?2004h>                 q=[q[i] if sign[i]=='+' else -q[i] for i in range(3)]
+[?2004l[?2004h>                 out.append(tuple(q))
+[?2004l[?2004h>             mins=[min(p[i] for p in out) for i in range(3)]
+[?2004l[?2004h>             out=[(p[0]-mins[0],p[1]-mins[1],p[2]-mins[2]) for p in out]
+[?2004l[?2004h>             dims=tuple(max(p[i] for p in out)+1 for i in range(3))
+[?2004l[?2004h>             seen.setdefault(dims,0)
+[?2004l[?2004h>             seen[dims]+=1
+[?2004l[?2004h>     print(name, 'unique_dims', sorted(seen.items()))
+[?2004l[?2004h> PY
+[?2004lbowl1 unique_dims [((4, 6, 12), 8), ((4, 12, 6), 8), ((6, 4, 12), 8), ((6, 12, 4), 8), ((12, 4, 6), 8), ((12, 6, 4), 8)]
+bowl2 unique_dims [((4, 6, 12), 8), ((4, 12, 6), 8), ((6, 4, 12), 8), ((6, 12, 4), 8), ((12, 4, 6), 8), ((12, 6, 4), 8)]
+bowl3 unique_dims [((4, 6, 12), 8), ((4, 12, 6), 8), ((6, 4, 12), 8), ((6, 12, 4), 8), ((12, 4, 6), 8), ((12, 6, 4), 8)]
+bowl4 unique_dims [((4, 6, 12), 8), ((4, 12, 6), 8), ((6, 4, 12), 8), ((6, 12, 4), 8), ((12, 4, 6), 8), ((12, 6, 4), 8)]
+bowl5 unique_dims [((4, 6, 12), 8), ((4, 12, 6), 8), ((6, 4, 12), 8), ((6, 12, 4), 8), ((12, 4, 6), 8), ((12, 6, 4), 8)]
+chocolate unique_dims [((1, 4, 6), 8), ((1, 6, 4), 8), ((4, 1, 6), 8), ((4, 6, 1), 8), ((6, 1, 4), 8), ((6, 4, 1), 8)]
+donut1 unique_dims [((1, 4, 8), 8), ((1, 8, 4), 8), ((4, 1, 8), 8), ((4, 8, 1), 8), ((8, 1, 4), 8), ((8, 4, 1), 8)]
+donut2 unique_dims [((1, 4, 6), 8), ((1, 6, 4), 8), ((4, 1, 6), 8), ((4, 6, 1), 8), ((6, 1, 4), 8), ((6, 4, 1), 8)]
+ball unique_dims [((6, 8, 10), 8), ((6, 10, 8), 8), ((8, 6, 10), 8), ((8, 10, 6), 8), ((10, 6, 8), 8), ((10, 8, 6), 8)]
+match_box1 unique_dims [((2, 3, 3), 16), ((3, 2, 3), 16), ((3, 3, 2), 16)]
+match_box2 unique_dims [((2, 3, 3), 16), ((3, 2, 3), 16), ((3, 3, 2), 16)]
+match_box3 unique_dims [((2, 3, 3), 16), ((3, 2, 3), 16), ((3, 3, 2), 16)]
+match_box4 unique_dims [((2, 3, 3), 16), ((3, 2, 3), 16), ((3, 3, 2), 16)]
+[?2004huser@61aa19fdb377:~$ python3 - <<'PY'
+[?2004l[?2004h> import json,itertools,math,time
+[?2004lut,(perm,sign,dims))
+    orients[name]=[(v[0],v[1],v[2],list(k)) for k,v in seen.items()]
+    print(name, len(orients[name]), 'unique orientations', sorted(set(o[2] for o in orients[name])))
+
+names=sorted(objs, key=lambda n:(-len(objs[n]), len(orients[n])))
+print('order', names)
+
+# search candidate overall boxes in increasing volume
+vol=sum(len(v) for v in objs.values())
+print('total voxels',vol)
+
+# occupancy and placement search using bottom-left-near candidate points
+best=None
+start=time.time()
+
+def search(box, idx, occ, placements, frontier):
+    global best
+    if time.time()-start>25:
+        return False
+    if idx==len(names):
+        best=placements.copy()
+        return True
+    name=names[idx]
+    opts=orients[name]
+    # try larger objects with fewer candidate placements first
+    tried=[]
+    cand_points=sorted(frontier | {(0,0,0)}, key=lambda p:(p[2],p[1],p[0]))[:120]
+    for perm,sign,dims,pts in sorted(opts, key=lambda t:t[2][2]*10000+t[2][1]*100+t[2][0]):
+        dx,dy,dz=dims
+        for ox,o[?2004h> from collections import defaultdict
+[?2004l[?2004h> 
+[?2004l[?2004h> with open('/task/objects.json') as f:
+[?2004l[?2004h>     data=json.load(f)
+[?2004l[?2004h> objs={}
+[?2004l[?2004h> for name,obj in data.items():
+[?2004l[?2004h>     pts=[]
+[?2004l[?2004h>     for arr in obj.values(): pts.extend(map(tuple,arr))
+[?2004l[?2004h>     objs[name]=sorted(set(pts))
+[?2004l[?2004h> 
+[?2004l[?2004h> perms=['xyz','xzy','yxz','yzx','zxy','zyx']
+[?2004l[?2004h> signs=[''.join(s) for s in itertools.product('+-', repeat=3)]
+[?2004l[?2004h> 
+[?2004l[?2004h> def transf(pts,perm,sign):
+[?2004l[?2004h>     out=[]
+[?2004l[?2004h>     for x,y,z in pts:
+[?2004l[?2004h>         d={'x':x,'y':y,'z':z}
+[?2004l[?2004h>         q=[d[perm[i]] for i in range(3)]
+[?2004l[?2004h>         q=[q[i] if sign[i]=='+' else -q[i] for i in range(3)]
+[?2004l[?2004h>         out.append(tuple(q))
+[?2004l[?2004h>     mins=[min(p[i] for p in out) for i in range(3)]
+[?2004l[?2004h>     out=sorted((p[0]-mins[0],p[1]-mins[1],p[2]-mins[2]) for p in out)
+[?2004l[?2004h>     dims=(max(p[0] for p in out)+1,max(p[1] for p in out)+1,max(p[2] for p in out)+1)
+[?2004l[?2004h>     return tuple(out),dims
+[?2004l[?2004h> 
+[?2004l[?2004h> orients={}
+[?2004l[?2004h> for name,pts in objs.items():
+[?2004l[?2004h>     seen={}
+[?2004l[?2004h>     for perm in perms:
+[?2004l[?2004h>         for sign in signs:
+[?2004l[?2004h>             out,dims=transf(pts,perm,sign)
+[?2004l[?2004h>             seen.setdefault(out,(perm,sign,dims))
+[?2004l[?2004h>     orients[name]=[(v[0],v[1],v[2],list(k)) for k,v in seen.items()]
+[?2004l[?2004h>     print(name, len(orients[name]), 'unique orientations', sorted(set(o[2] for o in orients[name])))
+[?2004l[?2004h> 
+[?2004l[?2004h> names=sorted(objs, key=lambda n:(-len(objs[n]), len(orients[n])))
+[?2004l[?2004h> print('order', names)
+[?2004l[?2004h> 
+[?2004l[?2004h> # search candidate overall boxes in increasing volume
+[?2004l[?2004h> vol=sum(len(v) for v in objs.values())
+[?2004l[?2004h> print('total voxels',vol)
+[?2004l[?2004h> 
+[?2004l[?2004h> # occupancy and placement search using bottom-left-near candidate points
+[?2004l[?2004h> best=None
+[?2004l[?2004h> start=time.time()
+[?2004l[?2004h> 
+[?2004l[?2004h> def search(box, idx, occ, placements, frontier):
+[?2004l[?2004h>     global best
+[?2004l[?2004h>     if time.time()-start>25:
+[?2004l[?2004h>         return False
+[?2004l[?2004h>     if idx==len(names):
+[?2004l[?2004h>         best=placements.copy()
+[?2004l[?2004h>         return True
+[?2004l[?2004h>     name=names[idx]
+[?2004l[?2004h>     opts=orients[name]
+[?2004l[?2004h>     # try larger objects with fewer candidate placements first
+[?2004l[?2004h>     tried=[]
+[?2004l[?2004h>     cand_points=sorted(frontier | {(0,0,0)}, key=lambda p:(p[2],p[1],p[0]))[:120]
+[?2004l[?2004h>     for perm,sign,dims,pts in sorted(opts, key=lambda t:t[2][2]*10000+t[2][1]*100+t[2][0]):
+[?2004l[?2004h>         dx,dy,dz=dims
+[?2004l[?2004h>         for ox,oy,oz in cand_points:
+[?2004l[?2004h>             if ox+dx>box[0] or oy+dy>box[1] or oz+dz>box[2]:
+[?2004l[?2004h>                 continue
+[?2004l[?2004h>             placed=[]
+[?2004l[?2004h>             ok=True
+[?2004l[?2004h>             for x,y,z in pts:
+[?2004l[?2004h>                 q=(x+ox,y+oy,z+oz)
+[?2004l[?2004h>                 if q in occ:
+[?2004l[?2004h>                     ok=False; break
+[?2004l[?2004h>                 placed.append(q)
+[?2004l[?2004h>             if not ok:
+[?2004l[?2004h>                 continue
+[?2004l[?2004h>             for p in placed: occ.add(p)
+[?2004l[?2004h>             nf=set(frontier)
+[?2004l[?2004h>             nf.add((ox+dx,oy,oz)); nf.add((ox,oy+dy,oz)); nf.add((ox,oy,oz+dz))
+[?2004l[?2004h>             placements[name]=(perm,sign,ox,oy,oz)
+[?2004l[?2004h>             if search(box, idx+1, occ, placements, nf):
+[?2004l[?2004h>                 return True
+[?2004l[?2004h>             del placements[name]
+[?2004l[?2004h>             for p in placed: occ.remove(p)
+[?2004l[?2004h>     return False
+[?2004l[?2004h> 
+[?2004l[?2004h> cands=[]
+[?2004l[?2004h> for X in range(10,25):
+[?2004l[?2004h>   for Y in range(8,25):
+[?2004l[?2004h>     for Z in range(6,25):
+[?2004l[?2004h>       if X*Y*Z<vol: continue
+[?2004l[?2004h>       if max(X,Y,Z)<12: continue
+[?2004l[?2004h>       cands.append((X*Y*Z,(X,Y,Z)))
+[?2004l[?2004h> for _,box in sorted(cands)[:400]:
+[?2004l[?2004h>     if time.time()-start>28: break
+[?2004l[?2004h>     print('try box',box,'vol',box[0]*box[1]*box[2])
+[?2004l[?2004h>     if search(box,0,set(),{},set()):
+[?2004l[?2004h>         print('FOUND',box,box[0]*box[1]*box[2])
+[?2004l[?2004h>         for n in names:
+[?2004l[?2004h>             print(n,best[n])
+[?2004l[?2004h>         break
+[?2004l[?2004h> else:
+[?2004l[?2004h>     print('no solution found in time')
+[?2004l[?2004h> PY
+[?2004lbowl1 12 unique orientations [(4, 6, 12), (4, 12, 6), (6, 4, 12), (6, 12, 4), (12, 4, 6), (12, 6, 4)]
+bowl2 12 unique orientations [(4, 6, 12), (4, 12, 6), (6, 4, 12), (6, 12, 4), (12, 4, 6), (12, 6, 4)]
+bowl3 12 unique orientations [(4, 6, 12), (4, 12, 6), (6, 4, 12), (6, 12, 4), (12, 4, 6), (12, 6, 4)]
+bowl4 12 unique orientations [(4, 6, 12), (4, 12, 6), (6, 4, 12), (6, 12, 4), (12, 4, 6), (12, 6, 4)]
+bowl5 12 unique orientations [(4, 6, 12), (4, 12, 6), (6, 4, 12), (6, 12, 4), (12, 4, 6), (12, 6, 4)]
+chocolate 6 unique orientations [(1, 4, 6), (1, 6, 4), (4, 1, 6), (4, 6, 1), (6, 1, 4), (6, 4, 1)]
+donut1 6 unique orientations [(1, 4, 8), (1, 8, 4), (4, 1, 8), (4, 8, 1), (8, 1, 4), (8, 4, 1)]
+donut2 6 unique orientations [(1, 4, 6), (1, 6, 4), (4, 1, 6), (4, 6, 1), (6, 1, 4), (6, 4, 1)]
+ball 6 unique orientations [(6, 8, 10), (6, 10, 8), (8, 6, 10), (8, 10, 6), (10, 6, 8), (10, 8, 6)]
+match_box1 3 unique orientations [(2, 3, 3), (3, 2, 3), (3, 3, 2)]
+match_box2 3 unique orientations [(2, 3, 3), (3, 2, 3), (3, 3, 2)]
+match_box3 3 unique orientations [(2, 3, 3), (3, 2, 3), (3, 3, 2)]
+match_box4 3 unique orientations [(2, 3, 3), (3, 2, 3), (3, 3, 2)]
+order ['ball', 'bowl1', 'bowl2', 'bowl3', 'bowl4', 'bowl5', 'donut1', 'chocolate', 'donut2', 'match_box1', 'match_box2', 'match_box3', 'match_box4']
+total voxels 1004
+try box (12, 12, 7) vol 1008
+try box (12, 14, 6) vol 1008
+try box (14, 8, 9) vol 1008
+try box (14, 9, 8) vol 1008
+try box (14, 12, 6) vol 1008
+try box (16, 9, 7) vol 1008
+try box (18, 8, 7) vol 1008
+try box (21, 8, 6) vol 1008
+try box (13, 13, 6) vol 1014
+try box (10, 17, 6) vol 1020
+try box (17, 10, 6) vol 1020
+try box (16, 8, 8) vol 1024
+try box (19, 9, 6) vol 1026
+try box (10, 8, 13) vol 1040
+try box (10, 13, 8) vol 1040
+try box (13, 8, 10) vol 1040
+try box (13, 10, 8) vol 1040
+try box (10, 15, 7) vol 1050
+try box (15, 10, 7) vol 1050
+try box (13, 9, 9) vol 1053
+try box (11, 8, 12) vol 1056
+try box (11, 12, 8) vol 1056
+try box (11, 16, 6) vol 1056
+try box (12, 8, 11) vol 1056
+try box (12, 11, 8) vol 1056
+try box (16, 11, 6) vol 1056
+try box (22, 8, 6) vol 1056
+try box (19, 8, 7) vol 1064
+try box (17, 9, 7) vol 1071
+try box (11, 14, 7) vol 1078
+try box (14, 11, 7) vol 1078
+try box (10, 9, 12) vol 1080
+try box (10, 12, 9) vol 1080
+try box (10, 18, 6) vol 1080
+try box (12, 9, 10) vol 1080
+try box (12, 10, 9) vol 1080
+try box (12, 15, 6) vol 1080
+try box (15, 8, 9) vol 1080
+try box (15, 9, 8) vol 1080
+try box (15, 12, 6) vol 1080
+try box (18, 10, 6) vol 1080
+try box (20, 9, 6) vol 1080
+try box (17, 8, 8) vol 1088
+try box (12, 13, 7) vol 1092
+try box (13, 12, 7) vol 1092
+try box (13, 14, 6) vol 1092
+try box (14, 13, 6) vol 1092
+try box (23, 8, 6) vol 1104
+try box (10, 8, 14) vol 1120
+try box (10, 14, 8) vol 1120
+try box (10, 16, 7) vol 1120
+try box (14, 8, 10) vol 1120
+try box (14, 10, 8) vol 1120
+try box (16, 10, 7) vol 1120
+try box (20, 8, 7) vol 1120
+try box (11, 17, 6) vol 1122
+try box (17, 11, 6) vol 1122
+try box (14, 9, 9) vol 1134
+try box (18, 9, 7) vol 1134
+try box (21, 9, 6) vol 1134
+try box (10, 19, 6) vol 1140
+try box (19, 10, 6) vol 1140
+try box (11, 8, 13) vol 1144
+try box (11, 13, 8) vol 1144
+try box (13, 8, 11) vol 1144
+try box (13, 11, 8) vol 1144
+try box (12, 8, 12) vol 1152
+try box (12, 12, 8) vol 1152
+try box (12, 16, 6) vol 1152
+try box (16, 8, 9) vol 1152
+try box (16, 9, 8) vol 1152
+try box (16, 12, 6) vol 1152
+try box (18, 8, 8) vol 1152
+try box (24, 8, 6) vol 1152
+try box (11, 15, 7) vol 1155
+try box (15, 11, 7) vol 1155
+try box (10, 9, 13) vol 1170
+try box (10, 13, 9) vol 1170
+try box (13, 9, 10) vol 1170
+try box (13, 10, 9) vol 1170
+try box (13, 15, 6) vol 1170
+try box (15, 13, 6) vol 1170
+try box (12, 14, 7) vol 1176
+try box (14, 12, 7) vol 1176
+try box (14, 14, 6) vol 1176
+try box (21, 8, 7) vol 1176
+try box (13, 13, 7) vol 1183
+try box (11, 9, 12) vol 1188
+try box (11, 12, 9) vol 1188
+try box (11, 18, 6) vol 1188
+try box (12, 9, 11) vol 1188
+try box (12, 11, 9) vol 1188
+try box (18, 11, 6) vol 1188
+try box (22, 9, 6) vol 1188
+try box (10, 17, 7) vol 1190
+try box (17, 10, 7) vol 1190
+try box (19, 9, 7) vol 1197
+try box (10, 8, 15) vol 1200
+try box (10, 10, 12) vol 1200
+try box (10, 12, 10) vol 1200
+try box (10, 15, 8) vol 1200
+try box (10, 20, 6) vol 1200
+try box (12, 10, 10) vol 1200
+try box (15, 8, 10) vol 1200
+try box (15, 10, 8) vol 1200
+try box (20, 10, 6) vol 1200
+try box (15, 9, 9) vol 1215
+try box (19, 8, 8) vol 1216
+try box (12, 17, 6) vol 1224
+try box (17, 8, 9) vol 1224
+try box (17, 9, 8) vol 1224
+try box (17, 12, 6) vol 1224
+try box (11, 8, 14) vol 1232
+try box (11, 14, 8) vol 1232
+try box (11, 16, 7) vol 1232
+try box (14, 8, 11) vol 1232
+try box (14, 11, 8) vol 1232
+try box (16, 11, 7) vol 1232
+try box (22, 8, 7) vol 1232
+try box (23, 9, 6) vol 1242
+try box (12, 8, 13) vol 1248
+try box (12, 13, 8) vol 1248
+try box (13, 8, 12) vol 1248
+try box (13, 12, 8) vol 1248
+try box (13, 16, 6) vol 1248
+try box (16, 13, 6) vol 1248
+try box (11, 19, 6) vol 1254
+try box (19, 11, 6) vol 1254
+try box (10, 9, 14) vol 1260
+try box (10, 14, 9) vol 1260
+try box (10, 18, 7) vol 1260
+try box (10, 21, 6) vol 1260
+try box (12, 15, 7) vol 1260
+try box (14, 9, 10) vol 1260
+try box (14, 10, 9) vol 1260
+try box (14, 15, 6) vol 1260
+try box (15, 12, 7) vol 1260
+try box (15, 14, 6) vol 1260
+try box (18, 10, 7) vol 1260
+try box (20, 9, 7) vol 1260
+try box (21, 10, 6) vol 1260
+try box (13, 14, 7) vol 1274
+try box (14, 13, 7) vol 1274
+try box (10, 8, 16) vol 1280
+try box (10, 16, 8) vol 1280
+try box (16, 8, 10) vol 1280
+try box (16, 10, 8) vol 1280
+try box (20, 8, 8) vol 1280
+try box (11, 9, 13) vol 1287
+try box (11, 13, 9) vol 1287
+try box (13, 9, 11) vol 1287
+try box (13, 11, 9) vol 1287
+try box (23, 8, 7) vol 1288
+try box (12, 9, 12) vol 1296
+try box (12, 12, 9) vol 1296
+try box (12, 18, 6) vol 1296
+try box (16, 9, 9) vol 1296
+try box (18, 8, 9) vol 1296
+try box (18, 9, 8) vol 1296
+try box (18, 12, 6) vol 1296
+try box (24, 9, 6) vol 1296
+try box (10, 10, 13) vol 1300
+try box (10, 13, 10) vol 1300
+try box (13, 10, 10) vol 1300
+try box (11, 17, 7) vol 1309
+try box (17, 11, 7) vol 1309
+try box (10, 11, 12) vol 1320
+try box (10, 12, 11) vol 1320
+try box (10, 22, 6) vol 1320
+try box (11, 8, 15) vol 1320
+try box (11, 10, 12) vol 1320
+try box (11, 12, 10) vol 1320
+try box (11, 15, 8) vol 1320
+try box (11, 20, 6) vol 1320
+try box (12, 10, 11) vol 1320
+try box (12, 11, 10) vol 1320
+try box (15, 8, 11) vol 1320
+try box (15, 11, 8) vol 1320
+try box (20, 11, 6) vol 1320
+try box (22, 10, 6) vol 1320
+try box (21, 9, 7) vol 1323
+try box (13, 17, 6) vol 1326
+try box (17, 13, 6) vol 1326
+try box (10, 19, 7) vol 1330
+try box (19, 10, 7) vol 1330
+try box (12, 8, 14) vol 1344
+try box (12, 14, 8) vol 1344
+try box (12, 16, 7) vol 1344
+try box (14, 8, 12) vol 1344
+try box (14, 12, 8) vol 1344
+try box (14, 16, 6) vol 1344
+try box (16, 12, 7) vol 1344
+try box (16, 14, 6) vol 1344
+try box (21, 8, 8) vol 1344
+try box (24, 8, 7) vol 1344
+try box (10, 9, 15) vol 1350
+try box (10, 15, 9) vol 1350
+try box (15, 9, 10) vol 1350
+try box (15, 10, 9) vol 1350
+try box (15, 15, 6) vol 1350
+try box (13, 8, 13) vol 1352
+try box (13, 13, 8) vol 1352
+try box (10, 8, 17) vol 1360
+try box (10, 17, 8) vol 1360
+try box (17, 8, 10) vol 1360
+try box (17, 10, 8) vol 1360
+try box (13, 15, 7) vol 1365
+try box (15, 13, 7) vol 1365
+try box (12, 19, 6) vol 1368
+try box (19, 8, 9) vol 1368
+try box (19, 9, 8) vol 1368
+try box (19, 12, 6) vol 1368
+try box (14, 14, 7) vol 1372
+try box (17, 9, 9) vol 1377
+try box (10, 23, 6) vol 1380
+try box (23, 10, 6) vol 1380
+try box (11, 9, 14) vol 1386
+try box (11, 14, 9) vol 1386
+try box (11, 18, 7) vol 1386
+try box (11, 21, 6) vol 1386
+try box (14, 9, 11) vol 1386
+try box (14, 11, 9) vol 1386
+try box (18, 11, 7) vol 1386
+try box (21, 11, 6) vol 1386
+try box (22, 9, 7) vol 1386
+try box (10, 10, 14) vol 1400
+try box (10, 14, 10) vol 1400
+try box (10, 20, 7) vol 1400
+try box (14, 10, 10) vol 1400
+try box (20, 10, 7) vol 1400
+try box (12, 9, 13) vol 1404
+try box (12, 13, 9) vol 1404
+try box (13, 9, 12) vol 1404
+try box (13, 12, 9) vol 1404
+try box (13, 18, 6) vol 1404
+try box (18, 13, 6) vol 1404
+try box (11, 8, 16) vol 1408
+try box (11, 16, 8) vol 1408
+try box (16, 8, 11) vol 1408
+try box (16, 11, 8) vol 1408
+try box (22, 8, 8) vol 1408
+try box (12, 17, 7) vol 1428
+try box (14, 17, 6) vol 1428
+try box (17, 12, 7) vol 1428
+try box (17, 14, 6) vol 1428
+try box (10, 11, 13) vol 1430
+try box (10, 13, 11) vol 1430
+try box (11, 10, 13) vol 1430
+try box (11, 13, 10) vol 1430
+try box (13, 10, 11) vol 1430
+try box (13, 11, 10) vol 1430
+try box (10, 8, 18) vol 1440
+try box (10, 9, 16) vol 1440
+try box (10, 12, 12) vol 1440
+try box (10, 16, 9) vol 1440
+try box (10, 18, 8) vol 1440
+try box (10, 24, 6) vol 1440
+try box (12, 8, 15) vol 1440
+try box (12, 10, 12) vol 1440
+try box (12, 12, 10) vol 1440
+try box (12, 15, 8) vol 1440
+try box (12, 20, 6) vol 1440
+try box (15, 8, 12) vol 1440
+try box (15, 12, 8) vol 1440
+try box (15, 16, 6) vol 1440
+try box (16, 9, 10) vol 1440
+try box (16, 10, 9) vol 1440
+try box (16, 15, 6) vol 1440
+try box (18, 8, 10) vol 1440
+try box (18, 10, 8) vol 1440
+try box (20, 8, 9) vol 1440
+try box (20, 9, 8) vol 1440
+try box (20, 12, 6) vol 1440
+try box (24, 10, 6) vol 1440
+try box (23, 9, 7) vol 1449
+try box (11, 11, 12) vol 1452
+try box (11, 12, 11) vol 1452
+try box (11, 22, 6) vol 1452
+try box (12, 11, 11) vol 1452
+try box (22, 11, 6) vol 1452
+try box (13, 8, 14) vol 1456
+try box (13, 14, 8) vol 1456
+try box (13, 16, 7) vol 1456
+try box (14, 8, 13) vol 1456
+try box (14, 13, 8) vol 1456
+try box (16, 13, 7) vol 1456
+try box (18, 9, 9) vol 1458
+try box (11, 19, 7) vol 1463
+try box (19, 11, 7) vol 1463
+try box (10, 21, 7) vol 1470
+try box (14, 15, 7) vol 1470
+try box (15, 14, 7) vol 1470
+try box (21, 10, 7) vol 1470
+try box (23, 8, 8) vol 1472
+try box (13, 19, 6) vol 1482
+try box (19, 13, 6) vol 1482
+try box (11, 9, 15) vol 1485
+try box (11, 15, 9) vol 1485
+try box (15, 9, 11) vol 1485
+try box (15, 11, 9) vol 1485
+try box (11, 8, 17) vol 1496
+try box (11, 17, 8) vol 1496
+try box (17, 8, 11) vol 1496
+try box (17, 11, 8) vol 1496
+try box (10, 10, 15) vol 1500
+try box (10, 15, 10) vol 1500
+try box (15, 10, 10) vol 1500
+try box (12, 9, 14) vol 1512
+try box (12, 14, 9) vol 1512
+try box (12, 18, 7) vol 1512
+try box (12, 21, 6) vol 1512
+try box (14, 9, 12) vol 1512
+try box (14, 12, 9) vol 1512
+try box (14, 18, 6) vol 1512
+try box (18, 12, 7) vol 1512
+try box (18, 14, 6) vol 1512
+try box (21, 8, 9) vol 1512
+try box (21, 9, 8) vol 1512
+try box (21, 12, 6) vol 1512
+try box (24, 9, 7) vol 1512
+try box (11, 23, 6) vol 1518
+try box (23, 11, 6) vol 1518
+try box (10, 8, 19) vol 1520
+try box (10, 19, 8) vol 1520
+try box (19, 8, 10) vol 1520
+try box (19, 10, 8) vol 1520
+try box (13, 9, 13) vol 1521
+try box (13, 13, 9) vol 1521
+try box (10, 9, 17) vol 1530
+try box (10, 17, 9) vol 1530
+try box (15, 17, 6) vol 1530
+try box (17, 9, 10) vol 1530
+try box (17, 10, 9) vol 1530
+try box (17, 15, 6) vol 1530
+try box (12, 8, 16) vol 1536
+try box (12, 16, 8) vol 1536
+try box (16, 8, 12) vol 1536
+try box (16, 12, 8) vol 1536
+try box (16, 16, 6) vol 1536
+try box (24, 8, 8) vol 1536
+try box (19, 9, 9) vol 1539
+try box (10, 11, 14) vol 1540
+try box (10, 14, 11) vol 1540
+try box (10, 22, 7) vol 1540
+try box (11, 10, 14) vol 1540
+try box (11, 14, 10) vol 1540
+try box (11, 20, 7) vol 1540
+try box (14, 10, 11) vol 1540
+try box (14, 11, 10) vol 1540
+try box (20, 11, 7) vol 1540
+try box (22, 10, 7) vol 1540
+try box (13, 17, 7) vol 1547
+try box (17, 13, 7) vol 1547
+try box (10, 12, 13) vol 1560
+try box (10, 13, 12) vol 1560
+try box (12, 10, 13) vol 1560
+try box (12, 13, 10) vol 1560
+try box (13, 8, 15) vol 1560
+try box (13, 10, 12) vol 1560
+try box (13, 12, 10) vol 1560
+try box (13, 15, 8) vol 1560
+try box (13, 20, 6) vol 1560
+try box (15, 8, 13) vol 1560
+try box (15, 13, 8) vol 1560
+try box (20, 13, 6) vol 1560
+try box (14, 8, 14) vol 1568
+try box (14, 14, 8) vol 1568
+try box (14, 16, 7) vol 1568
+try box (16, 14, 7) vol 1568
+try box (11, 11, 13) vol 1573
+try box (11, 13, 11) vol 1573
+try box (13, 11, 11) vol 1573
+try box (15, 15, 7) vol 1575
+try box (11, 8, 18) vol 1584
+try box (11, 9, 16) vol 1584
+try box (11, 12, 12) vol 1584
+try box (11, 16, 9) vol 1584
+try box (11, 18, 8) vol 1584
+try box (11, 24, 6) vol 1584
+try box (12, 11, 12) vol 1584
+try box (12, 12, 11) vol 1584
+try box (12, 22, 6) vol 1584
+try box (16, 9, 11) vol 1584
+try box (16, 11, 9) vol 1584
+try box (18, 8, 11) vol 1584
+try box (18, 11, 8) vol 1584
+try box (22, 8, 9) vol 1584
+try box (22, 9, 8) vol 1584
+try box (22, 12, 6) vol 1584
+try box (24, 11, 6) vol 1584
+try box (12, 19, 7) vol 1596
+try box (14, 19, 6) vol 1596
+try box (19, 12, 7) vol 1596
+try box (19, 14, 6) vol 1596
+try box (10, 8, 20) vol 1600
+try box (10, 10, 16) vol 1600
+try box (10, 16, 10) vol 1600
+try box (10, 20, 8) vol 1600
+try box (16, 10, 10) vol 1600
+try box (20, 8, 10) vol 1600
+no solution found in time
+[?2004huser@61aa19fdb377:~$ python3 - <<'PY'
+[?2004l[?2004h> import json
+[?2004l[?2004h> from collections import defaultdict
+[?2004l[?2004h> with open('/task/objects.json') as f:
+[?2004l[?2004h>     data=json.load(f)
+[?2004l[?2004h> for name in ['bowl1','ball','donut1','donut2','chocolate']:
+[?2004l[?2004h>     pts=[]
+[?2004l[?2004h>     for arr in data[name].values(): pts.extend(map(tuple,arr))
+[?2004l[?2004h>     pts=set(pts)
+[?2004l[?2004h>     xs=sorted(set(x for x,_,_ in pts)); ys=sorted(set(y for _,y,_ in pts)); zs=sorted(set(z for _,_,z in pts))
+[?2004l[?2004h>     print('\nOBJECT',name,'count',len(pts),'bbox',(max(xs)+1,max(ys)+1,max(zs)+1))
+[?2004l[?2004h>     print('x-slices counts:', [sum(1 for p in pts if p[0]==x) for x in xs])
+[?2004l[?2004h>     print('y-slices counts:', [sum(1 for p in pts if p[1]==y) for y in ys])
+[?2004l[?2004h>     print('z-slices counts:', [sum(1 for p in pts if p[2]==z) for z in zs])
+[?2004l[?2004h>     print('xy footprint by y descending (# occupied in z-collapsed slice):')
+[?2004l[?2004h>     for y in reversed(ys):
+[?2004l[?2004h>         row=''
+[?2004l[?2004h>         for x in xs:
+[?2004l[?2004h>             row += '#' if any((x,y,z) in pts for z in zs) else '.'
+[?2004l[?2004h>         print(row)
+[?2004l[?2004h>     if max(zs)==0:
+[?2004l[?2004h>         continue
+[?2004l[?2004h>     print('cross-sections per z:')
+[?2004l[?2004h>     for z in zs:
+[?2004l[?2004h>         print('z=',z)
+[?2004l[?2004h>         for y in reversed(ys):
+[?2004l[?2004h>             row=''
+[?2004l[?2004h>             for x in xs:
+[?2004l[?2004h>                 row += '#' if (x,y,z) in pts else '.'
+[?2004l[?2004h>             print(row)
+[?2004l[?2004h> PY
+[?2004l
+OBJECT bowl1 count 108 bbox (12, 4, 7)
+x-slices counts: [6, 12, 12, 12, 6, 6, 6, 6, 12, 12, 12, 6]
+y-slices counts: [24, 24, 24, 36]
+z-slices counts: [18, 18, 18, 18, 18, 18]
+xy footprint by y descending (# occupied in z-collapsed slice):
+...######...
+..##....##..
+.##......##.
+##........##
+cross-sections per z:
+z= 1
+...######...
+..##....##..
+.##......##.
+##........##
+z= 2
+...######...
+..##....##..
+.##......##.
+##........##
+z= 3
+...######...
+..##....##..
+.##......##.
+##........##
+z= 4
+...######...
+..##....##..
+.##......##.
+##........##
+z= 5
+...######...
+..##....##..
+.##......##.
+##........##
+z= 6
+...######...
+..##....##..
+.##......##.
+##........##
+
+OBJECT ball count 320 bbox (10, 8, 6)
+x-slices counts: [12, 24, 32, 48, 44, 44, 48, 32, 24, 12]
+y-slices counts: [24, 36, 44, 56, 56, 44, 36, 24]
+z-slices counts: [56, 56, 48, 48, 56, 56]
+xy footprint by y descending (# occupied in z-collapsed slice):
+...####...
+..######..
+.########.
+##########
+##########
+.########.
+..######..
+...####...
+cross-sections per z:
+z= 0
+...####...
+..######..
+.########.
+##########
+##########
+.########.
+..######..
+...####...
+z= 1
+...####...
+..######..
+.########.
+##########
+##########
+.########.
+..######..
+...####...
+z= 2
+...####...
+..######..
+.###..###.
+##.####.##
+##.####.##
+.###..###.
+..######..
+...####...
+z= 3
+...####...
+..######..
+.###..###.
+##.####.##
+##.####.##
+.###..###.
+..######..
+...####...
+z= 4
+...####...
+..######..
+.########.
+##########
+##########
+.########.
+..######..
+...####...
+z= 5
+...####...
+..######..
+.########.
+##########
+##########
+.########.
+..######..
+...####...
+
+OBJECT donut1 count 28 bbox (8, 4, 1)
+x-slices counts: [4, 4, 4, 2, 2, 4, 4, 4]
+y-slices counts: [8, 6, 6, 8]
+z-slices counts: [28]
+xy footprint by y descending (# occupied in z-collapsed slice):
+########
+###..###
+###..###
+########
+
+OBJECT donut2 count 20 bbox (6, 4, 1)
+x-slices counts: [4, 4, 2, 2, 4, 4]
+y-slices counts: [6, 4, 4, 6]
+z-slices counts: [20]
+xy footprint by y descending (# occupied in z-collapsed slice):
+######
+##..##
+##..##
+######
+
+OBJECT chocolate count 24 bbox (6, 4, 1)
+x-slices counts: [4, 4, 4, 4, 4, 4]
+y-slices counts: [6, 6, 6, 6]
+z-slices counts: [24]
+xy footprint by y descending (# occupied in z-collapsed slice):
+######
+######
+######
+######
+[?2004huser@61aa19fdb377:~$ python3 - <<'PY'
+[?2004l[?2004h> import json,itertools
+[?2004l[?2004h> with open('/task/objects.json') as f:
+[?2004l[?2004h>     data=json.load(f)
+[?2004l[?2004h> pts=[]
+[?2004l[?2004h> for arr in data['bowl1'].values(): pts.extend(map(tuple,arr))
+[?2004l[?2004h> pts=set(pts)
+[?2004l[?2004h> perms=['xyz','xzy','yxz','yzx','zxy','zyx']
+[?2004l[?2004h> signs=['+++','++-','+-+','+--','-++','-+-','--+','---']
+[?2004l[?2004h> 
+[?2004l[?2004h> def tr(pts,perm,sign):
+[?2004l[?2004h>     out=[]
+[?2004l[?2004h>     for x,y,z in pts:
+[?2004l[?2004h>         d={'x':x,'y':y,'z':z}
+[?2004l[?2004h>         q=[d[perm[i]] for i in range(3)]
+[?2004l[?2004h>         q=[q[i] if sign[i]=='+' else -q[i] for i in range(3)]
+[?2004l[?2004h>         out.append(tuple(q))
+[?2004l[?2004h>     mins=[min(p[i] for p in out) for i in range(3)]
+[?2004l[?2004h>     out={(p[0]-mins[0],p[1]-mins[1],p[2]-mins[2]) for p in out}
+[?2004l[?2004h>     dims=(max(p[0] for p in out)+1,max(p[1] for p in out)+1,max(p[2] for p in out)+1)
+[?2004l[?2004h>     return out,dims
+[?2004l[?2004h> # show one orientation for each dims
+[?2004l[?2004h> shown=set()
+[?2004l[?2004h> for perm in perms:
+[?2004l[?2004h>     for sign in signs:
+[?2004l[?2004h>         out,dims=tr(pts,perm,sign)
+[?2004l[?2004h>         if dims in shown: continue
+[?2004l[?2004h>         shown.add(dims)
+[?2004l[?2004h>         print('\nBOWL orientation',perm,sign,'dims',dims)
+[?2004l[?2004h>         xs=range(dims[0]); ys=range(dims[1]); zs=range(dims[2])
+[?2004l[?2004h>         # print occupancy collapsed along smallest axis if possible
+[?2004l[?2004h>         for z in zs[:min(6,dims[2])]:
+[?2004l[?2004h>             print('slice',z)
+[?2004l[?2004h>             for y in reversed(list(ys)):
+[?2004l[?2004h>                 print(''.join('#' if (x,y,z) in out else '.' for x in xs))
+[?2004l[?2004h>         if len(shown)==6: raise SystemExit
+[?2004l[?2004h> PY
+[?2004l
+BOWL orientation xyz +++ dims (12, 4, 6)
+slice 0
+...######...
+..##....##..
+.##......##.
+##........##
+slice 1
+...######...
+..##....##..
+.##......##.
+##........##
+slice 2
+...######...
+..##....##..
+.##......##.
+##........##
+slice 3
+...######...
+..##....##..
+.##......##.
+##........##
+slice 4
+...######...
+..##....##..
+.##......##.
+##........##
+slice 5
+...######...
+..##....##..
+.##......##.
+##........##
+
+BOWL orientation xzy +++ dims (12, 6, 4)
+slice 0
+##........##
+##........##
+##........##
+##........##
+##........##
+##........##
+slice 1
+.##......##.
+.##......##.
+.##......##.
+.##......##.
+.##......##.
+.##......##.
+slice 2
+..##....##..
+..##....##..
+..##....##..
+..##....##..
+..##....##..
+..##....##..
+slice 3
+...######...
+...######...
+...######...
+...######...
+...######...
+...######...
+
+BOWL orientation yxz +++ dims (4, 12, 6)
+slice 0
+#...
+##..
+.##.
+..##
+...#
+...#
+...#
+...#
+..##
+.##.
+##..
+#...
+slice 1
+#...
+##..
+.##.
+..##
+...#
+...#
+...#
+...#
+..##
+.##.
+##..
+#...
+slice 2
+#...
+##..
+.##.
+..##
+...#
+...#
+...#
+...#
+..##
+.##.
+##..
+#...
+slice 3
+#...
+##..
+.##.
+..##
+...#
+...#
+...#
+...#
+..##
+.##.
+##..
+#...
+slice 4
+#...
+##..
+.##.
+..##
+...#
+...#
+...#
+...#
+..##
+.##.
+##..
+#...
+slice 5
+#...
+##..
+.##.
+..##
+...#
+...#
+...#
+...#
+..##
+.##.
+##..
+#...
+
+BOWL orientation yzx +++ dims (4, 6, 12)
+slice 0
+#...
+#...
+#...
+#...
+#...
+#...
+slice 1
+##..
+##..
+##..
+##..
+##..
+##..
+slice 2
+.##.
+.##.
+.##.
+.##.
+.##.
+.##.
+slice 3
+..##
+..##
+..##
+..##
+..##
+..##
+slice 4
+...#
+...#
+...#
+...#
+...#
+...#
+slice 5
+...#
+...#
+...#
+...#
+...#
+...#
+
+BOWL orientation zxy +++ dims (6, 12, 4)
+slice 0
+######
+######
+......
+......
+......
+......
+......
+......
+......
+......
+######
+######
+slice 1
+......
+######
+######
+......
+......
+......
+......
+......
+......
+######
+######
+......
+slice 2
+......
+......
+######
+######
+......
+......
+......
+......
+######
+######
+......
+......
+slice 3
+......
+......
+......
+######
+######
+######
+######
+######
+######
+......
+......
+......
+
+BOWL orientation zyx +++ dims (6, 4, 12)
+slice 0
+......
+......
+......
+######
+slice 1
+......
+......
+######
+######
+slice 2
+......
+######
+######
+......
+slice 3
+######
+######
+......
+......
+slice 4
+######
+......
+......
+......
+slice 5
+######
+......
+......
+......
+[?2004huser@61aa19fdb377:~$ python3 - <<'PY'
+[?2004l[?2004h> import json,itertools,time
+[?2004l[?2004h> with open('/task/objects.json') as f:
+[?2004l[?2004h>     data=json.load(f)
+[?2004l[?2004h> pts=[]
+[?2004l[?2004h> for arr in data['bowl1'].values(): pts.extend(map(tuple,arr))
+[?2004l[?2004h> pts=set(pts)
+[?2004l[?2004h> perms=['xyz','xzy','yxz','yzx','zxy','zyx']
+[?2004l[?2004h> signs=['+++','++-','+-+','+--','-++','-+-','--+','---']
+[?2004l[?2004h> 
+[?2004l[?2004h> def tr(pts,perm,sign):
+[?2004l[?2004h>     out=[]
+[?2004l[?2004h>     for x,y,z in pts:
+[?2004l[?2004h>         d={'x':x,'y':y,'z':z}
+[?2004l[?2004h>         q=[d[perm[i]] for i in range(3)]
+[?2004l[?2004h>         q=[q[i] if sign[i]=='+' else -q[i] for i in range(3)]
+[?2004l[?2004h>         out.append(tuple(q))
+[?2004l[?2004h>     mins=[min(p[i] for p in out) for i in range(3)]
+[?2004l[?2004h>     out={(p[0]-mins[0],p[1]-mins[1],p[2]-mins[2]) for p in out}
+[?2004l[?2004h>     dims=(max(p[0] for p in out)+1,max(p[1] for p in out)+1,max(p[2] for p in out)+1)
+[?2004l[?2004h>     return out,dims
+[?2004l[?2004h> ori=[]; seen={}
+[?2004l[?2004h> for perm in perms:
+[?2004l[?2004h>     for sign in signs:
+[?2004l[?2004h>         out,dims=tr(pts,perm,sign)
+[?2004l[?2004h>         if out not in seen:
+[?2004l[?2004h>             seen[out]=(perm,sign,dims)
+[?2004l[?2004h>             ori.append((perm,sign,dims,out))
+[?2004l[?2004h> print('orientations',len(ori))
+[?2004l[?2004h> 
+[?2004l[?2004h> best=None
+[?2004l[?2004h> start=time.time()
+[?2004l[?2004h> N=5
+[?2004l[?2004h> 
+[?2004l[?2004h> def search(box, idx, occ, placements, frontier):
+[?2004l[?2004h>     if time.time()-start>25: return False
+[?2004l[?2004h>     if idx==N: return True
+[?2004l[?2004h>     cand=sorted(frontier|{(0,0,0)}, key=lambda p:(p[2],p[1],p[0]))[:80]
+[?2004l[?2004h>     for perm,sign,dims,out in sorted(ori, key=lambda t:(t[2][2],t[2][1],t[2][0])):
+[?2004l[?2004h>         dx,dy,dz=dims
+[?2004l[?2004h>         for ox,oy,oz in cand:
+[?2004l[?2004h>             if ox+dx>box[0] or oy+dy>box[1] or oz+dz>box[2]: continue
+[?2004l[?2004h>             placed=[]; ok=True
+[?2004l[?2004h>             for p in out:
+[?2004l[?2004h>                 q=(p[0]+ox,p[1]+oy,p[2]+oz)
+[?2004l[?2004h>                 if q in occ: ok=False; break
+[?2004l[?2004h>                 placed.append(q)
+[?2004l[?2004h>             if not ok: continue
+[?2004l[?2004h>             for q in placed: occ.add(q)
+[?2004l[?2004h>             placements.append((perm,sign,ox,oy,oz,dims))
+[?2004l[?2004h>             nf=set(frontier)
+[?2004l[?2004h>             nf.update([(ox+dx,oy,oz),(ox,oy+dy,oz),(ox,oy,oz+dz)])
+[?2004l[?2004h>             if search(box, idx+1, occ, placements, nf): return True
+[?2004l[?2004h>             placements.pop()
+[?2004l[?2004h>             for q in placed: occ.remove(q)
+[?2004l[?2004h>     return False
+[?2004l[?2004h> 
+[?2004l[?2004h> vol=108*N
+[?2004l[?2004h> cands=[]
+[?2004l[?2004h> for X in range(4,25):
+[?2004l[?2004h>   for Y in range(4,25):
+[?2004l[?2004h>     for Z in range(4,25):
+[?2004l[?2004h>       if X*Y*Z<vol: continue
+[?2004l[?2004h>       cands.append((X*Y*Z,(X,Y,Z)))
+[?2004l[?2004h> for v,box in sorted(cands)[:250]:
+[?2004l[?2004h>     print('try',box,'vol',v)
+[?2004l[?2004h>     occ=set(); placements=[]
+[?2004l[?2004h>     if search(box,0,occ,placements,set()):
+[?2004l[?2004h>         print('FOUND',box,v)
+[?2004l[?2004h>         for i,p in enumerate(placements,1): print('bowl',i,p)
+[?2004l[?2004h>         break
+[?2004l[?2004h> else:
+[?2004l[?2004h>     print('none found in time')
+[?2004l[?2004h> PY
+[?2004lTraceback (most recent call last):
+  File "<stdin>", line 25, in <module>
+TypeError: unhashable type: 'set'
+[?2004huser@61aa19fdb377:~$ python3 - <<'PY'
+[?2004l[?2004h> import json,itertools,time
+[?2004l[?2004h> with open('/task/objects.json') as f:
+[?2004l[?2004h>     data=json.load(f)
+[?2004l[?2004h> pts=[]
+[?2004l[?2004h> for arr in data['bowl1'].values(): pts.extend(map(tuple,arr))
+[?2004l[?2004h> pts=set(pts)
+[?2004l[?2004h> perms=['xyz','xzy','yxz','yzx','zxy','zyx']
+[?2004l[?2004h> signs=['+++','++-','+-+','+--','-++','-+-','--+','---']
+[?2004l[?2004h> 
+[?2004l[?2004h> def tr(pts,perm,sign):
+[?2004l[?2004h>     out=[]
+[?2004l[?2004h>     for x,y,z in pts:
+[?2004l[?2004h>         d={'x':x,'y':y,'z':z}
+[?2004l[?2004h>         q=[d[perm[i]] for i in range(3)]
+[?2004l[?2004h>         q=[q[i] if sign[i]=='+' else -q[i] for i in range(3)]
+[?2004l[?2004h>         out.append(tuple(q))
+[?2004l[?2004h>     mins=[min(p[i] for p in out) for i in range(3)]
+[?2004l[?2004h>     out={(p[0]-mins[0],p[1]-mins[1],p[2]-mins[2]) for p in out}
+[?2004l[?2004h>     dims=(max(p[0] for p in out)+1,max(p[1] for p in out)+1,max(p[2] for p in out)+1)
+[?2004l[?2004h>     return out,dims
+[?2004l[?2004h> 
+[?2004l[?2004h> ori=[]; seen={}
+[?2004l[?2004h> for perm in perms:
+[?2004l[?2004h>     for sign in signs:
+[?2004l[?2004h>         out,dims=tr(pts,perm,sign)
+[?2004l[?2004h>         key=frozenset(out)
+[?2004l[?2004h>         if key not in seen:
+[?2004l[?2004h>             seen[key]=(perm,sign,dims)
+[?2004l[?2004h>             ori.append((perm,sign,dims,out))
+[?2004l[?2004h> print('orientations',len(ori))
+[?2004l[?2004h> 
+[?2004l[?2004h> start=time.time()
+[?2004l[?2004h> N=5
+[?2004l[?2004h> 
+[?2004l[?2004h> def search(box, idx, occ, placements, frontier):
+[?2004l[?2004h>     if time.time()-start>25: return False
+[?2004l[?2004h>     if idx==N: return True
+[?2004l[?2004h>     cand=sorted(frontier|{(0,0,0)}, key=lambda p:(p[2],p[1],p[0]))[:80]
+[?2004l[?2004h>     for perm,sign,dims,out in sorted(ori, key=lambda t:(t[2][2],t[2][1],t[2][0])):
+[?2004l[?2004h>         dx,dy,dz=dims
+[?2004l[?2004h>         for ox,oy,oz in cand:
+[?2004l[?2004h>             if ox+dx>box[0] or oy+dy>box[1] or oz+dz>box[2]: continue
+[?2004l[?2004h>             placed=[]; ok=True
+[?2004l[?2004h>             for p in out:
+[?2004l[?2004h>                 q=(p[0]+ox,p[1]+oy,p[2]+oz)
+[?2004l[?2004h>                 if q in occ: ok=False; break
+[?2004l[?2004h>                 placed.append(q)
+[?2004l[?2004h>             if not ok: continue
+[?2004l[?2004h>             for q in placed: occ.add(q)
+[?2004l[?2004h>             placements.append((perm,sign,ox,oy,oz,dims))
+[?2004l[?2004h>             nf=set(frontier)
+[?2004l[?2004h>             nf.update([(ox+dx,oy,oz),(ox,oy+dy,oz),(ox,oy,oz+dz)])
+[?2004l[?2004h>             if search(box, idx+1, occ, placements, nf): return True
+[?2004l[?2004h>             placements.pop()
+[?2004l[?2004h>             for q in placed: occ.remove(q)
+[?2004l[?2004h>     return False
+[?2004l[?2004h> 
+[?2004l[?2004h> vol=108*N
+[?2004l[?2004h> cands=[]
+[?2004l[?2004h> for X in range(4,25):
+[?2004l[?2004h>   for Y in range(4,25):
+[?2004l[?2004h>     for Z in range(4,25):
+[?2004l[?2004h>       if X*Y*Z<vol: continue
+[?2004l[?2004h>       cands.append((X*Y*Z,(X,Y,Z)))
+[?2004l[?2004h> for v,box in sorted(cands)[:250]:
+[?2004l[?2004h>     print('try',box,'vol',v)
+[?2004l[?2004h>     occ=set(); placements=[]
+[?2004l[?2004h>     if search(box,0,occ,placements,set()):
+[?2004l[?2004h>         print('FOUND',box,v)
+[?2004l[?2004h>         for i,p in enumerate(placements,1): print('bowl',i,p)
+[?2004l[?2004h>         break
+[?2004l[?2004h> else:
+[?2004l[?2004h>     print('none found in time')
+[?2004l[?2004h> PY
+[?2004lorientations 12
+try (4, 9, 15) vol 540
+try (4, 15, 9) vol 540
+try (5, 6, 18) vol 540
+try (5, 9, 12) vol 540
+try (5, 12, 9) vol 540
+try (5, 18, 6) vol 540
+try (6, 5, 18) vol 540
+try (6, 6, 15) vol 540
+try (6, 9, 10) vol 540
+try (6, 10, 9) vol 540
+try (6, 15, 6) vol 540
+try (6, 18, 5) vol 540
+try (9, 4, 15) vol 540
+try (9, 5, 12) vol 540
+try (9, 6, 10) vol 540
+try (9, 10, 6) vol 540
+try (9, 12, 5) vol 540
+try (9, 15, 4) vol 540
+try (10, 6, 9) vol 540
+try (10, 9, 6) vol 540
+try (12, 5, 9) vol 540
+try (12, 9, 5) vol 540
+try (15, 4, 9) vol 540
+try (15, 6, 6) vol 540
+try (15, 9, 4) vol 540
+try (18, 5, 6) vol 540
+try (18, 6, 5) vol 540
+try (4, 8, 17) vol 544
+try (4, 17, 8) vol 544
+try (8, 4, 17) vol 544
+try (8, 17, 4) vol 544
+try (17, 4, 8) vol 544
+try (17, 8, 4) vol 544
+try (6, 7, 13) vol 546
+try (6, 13, 7) vol 546
+try (7, 6, 13) vol 546
+try (7, 13, 6) vol 546
+try (13, 6, 7) vol 546
+try (13, 7, 6) vol 546
+try (5, 5, 22) vol 550
+try (5, 10, 11) vol 550
+try (5, 11, 10) vol 550
+try (5, 22, 5) vol 550
+try (10, 5, 11) vol 550
+try (10, 11, 5) vol 550
+try (11, 5, 10) vol 550
+try (11, 10, 5) vol 550
+try (22, 5, 5) vol 550
+try (4, 6, 23) vol 552
+try (4, 23, 6) vol 552
+try (6, 4, 23) vol 552
+try (6, 23, 4) vol 552
+try (23, 4, 6) vol 552
+try (23, 6, 4) vol 552
+try (4, 7, 20) vol 560
+try (4, 10, 14) vol 560
+try (4, 14, 10) vol 560
+try (4, 20, 7) vol 560
+try (5, 7, 16) vol 560
+try (5, 8, 14) vol 560
+try (5, 14, 8) vol 560
+try (5, 16, 7) vol 560
+try (7, 4, 20) vol 560
+try (7, 5, 16) vol 560
+try (7, 8, 10) vol 560
+try (7, 10, 8) vol 560
+try (7, 16, 5) vol 560
+try (7, 20, 4) vol 560
+try (8, 5, 14) vol 560
+try (8, 7, 10) vol 560
+try (8, 10, 7) vol 560
+try (8, 14, 5) vol 560
+try (10, 4, 14) vol 560
+try (10, 7, 8) vol 560
+try (10, 8, 7) vol 560
+try (10, 14, 4) vol 560
+try (14, 4, 10) vol 560
+try (14, 5, 8) vol 560
+try (14, 8, 5) vol 560
+try (14, 10, 4) vol 560
+try (16, 5, 7) vol 560
+try (16, 7, 5) vol 560
+try (20, 4, 7) vol 560
+try (20, 7, 4) vol 560
+try (7, 9, 9) vol 567
+try (9, 7, 9) vol 567
+try (9, 9, 7) vol 567
+try (5, 6, 19) vol 570
+try (5, 19, 6) vol 570
+try (6, 5, 19) vol 570
+try (6, 19, 5) vol 570
+try (19, 5, 6) vol 570
+try (19, 6, 5) vol 570
+try (4, 11, 13) vol 572
+try (4, 13, 11) vol 572
+try (11, 4, 13) vol 572
+try (11, 13, 4) vol 572
+try (13, 4, 11) vol 572
+try (13, 11, 4) vol 572
+try (5, 5, 23) vol 575
+try (5, 23, 5) vol 575
+try (23, 5, 5) vol 575
+try (4, 6, 24) vol 576
+try (4, 8, 18) vol 576
+try (4, 9, 16) vol 576
+try (4, 12, 12) vol 576
+try (4, 16, 9) vol 576
+try (4, 18, 8) vol 576
+try (4, 24, 6) vol 576
+try (6, 4, 24) vol 576
+try (6, 6, 16) vol 576
+try (6, 8, 12) vol 576
+try (6, 12, 8) vol 576
+try (6, 16, 6) vol 576
+try (6, 24, 4) vol 576
+try (8, 4, 18) vol 576
+try (8, 6, 12) vol 576
+try (8, 8, 9) vol 576
+try (8, 9, 8) vol 576
+try (8, 12, 6) vol 576
+try (8, 18, 4) vol 576
+try (9, 4, 16) vol 576
+try (9, 8, 8) vol 576
+try (9, 16, 4) vol 576
+try (12, 4, 12) vol 576
+try (12, 6, 8) vol 576
+try (12, 8, 6) vol 576
+try (12, 12, 4) vol 576
+try (16, 4, 9) vol 576
+try (16, 6, 6) vol 576
+try (16, 9, 4) vol 576
+try (18, 4, 8) vol 576
+try (18, 8, 4) vol 576
+try (24, 4, 6) vol 576
+try (24, 6, 4) vol 576
+try (5, 9, 13) vol 585
+try (5, 13, 9) vol 585
+try (9, 5, 13) vol 585
+try (9, 13, 5) vol 585
+try (13, 5, 9) vol 585
+try (13, 9, 5) vol 585
+try (4, 7, 21) vol 588
+try (4, 21, 7) vol 588
+try (6, 7, 14) vol 588
+try (6, 14, 7) vol 588
+try (7, 4, 21) vol 588
+try (7, 6, 14) vol 588
+try (7, 7, 12) vol 588
+try (7, 12, 7) vol 588
+try (7, 14, 6) vol 588
+try (7, 21, 4) vol 588
+try (12, 7, 7) vol 588
+try (14, 6, 7) vol 588
+try (14, 7, 6) vol 588
+try (21, 4, 7) vol 588
+try (21, 7, 4) vol 588
+try (6, 9, 11) vol 594
+try (6, 11, 9) vol 594
+try (9, 6, 11) vol 594
+try (9, 11, 6) vol 594
+try (11, 6, 9) vol 594
+try (11, 9, 6) vol 594
+try (5, 7, 17) vol 595
+try (5, 17, 7) vol 595
+try (7, 5, 17) vol 595
+try (7, 17, 5) vol 595
+try (17, 5, 7) vol 595
+try (17, 7, 5) vol 595
+try (4, 10, 15) vol 600
+try (4, 15, 10) vol 600
+try (5, 5, 24) vol 600
+try (5, 6, 20) vol 600
+try (5, 8, 15) vol 600
+try (5, 10, 12) vol 600
+try (5, 12, 10) vol 600
+try (5, 15, 8) vol 600
+try (5, 20, 6) vol 600
+try (5, 24, 5) vol 600
+try (6, 5, 20) vol 600
+try (6, 10, 10) vol 600
+try (6, 20, 5) vol 600
+try (8, 5, 15) vol 600
+try (8, 15, 5) vol 600
+try (10, 4, 15) vol 600
+try (10, 5, 12) vol 600
+try (10, 6, 10) vol 600
+try (10, 10, 6) vol 600
+try (10, 12, 5) vol 600
+try (10, 15, 4) vol 600
+try (12, 5, 10) vol 600
+try (12, 10, 5) vol 600
+try (15, 4, 10) vol 600
+try (15, 5, 8) vol 600
+try (15, 8, 5) vol 600
+try (15, 10, 4) vol 600
+try (20, 5, 6) vol 600
+try (20, 6, 5) vol 600
+try (24, 5, 5) vol 600
+try (5, 11, 11) vol 605
+try (11, 5, 11) vol 605
+try (11, 11, 5) vol 605
+try (4, 8, 19) vol 608
+try (4, 19, 8) vol 608
+try (8, 4, 19) vol 608
+try (8, 19, 4) vol 608
+try (19, 4, 8) vol 608
+try (19, 8, 4) vol 608
+try (4, 9, 17) vol 612
+try (4, 17, 9) vol 612
+try (6, 6, 17) vol 612
+try (6, 17, 6) vol 612
+try (9, 4, 17) vol 612
+try (9, 17, 4) vol 612
+try (17, 4, 9) vol 612
+try (17, 6, 6) vol 612
+try (17, 9, 4) vol 612
+try (4, 7, 22) vol 616
+try (4, 11, 14) vol 616
+try (4, 14, 11) vol 616
+try (4, 22, 7) vol 616
+try (7, 4, 22) vol 616
+try (7, 8, 11) vol 616
+try (7, 11, 8) vol 616
+try (7, 22, 4) vol 616
+try (8, 7, 11) vol 616
+try (8, 11, 7) vol 616
+try (11, 4, 14) vol 616
+try (11, 7, 8) vol 616
+try (11, 8, 7) vol 616
+try (11, 14, 4) vol 616
+try (14, 4, 11) vol 616
+try (14, 11, 4) vol 616
+try (22, 4, 7) vol 616
+try (22, 7, 4) vol 616
+try (4, 12, 13) vol 624
+try (4, 13, 12) vol 624
+try (6, 8, 13) vol 624
+try (6, 13, 8) vol 624
+try (8, 6, 13) vol 624
+try (8, 13, 6) vol 624
+try (12, 4, 13) vol 624
+try (12, 13, 4) vol 624
+try (13, 4, 12) vol 624
+try (13, 6, 8) vol 624
+try (13, 8, 6) vol 624
+try (13, 12, 4) vol 624
+try (5, 6, 21) vol 630
+try (5, 7, 18) vol 630
+try (5, 9, 14) vol 630
+try (5, 14, 9) vol 630
+none found in time
+[?2004huser@61aa19fdb377:~$ python3 - <<'PY'
+[?2004l[?2004h> mods=['z3','ortools','pulp','python-constraint']
+[?2004l[?2004h> for m in mods:
+[?2004l[?2004h>     try:
+[?2004l[?2004h>         __import__(m)
+[?2004l[?2004h>         print(m,'YES')
+[?2004l[?2004h>     except Exception as e:
+[?2004l[?2004h>         print(m,'NO')
+[?2004l[?2004h> PY
+[?2004lz3 NO
+ortools NO
+pulp NO
+python-constraint NO
+[?2004huser@61aa19fdb377:~$ python3 - <<'PY'
+[?2004l[?2004h> import json,itertools
+[?2004l[?2004h> with open('/task/objects.json') as f:
+[?2004l[?2004h>     data=json.load(f)
+[?2004l[?2004h> objs={}
+[?2004l[?2004h> for name,obj in data.items():
+[?2004l[?2004h>     pts=[]
+[?2004l[?2004h>     for arr in obj.values(): pts.extend(map(tuple,arr))
+[?2004l[?2004h>     objs[name]=sorted(set(pts))
+[?2004l[?2004h> perms=['xyz','xzy','yxz','yzx','zxy','zyx']
+[?2004l[?2004h> signs=[''.join(s) for s in itertools.product('+-', repeat=3)]
+[?2004l[?2004h> 
+[?2004l[?2004h> def transf(pts,perm,sign):
+[?2004l[?2004h>     out=[]
+[?2004l[?2004h>     for x,y,z in pts:
+[?2004l[?2004h>         d={'x':x,'y':y,'z':z}
+[?2004l[?2004h>         q=[d[perm[i]] for i in range(3)]
+[?2004l[?2004h>         q=[q[i] if sign[i]=='+' else -q[i] for i in range(3)]
+[?2004l[?2004h>         out.append(tuple(q))
+[?2004l[?2004h>     mins=[min(p[i] for p in out) for i in range(3)]
+[?2004l[?2004h>     out=tuple(sorted((p[0]-mins[0],p[1]-mins[1],p[2]-mins[2]) for p in out))
+[?2004l[?2004h>     dims=(max(p[0] for p in out)+1,max(p[1] for p in out)+1,max(p[2] for p in out)+1)
+[?2004l[?2004h>     return out,dims
+[?2004l[?2004h> orients={}
+[?2004l[?2004h> for name,pts in objs.items():
+[?2004l[?2004h>     seen={}
+[?2004l[?2004h>     for perm in perms:
+[?2004l[?2004h>         for sign in signs:
+[?2004l[?2004h>             out,dims=transf(pts,perm,sign)
+[?2004l[?2004h>             seen.setdefault(out,(perm,sign,dims))
+[?2004l[?2004h>     orients[name]=[(v[0],v[1],v[2]) for k,v in seen.items()]
+[?2004l[?2004h> boxes=[(12,12,10),(15,12,8),(16,10,9),(18,10,8),(20,9,8),(20,12,6),(24,10,6),(16,12,8),(18,12,7)]
+[?2004l[?2004h> for box in boxes:
+[?2004l[?2004h>     print('\nBOX',box,'vol',box[0]*box[1]*box[2])
+[?2004l[?2004h>     total=0
+[?2004l[?2004h>     for name in sorted(objs,key=lambda n:-len(objs[n])):
+[?2004l[?2004h>         c=0
+[?2004l[?2004h>         bydims={}
+[?2004l[?2004h>         for perm,sign,dims in orients[name]:
+[?2004l[?2004h>             n=max(0,box[0]-dims[0]+1)*max(0,box[1]-dims[1]+1)*max(0,box[2]-dims[2]+1)
+[?2004l[?2004h>             if n:
+[?2004l[?2004h>                 bydims[dims]=bydims.get(dims,0)+n
+[?2004l[?2004h>                 c+=n
+[?2004l[?2004h>         total+=c
+[?2004l[?2004h>         print(f'{name:10s} placements={c:6d} dims={sorted(bydims.items())}')
+[?2004l[?2004h>     print('total placements',total)
+[?2004l[?2004h> PY
+[?2004l
+BOX (12, 12, 10) vol 1440
+ball       placements=   346 dims=[((6, 8, 10), 35), ((6, 10, 8), 63), ((8, 6, 10), 35), ((8, 10, 6), 75), ((10, 6, 8), 63), ((10, 8, 6), 75)]
+bowl1      placements=   376 dims=[((4, 12, 6), 90), ((6, 12, 4), 98), ((12, 4, 6), 90), ((12, 6, 4), 98)]
+bowl2      placements=   376 dims=[((4, 12, 6), 90), ((6, 12, 4), 98), ((12, 4, 6), 90), ((12, 6, 4), 98)]
+bowl3      placements=   376 dims=[((4, 12, 6), 90), ((6, 12, 4), 98), ((12, 4, 6), 90), ((12, 6, 4), 98)]
+bowl4      placements=   376 dims=[((4, 12, 6), 90), ((6, 12, 4), 98), ((12, 4, 6), 90), ((12, 6, 4), 98)]
+bowl5      placements=   376 dims=[((4, 12, 6), 90), ((6, 12, 4), 98), ((12, 4, 6), 90), ((12, 6, 4), 98)]
+donut1     placements=  2388 dims=[((1, 4, 8), 324), ((1, 8, 4), 420), ((4, 1, 8), 324), ((4, 8, 1), 450), ((8, 1, 4), 420), ((8, 4, 1), 450)]
+chocolate  placements=  3516 dims=[((1, 4, 6), 540), ((1, 6, 4), 588), ((4, 1, 6), 540), ((4, 6, 1), 630), ((6, 1, 4), 588), ((6, 4, 1), 630)]
+donut2     placements=  3516 dims=[((1, 4, 6), 540), ((1, 6, 4), 588), ((4, 1, 6), 540), ((4, 6, 1), 630), ((6, 1, 4), 588), ((6, 4, 1), 630)]
+match_box1 placements=  2660 dims=[((2, 3, 3), 880), ((3, 2, 3), 880), ((3, 3, 2), 900)]
+match_box2 placements=  2660 dims=[((2, 3, 3), 880), ((3, 2, 3), 880), ((3, 3, 2), 900)]
+match_box3 placements=  2660 dims=[((2, 3, 3), 880), ((3, 2, 3), 880), ((3, 3, 2), 900)]
+match_box4 placements=  2660 dims=[((2, 3, 3), 880), ((3, 2, 3), 880), ((3, 3, 2), 900)]
+total placements 22286
+
+BOX (15, 12, 8) vol 1440
+ball       placements=   234 dims=[((6, 10, 8), 30), ((8, 10, 6), 72), ((10, 6, 8), 42), ((10, 8, 6), 90)]
+bowl1      placements=   668 dims=[((4, 12, 6), 72), ((6, 12, 4), 100), ((12, 4, 6), 216), ((12, 6, 4), 280)]
+bowl2      placements=   668 dims=[((4, 12, 6), 72), ((6, 12, 4), 100), ((12, 4, 6), 216), ((12, 6, 4), 280)]
+bowl3      placements=   668 dims=[((4, 12, 6), 72), ((6, 12, 4), 100), ((12, 4, 6), 216), ((12, 6, 4), 280)]
+bowl4      placements=   668 dims=[((4, 12, 6), 72), ((6, 12, 4), 100), ((12, 4, 6), 216), ((12, 6, 4), 280)]
+bowl5      placements=   668 dims=[((4, 12, 6), 72), ((6, 12, 4), 100), ((12, 4, 6), 216), ((12, 6, 4), 280)]
+donut1     placements=  2190 dims=[((1, 4, 8), 135), ((1, 8, 4), 375), ((4, 1, 8), 144), ((4, 8, 1), 480), ((8, 1, 4), 480), ((8, 4, 1), 576)]
+chocolate  placements=  3354 dims=[((1, 4, 6), 405), ((1, 6, 4), 525), ((4, 1, 6), 432), ((4, 6, 1), 672), ((6, 1, 4), 600), ((6, 4, 1), 720)]
+donut2     placements=  3354 dims=[((1, 4, 6), 405), ((1, 6, 4), 525), ((4, 1, 6), 432), ((4, 6, 1), 672), ((6, 1, 4), 600), ((6, 4, 1), 720)]
+match_box1 placements=  2608 dims=[((2, 3, 3), 840), ((3, 2, 3), 858), ((3, 3, 2), 910)]
+match_box2 placements=  2608 dims=[((2, 3, 3), 840), ((3, 2, 3), 858), ((3, 3, 2), 910)]
+match_box3 placements=  2608 dims=[((2, 3, 3), 840), ((3, 2, 3), 858), ((3, 3, 2), 910)]
+match_box4 placements=  2608 dims=[((2, 3, 3), 840), ((3, 2, 3), 858), ((3, 3, 2), 910)]
+total placements 22904
+
+BOX (16, 10, 9) vol 1440
+ball       placements=   212 dims=[((6, 10, 8), 22), ((8, 10, 6), 36), ((10, 6, 8), 70), ((10, 8, 6), 84)]
+bowl1      placements=   580 dims=[((12, 4, 6), 280), ((12, 6, 4), 300)]
+bowl2      placements=   580 dims=[((12, 4, 6), 280), ((12, 6, 4), 300)]
+bowl3      placements=   580 dims=[((12, 4, 6), 280), ((12, 6, 4), 300)]
+bowl4      placements=   580 dims=[((12, 4, 6), 280), ((12, 6, 4), 300)]
+bowl5      placements=   580 dims=[((12, 4, 6), 280), ((12, 6, 4), 300)]
+donut1     placements=  2230 dims=[((1, 4, 8), 224), ((1, 8, 4), 288), ((4, 1, 8), 260), ((4, 8, 1), 351), ((8, 1, 4), 540), ((8, 4, 1), 567)]
+chocolate  placements=  3386 dims=[((1, 4, 6), 448), ((1, 6, 4), 480), ((4, 1, 6), 520), ((4, 6, 1), 585), ((6, 1, 4), 660), ((6, 4, 1), 693)]
+donut2     placements=  3386 dims=[((1, 4, 6), 448), ((1, 6, 4), 480), ((4, 1, 6), 520), ((4, 6, 1), 585), ((6, 1, 4), 660), ((6, 4, 1), 693)]
+match_box1 placements=  2618 dims=[((2, 3, 3), 840), ((3, 2, 3), 882), ((3, 3, 2), 896)]
+match_box2 placements=  2618 dims=[((2, 3, 3), 840), ((3, 2, 3), 882), ((3, 3, 2), 896)]
+match_box3 placements=  2618 dims=[((2, 3, 3), 840), ((3, 2, 3), 882), ((3, 3, 2), 896)]
+match_box4 placements=  2618 dims=[((2, 3, 3), 840), ((3, 2, 3), 882), ((3, 3, 2), 896)]
+total placements 22586
+
+BOX (18, 10, 8) vol 1440
+ball       placements=   172 dims=[((6, 10, 8), 13), ((8, 10, 6), 33), ((10, 6, 8), 45), ((10, 8, 6), 81)]
+bowl1      placements=   644 dims=[((12, 4, 6), 294), ((12, 6, 4), 350)]
+bowl2      placements=   644 dims=[((12, 4, 6), 294), ((12, 6, 4), 350)]
+bowl3      placements=   644 dims=[((12, 4, 6), 294), ((12, 6, 4), 350)]
+bowl4      placements=   644 dims=[((12, 4, 6), 294), ((12, 6, 4), 350)]
+bowl5      placements=   644 dims=[((12, 4, 6), 294), ((12, 6, 4), 350)]
+donut1     placements=  2072 dims=[((1, 4, 8), 126), ((1, 8, 4), 270), ((4, 1, 8), 150), ((4, 8, 1), 360), ((8, 1, 4), 550), ((8, 4, 1), 616)]
+chocolate  placements=  3256 dims=[((1, 4, 6), 378), ((1, 6, 4), 450), ((4, 1, 6), 450), ((4, 6, 1), 600), ((6, 1, 4), 650), ((6, 4, 1), 728)]
+donut2     placements=  3256 dims=[((1, 4, 6), 378), ((1, 6, 4), 450), ((4, 1, 6), 450), ((4, 6, 1), 600), ((6, 1, 4), 650), ((6, 4, 1), 728)]
+match_box1 placements=  2576 dims=[((2, 3, 3), 816), ((3, 2, 3), 864), ((3, 3, 2), 896)]
+match_box2 placements=  2576 dims=[((2, 3, 3), 816), ((3, 2, 3), 864), ((3, 3, 2), 896)]
+match_box3 placements=  2576 dims=[((2, 3, 3), 816), ((3, 2, 3), 864), ((3, 3, 2), 896)]
+match_box4 placements=  2576 dims=[((2, 3, 3), 816), ((3, 2, 3), 864), ((3, 3, 2), 896)]
+total placements 22280
+
+BOX (20, 9, 8) vol 1440
+ball       placements=   110 dims=[((10, 6, 8), 44), ((10, 8, 6), 66)]
+bowl1      placements=   684 dims=[((12, 4, 6), 324), ((12, 6, 4), 360)]
+bowl2      placements=   684 dims=[((12, 4, 6), 324), ((12, 6, 4), 360)]
+bowl3      placements=   684 dims=[((12, 4, 6), 324), ((12, 6, 4), 360)]
+bowl4      placements=   684 dims=[((12, 4, 6), 324), ((12, 6, 4), 360)]
+bowl5      placements=   684 dims=[((12, 4, 6), 324), ((12, 6, 4), 360)]
+donut1     placements=  1954 dims=[((1, 4, 8), 120), ((1, 8, 4), 200), ((4, 1, 8), 153), ((4, 8, 1), 272), ((8, 1, 4), 585), ((8, 4, 1), 624)]
+chocolate  placements=  3158 dims=[((1, 4, 6), 360), ((1, 6, 4), 400), ((4, 1, 6), 459), ((4, 6, 1), 544), ((6, 1, 4), 675), ((6, 4, 1), 720)]
+donut2     placements=  3158 dims=[((1, 4, 6), 360), ((1, 6, 4), 400), ((4, 1, 6), 459), ((4, 6, 1), 544), ((6, 1, 4), 675), ((6, 4, 1), 720)]
+match_box1 placements=  2544 dims=[((2, 3, 3), 798), ((3, 2, 3), 864), ((3, 3, 2), 882)]
+match_box2 placements=  2544 dims=[((2, 3, 3), 798), ((3, 2, 3), 864), ((3, 3, 2), 882)]
+match_box3 placements=  2544 dims=[((2, 3, 3), 798), ((3, 2, 3), 864), ((3, 3, 2), 882)]
+match_box4 placements=  2544 dims=[((2, 3, 3), 798), ((3, 2, 3), 864), ((3, 3, 2), 882)]
+total placements 21976
+
+BOX (20, 12, 6) vol 1440
+ball       placements=    94 dims=[((8, 10, 6), 39), ((10, 8, 6), 55)]
+bowl1      placements=   664 dims=[((4, 12, 6), 34), ((6, 12, 4), 90), ((12, 4, 6), 162), ((12, 6, 4), 378)]
+bowl2      placements=   664 dims=[((4, 12, 6), 34), ((6, 12, 4), 90), ((12, 4, 6), 162), ((12, 6, 4), 378)]
+bowl3      placements=   664 dims=[((4, 12, 6), 34), ((6, 12, 4), 90), ((12, 4, 6), 162), ((12, 6, 4), 378)]
+bowl4      placements=   664 dims=[((4, 12, 6), 34), ((6, 12, 4), 90), ((12, 4, 6), 162), ((12, 6, 4), 378)]
+bowl5      placements=   664 dims=[((4, 12, 6), 34), ((6, 12, 4), 90), ((12, 4, 6), 162), ((12, 6, 4), 378)]
+donut1     placements=  1980 dims=[((1, 8, 4), 300), ((4, 8, 1), 510), ((8, 1, 4), 468), ((8, 4, 1), 702)]
+chocolate  placements=  2868 dims=[((1, 4, 6), 180), ((1, 6, 4), 420), ((4, 1, 6), 204), ((4, 6, 1), 714), ((6, 1, 4), 540), ((6, 4, 1), 810)]
+donut2     placements=  2868 dims=[((1, 4, 6), 180), ((1, 6, 4), 420), ((4, 1, 6), 204), ((4, 6, 1), 714), ((6, 1, 4), 540), ((6, 4, 1), 810)]
+match_box1 placements=  2452 dims=[((2, 3, 3), 760), ((3, 2, 3), 792), ((3, 3, 2), 900)]
+match_box2 placements=  2452 dims=[((2, 3, 3), 760), ((3, 2, 3), 792), ((3, 3, 2), 900)]
+match_box3 placements=  2452 dims=[((2, 3, 3), 760), ((3, 2, 3), 792), ((3, 3, 2), 900)]
+match_box4 placements=  2452 dims=[((2, 3, 3), 760), ((3, 2, 3), 792), ((3, 3, 2), 900)]
+total placements 20938
+
+BOX (24, 10, 6) vol 1440
+ball       placements=    62 dims=[((8, 10, 6), 17), ((10, 8, 6), 45)]
+bowl1      placements=   572 dims=[((12, 4, 6), 182), ((12, 6, 4), 390)]
+bowl2      placements=   572 dims=[((12, 4, 6), 182), ((12, 6, 4), 390)]
+bowl3      placements=   572 dims=[((12, 4, 6), 182), ((12, 6, 4), 390)]
+bowl4      placements=   572 dims=[((12, 4, 6), 182), ((12, 6, 4), 390)]
+bowl5      placements=   572 dims=[((12, 4, 6), 182), ((12, 6, 4), 390)]
+donut1     placements=  1818 dims=[((1, 8, 4), 216), ((4, 8, 1), 378), ((8, 1, 4), 510), ((8, 4, 1), 714)]
+chocolate  placements=  2736 dims=[((1, 4, 6), 168), ((1, 6, 4), 360), ((4, 1, 6), 210), ((4, 6, 1), 630), ((6, 1, 4), 570), ((6, 4, 1), 798)]
+donut2     placements=  2736 dims=[((1, 4, 6), 168), ((1, 6, 4), 360), ((4, 1, 6), 210), ((4, 6, 1), 630), ((6, 1, 4), 570), ((6, 4, 1), 798)]
+match_box1 placements=  2408 dims=[((2, 3, 3), 736), ((3, 2, 3), 792), ((3, 3, 2), 880)]
+match_box2 placements=  2408 dims=[((2, 3, 3), 736), ((3, 2, 3), 792), ((3, 3, 2), 880)]
+match_box3 placements=  2408 dims=[((2, 3, 3), 736), ((3, 2, 3), 792), ((3, 3, 2), 880)]
+match_box4 placements=  2408 dims=[((2, 3, 3), 736), ((3, 2, 3), 792), ((3, 3, 2), 880)]
+total placements 19844
+
+BOX (16, 12, 8) vol 1536
+ball       placements=   268 dims=[((6, 10, 8), 33), ((8, 10, 6), 81), ((10, 6, 8), 49), ((10, 8, 6), 105)]
+bowl1      placements=   808 dims=[((4, 12, 6), 78), ((6, 12, 4), 110), ((12, 4, 6), 270), ((12, 6, 4), 350)]
+bowl2      placements=   808 dims=[((4, 12, 6), 78), ((6, 12, 4), 110), ((12, 4, 6), 270), ((12, 6, 4), 350)]
+bowl3      placements=   808 dims=[((4, 12, 6), 78), ((6, 12, 4), 110), ((12, 4, 6), 270), ((12, 6, 4), 350)]
+bowl4      placements=   808 dims=[((4, 12, 6), 78), ((6, 12, 4), 110), ((12, 4, 6), 270), ((12, 6, 4), 350)]
+bowl5      placements=   808 dims=[((4, 12, 6), 78), ((6, 12, 4), 110), ((12, 4, 6), 270), ((12, 6, 4), 350)]
+donut1     placements=  2408 dims=[((1, 4, 8), 144), ((1, 8, 4), 400), ((4, 1, 8), 156), ((4, 8, 1), 520), ((8, 1, 4), 540), ((8, 4, 1), 648)]
+chocolate  placements=  3640 dims=[((1, 4, 6), 432), ((1, 6, 4), 560), ((4, 1, 6), 468), ((4, 6, 1), 728), ((6, 1, 4), 660), ((6, 4, 1), 792)]
+donut2     placements=  3640 dims=[((1, 4, 6), 432), ((1, 6, 4), 560), ((4, 1, 6), 468), ((4, 6, 1), 728), ((6, 1, 4), 660), ((6, 4, 1), 792)]
+match_box1 placements=  2804 dims=[((2, 3, 3), 900), ((3, 2, 3), 924), ((3, 3, 2), 980)]
+match_box2 placements=  2804 dims=[((2, 3, 3), 900), ((3, 2, 3), 924), ((3, 3, 2), 980)]
+match_box3 placements=  2804 dims=[((2, 3, 3), 900), ((3, 2, 3), 924), ((3, 3, 2), 980)]
+match_box4 placements=  2804 dims=[((2, 3, 3), 900), ((3, 2, 3), 924), ((3, 3, 2), 980)]
+total placements 25212
+
+BOX (18, 12, 7) vol 1512
+ball       placements=   156 dims=[((8, 10, 6), 66), ((10, 8, 6), 90)]
+bowl1      placements=   808 dims=[((4, 12, 6), 60), ((6, 12, 4), 104), ((12, 4, 6), 252), ((12, 6, 4), 392)]
+bowl2      placements=   808 dims=[((4, 12, 6), 60), ((6, 12, 4), 104), ((12, 4, 6), 252), ((12, 6, 4), 392)]
+bowl3      placements=   808 dims=[((4, 12, 6), 60), ((6, 12, 4), 104), ((12, 4, 6), 252), ((12, 6, 4), 392)]
+bowl4      placements=   808 dims=[((4, 12, 6), 60), ((6, 12, 4), 104), ((12, 4, 6), 252), ((12, 6, 4), 392)]
+bowl5      placements=   808 dims=[((4, 12, 6), 60), ((6, 12, 4), 104), ((12, 4, 6), 252), ((12, 6, 4), 392)]
+donut1     placements=  2106 dims=[((1, 8, 4), 360), ((4, 8, 1), 525), ((8, 1, 4), 528), ((8, 4, 1), 693)]
+chocolate  placements=  3366 dims=[((1, 4, 6), 324), ((1, 6, 4), 504), ((4, 1, 6), 360), ((4, 6, 1), 735), ((6, 1, 4), 624), ((6, 4, 1), 819)]
+donut2     placements=  3366 dims=[((1, 4, 6), 324), ((1, 6, 4), 504), ((4, 1, 6), 360), ((4, 6, 1), 735), ((6, 1, 4), 624), ((6, 4, 1), 819)]
+match_box1 placements=  2690 dims=[((2, 3, 3), 850), ((3, 2, 3), 880), ((3, 3, 2), 960)]
+match_box2 placements=  2690 dims=[((2, 3, 3), 850), ((3, 2, 3), 880), ((3, 3, 2), 960)]
+match_box3 placements=  2690 dims=[((2, 3, 3), 850), ((3, 2, 3), 880), ((3, 3, 2), 960)]
+match_box4 placements=  2690 dims=[((2, 3, 3), 850), ((3, 2, 3), 880), ((3, 3, 2), 960)]
+total placements 23794
+[?2004huser@61aa19fdb377:~$ python3 - <<'PY'
+[?2004l,sign,dims))
+    orients[name]=[(v[0],v[1],v[2],k) for k,v in seen.items()]
+# candidate placements
+placements={}
+for name in objs:
+    lst=[]
+    for perm,sign,dims,pts in orients[name]:
+        dx,dy,dz=dims
+        if dx>box[0] or dy>box[1] or dz>box[2]:
+            continue
+        for ox in range(box[0]-dx+1):
+            for oy in range(box[1]-dy+1):
+                for oz in range(box[2]-dz+1):
+                    vox=tuple((x+ox,y+oy,z+oz) for x,y,z in pts)
+                    lst.append((perm,sign,ox,oy,oz,dims,vox))
+    placements[name]=lst
+    print(name,len(lst))
+order=sorted(objs,key=lambda n: len(placements[n]))
+print('order',order)
+start=time.time(); best=None
+# occupancy index from voxel to candidate ids not built; use recursion with frontier anchors
+
+def search(i, occ, ans):
+    global best
+    if time.time()-start>55: return False
+    if i==len(order):
+        best=ans.copy(); return True
+    name=order[i]
+    # choose lexicographically lowest empty cell as anchor if any occupancy exists
+    anchor=None
+    if occ:
+        for z in range(box[2]):
+            for y in range(box[1]):
+                for x in range(box[0]):
+                    if (x,y,z) not in occ:
+                        anchor=(x,y,z); break
+                if anchor: break
+            if anchor: break
+    cand=placements[name]
+    # prefer placements near origin and intersecting anchor neighborhood if possible
+    cand2=[]
+    for p in cand:
+        vox=p[6]
+        s=set(vox)
+        if any(v in occ for v in vox):
+            continue
+        score=(p[4],p[3],p[2])
+        if anchor is None or anchor in s:
+            cand2.append((0,score,p))
+        else:
+            ax,ay,az=anchor
+            md=min(abs(x-ax)+abs(y-ay)+abs(z-az) for x,y,z in vox)
+            cand2.append((1+md,score,p))
+    cand2.sort(key=lambda t:(t[0],t[1]))
+    for _,_,p in cand2[:400]:
+        perm,sign,ox,oy,oz,dims,vox=p
+        for v in vox: occ.add(v)
+        ans[name]=(perm,sign,ox,oy,oz)
+        if search(i+1,occ,ans): return True
+        del ans[name]
+        for v in vox: occ.remove(v)
+    return False
+
+ok=search(0,set(),{})
+print('ok',ok,'elapsed',time.time()-start)
+if ok:
+    for n in order:
+        print(n,best[n])
+PY
+[?2004h> import json,itertools,time
+[?2004l[?2004h> with open('/task/objects.json') as f:
+[?2004l[?2004h>     data=json.load(f)
+[?2004l[?2004h> objs={}
+[?2004l[?2004h> for name,obj in data.items():
+[?2004l[?2004h>     pts=[]
+[?2004l[?2004h>     for arr in obj.values(): pts.extend(map(tuple,arr))
+[?2004l[?2004h>     objs[name]=sorted(set(pts))
+[?2004l[?2004h> perms=['xyz','xzy','yxz','yzx','zxy','zyx']
+[?2004l[?2004h> signs=[''.join(s) for s in itertools.product('+-', repeat=3)]
+[?2004l[?2004h> box=(24,10,6)
+[?2004l[?2004h> 
+[?2004l[?2004h> def transf(pts,perm,sign):
+[?2004l[?2004h>     out=[]
+[?2004l[?2004h>     for x,y,z in pts:
+[?2004l[?2004h>         d={'x':x,'y':y,'z':z}
+[?2004l[?2004h>         q=[d[perm[i]] for i in range(3)]
+[?2004l[?2004h>         q=[q[i] if sign[i]=='+' else -q[i] for i in range(3)]
+[?2004l[?2004h>         out.append(tuple(q))
+[?2004l[?2004h>     mins=[min(p[i] for p in out) for i in range(3)]
+[?2004l[?2004h>     out=tuple(sorted((p[0]-mins[0],p[1]-mins[1],p[2]-mins[2]) for p in out))
+[?2004l[?2004h>     dims=(max(p[0] for p in out)+1,max(p[1] for p in out)+1,max(p[2] for p in out)+1)
+[?2004l[?2004h>     return out,dims
+[?2004l[?2004h> # unique orientations
+[?2004l[?2004h> orients={}
+[?2004l[?2004h> for name,pts in objs.items():
+[?2004l[?2004h>     seen={}
+[?2004l[?2004h>     for perm in perms:
+[?2004l[?2004h>         for sign in signs:
+[?2004l[?2004h>             out,dims=transf(pts,perm,sign)
+[?2004l[?2004h>             seen.setdefault(out,(perm,sign,dims))
+[?2004l[?2004h>     orients[name]=[(v[0],v[1],v[2],k) for k,v in seen.items()]
+[?2004l[?2004h> # candidate placements
+[?2004l[?2004h> placements={}
+[?2004l[?2004h> for name in objs:
+[?2004l[?2004h>     lst=[]
+[?2004l[?2004h>     for perm,sign,dims,pts in orients[name]:
+[?2004l[?2004h>         dx,dy,dz=dims
+[?2004l[?2004h>         if dx>box[0] or dy>box[1] or dz>box[2]:
+[?2004l[?2004h>             continue
+[?2004l[?2004h>         for ox in range(box[0]-dx+1):
+[?2004l[?2004h>             for oy in range(box[1]-dy+1):
+[?2004l[?2004h>                 for oz in range(box[2]-dz+1):
+[?2004l[?2004h>                     vox=tuple((x+ox,y+oy,z+oz) for x,y,z in pts)
+[?2004l[?2004h>                     lst.append((perm,sign,ox,oy,oz,dims,vox))
+[?2004l[?2004h>     placements[name]=lst
+[?2004l[?2004h>     print(name,len(lst))
+[?2004l[?2004h> order=sorted(objs,key=lambda n: len(placements[n]))
+[?2004l[?2004h> print('order',order)
+[?2004l[?2004h> start=time.time(); best=None
+[?2004l[?2004h> # occupancy index from voxel to candidate ids not built; use recursion with frontier anchors
+[?2004l[?2004h> 
+[?2004l[?2004h> def search(i, occ, ans):
+[?2004l[?2004h>     global best
+[?2004l[?2004h>     if time.time()-start>55: return False
+[?2004l[?2004h>     if i==len(order):
+[?2004l[?2004h>         best=ans.copy(); return True
+[?2004l[?2004h>     name=order[i]
+[?2004l[?2004h>     # choose lexicographically lowest empty cell as anchor if any occupancy exists
+[?2004l[?2004h>     anchor=None
+[?2004l[?2004h>     if occ:
+[?2004l[?2004h>         for z in range(box[2]):
+[?2004l[?2004h>             for y in range(box[1]):
+[?2004l[?2004h>                 for x in range(box[0]):
+[?2004l[?2004h>                     if (x,y,z) not in occ:
+[?2004l[?2004h>                         anchor=(x,y,z); break
+[?2004l[?2004h>                 if anchor: break
+[?2004l[?2004h>             if anchor: break
+[?2004l[?2004h>     cand=placements[name]
+[?2004l[?2004h>     # prefer placements near origin and intersecting anchor neighborhood if possible
+[?2004l[?2004h>     cand2=[]
+[?2004l[?2004h>     for p in cand:
+[?2004l[?2004h>         vox=p[6]
+[?2004l[?2004h>         s=set(vox)
+[?2004l[?2004h>         if any(v in occ for v in vox):
+[?2004l[?2004h>             continue
+[?2004l[?2004h>         score=(p[4],p[3],p[2])
+[?2004l[?2004h>         if anchor is None or anchor in s:
+[?2004l[?2004h>             cand2.append((0,score,p))
+[?2004l[?2004h>         else:
+[?2004l[?2004h>             ax,ay,az=anchor
+[?2004l[?2004h>             md=min(abs(x-ax)+abs(y-ay)+abs(z-az) for x,y,z in vox)
+[?2004l[?2004h>             cand2.append((1+md,score,p))
+[?2004l[?2004h>     cand2.sort(key=lambda t:(t[0],t[1]))
+[?2004l[?2004h>     for _,_,p in cand2[:400]:
+[?2004l[?2004h>         perm,sign,ox,oy,oz,dims,vox=p
+[?2004l[?2004h>         for v in vox: occ.add(v)
+[?2004l[?2004h>         ans[name]=(perm,sign,ox,oy,oz)
+[?2004l[?2004h>         if search(i+1,occ,ans): return True
+[?2004l[?2004h>         del ans[name]
+[?2004l[?2004h>         for v in vox: occ.remove(v)
+[?2004l[?2004h>     return False
+[?2004l[?2004h> 
+[?2004l[?2004h> ok=search(0,set(),{})
+[?2004l[?2004h> print('ok',ok,'elapsed',time.time()-start)
+[?2004l[?2004h> if ok:
+[?2004l[?2004h>     for n in order:
+[?2004l[?2004h>         print(n,best[n])
+[?2004l[?2004h> PY
+[?2004lbowl1 572
+bowl2 572
+bowl3 572
+bowl4 572
+bowl5 572
+chocolate 2736
+donut1 1818
+donut2 2736
+ball 62
+match_box1 2408
+match_box2 2408
+match_box3 2408
+match_box4 2408
+order ['ball', 'bowl1', 'bowl2', 'bowl3', 'bowl4', 'bowl5', 'donut1', 'match_box1', 'match_box2', 'match_box3', 'match_box4', 'chocolate', 'donut2']
+ok True elapsed 0.34654736518859863
+ball ('xyz', '+++', 0, 0, 0)
+bowl1 ('xyz', '+++', 0, 6, 0)
+bowl2 ('xyz', '+++', 8, 1, 0)
+bowl3 ('xyz', '+-+', 6, 5, 0)
+bowl4 ('xyz', '+-+', 12, 0, 0)
+bowl5 ('xyz', '+++', 12, 6, 0)
+donut1 ('xzy', '+++', 7, 0, 0)
+match_box1 ('yxz', '+++', 11, 7, 0)
+match_box2 ('yxz', '+++', 19, 2, 0)
+match_box3 ('yxz', '+++', 17, 4, 0)
+match_box4 ('yxz', '+++', 11, 7, 3)
+chocolate ('yzx', '+++', 10, 1, 0)
+donut2 ('zyx', '+++', 21, 3, 0)
+[?2004huser@61aa19fdb377:~$ python3 /task/tools/place_object.py ball xyz +++ 0 0 0
+[?2004lPLACED ball
+  Transform : perm=xyz signs=+++ offset=(0,0,0)
+  Voxels    : 320
+  Range     : x=[0,9] y=[0,7] z=[0,5]
+  Bounding box so far: 10 x 8 x 6 = 480
+Bounding box: 10 x 8 x 6 = 480
+Placed   (1): ball
+Unplaced (12): bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+[?2004huser@61aa19fdb377:~$ python3 /task/tools/place_object.py bowl1 xyz +++ 0 6 0
+[?2004lPLACED bowl1
+  Transform : perm=xyz signs=+++ offset=(0,6,0)
+  Voxels    : 108
+  Range     : x=[0,11] y=[6,9] z=[0,5]
+  Bounding box so far: 12 x 10 x 6 = 720
+Bounding box: 12 x 10 x 6 = 720
+Placed   (2): ball, bowl1
+Unplaced (11): bowl2, bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+[?2004huser@61aa19fdb377:~$ python3 /task/tools/place_object.py bowl2 xyz +++ 8 1 0
+[?2004lPLACED bowl2
+  Transform : perm=xyz signs=+++ offset=(8,1,0)
+  Voxels    : 108
+  Range     : x=[8,19] y=[1,4] z=[0,5]
+  Bounding box so far: 20 x 10 x 6 = 1200
+Bounding box: 20 x 10 x 6 = 1200
+Placed   (3): ball, bowl1, bowl2
+Unplaced (10): bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+[?2004huser@61aa19fdb377:~$ python3 /task/tools/place_object.py bowl3 xyz +-+ 6 5 0
+[?2004lPLACED bowl3
+  Transform : perm=xyz signs=+-+ offset=(6,5,0)
+  Voxels    : 108
+  Range     : x=[6,17] y=[5,8] z=[0,5]
+  Bounding box so far: 20 x 10 x 6 = 1200
+Bounding box: 20 x 10 x 6 = 1200
+Placed   (4): ball, bowl1, bowl2, bowl3
+Unplaced (9): bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+[?2004huser@61aa19fdb377:~$ python3 /task/tools/place_object.py bowl4 xyz +-+ 12 0 0
+[?2004lPLACED bowl4
+  Transform : perm=xyz signs=+-+ offset=(12,0,0)
+  Voxels    : 108
+  Range     : x=[12,23] y=[0,3] z=[0,5]
+  Bounding box so far: 24 x 10 x 6 = 1440
+Bounding box: 24 x 10 x 6 = 1440
+Placed   (5): ball, bowl1, bowl2, bowl3, bowl4
+Unplaced (8): bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+[?2004huser@61aa19fdb377:~$ python3 /task/tools/place_object.py bowl5 xyz +++ 12 6 0
+[?2004lPLACED bowl5
+  Transform : perm=xyz signs=+++ offset=(12,6,0)
+  Voxels    : 108
+  Range     : x=[12,23] y=[6,9] z=[0,5]
+  Bounding box so far: 24 x 10 x 6 = 1440
+Bounding box: 24 x 10 x 6 = 1440
+Placed   (6): ball, bowl1, bowl2, bowl3, bowl4, bowl5
+Unplaced (7): chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+[?2004huser@61aa19fdb377:~$ python3 /task/tools/place_object.py donut1 xzy +++ 7 0 0
+[?2004lPLACED donut1
+  Transform : perm=xzy signs=+++ offset=(7,0,0)
+  Voxels    : 28
+  Range     : x=[7,14] y=[0,0] z=[0,3]
+  Bounding box so far: 24 x 10 x 6 = 1440
+Bounding box: 24 x 10 x 6 = 1440
+Placed   (7): ball, bowl1, bowl2, bowl3, bowl4, bowl5, donut1
+Unplaced (6): chocolate, donut2, match_box1, match_box2, match_box3, match_box4
+[?2004huser@61aa19fdb377:~$ python3 /task/tools/place_object.py match_box1 yxz +++ 11 7 0
+[?2004lPLACED match_box1
+  Transform : perm=yxz signs=+++ offset=(11,7,0)
+  Voxels    : 18
+  Range     : x=[11,12] y=[7,9] z=[0,2]
+  Bounding box so far: 24 x 10 x 6 = 1440
+Bounding box: 24 x 10 x 6 = 1440
+Placed   (8): ball, bowl1, bowl2, bowl3, bowl4, bowl5, donut1, match_box1
+Unplaced (5): chocolate, donut2, match_box2, match_box3, match_box4
+[?2004huser@61aa19fdb377:~$ python3 /task/tools/place_object.py match_box2 yxz +++ 19 2 0
+[?2004lPLACED match_box2
+  Transform : perm=yxz signs=+++ offset=(19,2,0)
+  Voxels    : 18
+  Range     : x=[19,20] y=[2,4] z=[0,2]
+  Bounding box so far: 24 x 10 x 6 = 1440
+Bounding box: 24 x 10 x 6 = 1440
+Placed   (9): ball, bowl1, bowl2, bowl3, bowl4, bowl5, donut1, match_box1, match_box2
+Unplaced (4): chocolate, donut2, match_box3, match_box4
+[?2004huser@61aa19fdb377:~$ python3 /task/tools/place_object.py match_box3 yxz +++ 17 4 0
+[?2004lPLACED match_box3
+  Transform : perm=yxz signs=+++ offset=(17,4,0)
+  Voxels    : 18
+  Range     : x=[17,18] y=[4,6] z=[0,2]
+  Bounding box so far: 24 x 10 x 6 = 1440
+Bounding box: 24 x 10 x 6 = 1440
+Placed   (10): ball, bowl1, bowl2, bowl3, bowl4, bowl5, donut1, match_box1, match_box2, match_box3
+Unplaced (3): chocolate, donut2, match_box4
+[?2004huser@61aa19fdb377:~$ python3 /task/tools/place_object.py match_box4 yxz +++ 11 7 3
+[?2004lPLACED match_box4
+  Transform : perm=yxz signs=+++ offset=(11,7,3)
+  Voxels    : 18
+  Range     : x=[11,12] y=[7,9] z=[3,5]
+  Bounding box so far: 24 x 10 x 6 = 1440
+Bounding box: 24 x 10 x 6 = 1440
+Placed   (11): ball, bowl1, bowl2, bowl3, bowl4, bowl5, donut1, match_box1, match_box2, match_box3, match_box4
+Unplaced (2): chocolate, donut2
+[?2004huser@61aa19fdb377:~$ python3 /task/tools/place_object.py chocolate yzx +++ 10 1 0
+[?2004lPLACED chocolate
+  Transform : perm=yzx signs=+++ offset=(10,1,0)
+  Voxels    : 24
+  Range     : x=[10,13] y=[1,1] z=[0,5]
+  Bounding box so far: 24 x 10 x 6 = 1440
+Bounding box: 24 x 10 x 6 = 1440
+Placed   (12): ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut1, match_box1, match_box2, match_box3, match_box4
+Unplaced (1): donut2
+[?2004huser@61aa19fdb377:~$ python3 /task/tools/place_object.py donut2 zyx +++ 21 3 0
+[?2004lPLACED donut2
+  Transform : perm=zyx signs=+++ offset=(21,3,0)
+  Voxels    : 20
+  Range     : x=[21,21] y=[3,6] z=[0,5]
+  Bounding box so far: 24 x 10 x 6 = 1440
+Bounding box: 24 x 10 x 6 = 1440
+Placed   (13): ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+Unplaced (0): —
+[?2004huser@61aa19fdb377:~$ python3 /task/tools/check_state.py
+[?2004l=== Workspace State ===
+Bounding box   : 24 x 10 x 6 = 1440
+Total voxels   : 1004
+Placed   (13) : ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut1, donut2, match_box1, match_box2, match_box3, match_box4
+Unplaced ( 0) : —
+[?2004huser@61aa19fdb377:~$ python3 /task/tools/finalize.py
+[?2004l=== Finalized Solution ===
+All 13 objects placed.
+Bounding box: 24 x 10 x 6
+Volume: 1440
+Total voxels: 1004
+Solution written to /home/user/solution.json
+
+Box [24, 10, 6]
+Volume: 1440
+[?2004huser@61aa19fdb377:~$ 

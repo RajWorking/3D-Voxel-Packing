@@ -1,0 +1,137 @@
+New Terminal Output:
+
+user@a968081b7478:~$ python3 << 'EOF'
+> import json
+> with open('/task/objects.json') as f:
+>     data = json.load(f)
+>
+> # Bowl interior (empty space within 12x4x6 bbox)
+> bowl_xy = set()
+> for group in data['bowl1'].values():
+>     for v in group:
+>         bowl_xy.add((v[0], v[1]))
+>
+> interior_xy = set()
+> for x in range(12):
+>     for y in range(4):
+>         if (x,y) not in bowl_xy:
+>             interior_xy.add((x,y))
+>
+> print("Bowl interior XY:")
+> for y in range(4):
+>     row = ''
+>     for x in range(12):
+>         if (x,y) in interior_xy:
+>             row += '.'
+>         elif (x,y) in bowl_xy:
+>             row += '#'
+>         else:
+>             row += ' '
+>     print(f"  y={y}: {row}")
+> print(f"Interior cells per layer: {len(interior_xy)}")
+> print(f"Interior volume (6 layers): {len(interior_xy) * 6}")
+>
+> # What objects could fit inside?
+> # Match box: 3x2x3 - need 3x2 footprint in XY, 3 in z
+> # Can we fit 3x2 in the interior?
+> print("\nChecking 3x2 rectangles in interior:")
+> for ox in range(12):
+>     for oy in range(4):
+>         fits = True
+>         for dx in range(3):
+>             for dy in range(2):
+>                 if (ox+dx, oy+dy) not in interior_xy:
+>                     fits = False
+>                     break
+>             if not fits:
+>                 break
+>         if fits:
+>             print(f"  3x2 fits at ({ox},{oy})")
+>
+> print("\nChecking 2x3 rectangles in interior:")
+> for ox in range(12):
+>     for oy in range(4):
+>         fits = True
+>         for dx in range(2):
+>             for dy in range(3):
+>                 if (ox+dx, oy+dy) not in interior_xy:
+>                     fits = False
+>                     break
+>             if not fits:
+>                 break
+>         if fits:
+>             print(f"  2x3 fits at ({ox},{oy})")
+>
+> # Can we fit multiple match boxes?
+> # Match box oriented as 3x2 in XY, 3 in z: needs 3x2 footprint
+> # We have 6 z-layers, so 2 match boxes stacked in z
+> # Interior has room for multiple 3x2 blocks
+>
+> # What about flat objects?
+> # chocolate 6x4x1 - needs 6x4 footprint - interior is only 3 tall, won't fit 4
+> # But rotated: 4x6x1 or 1x6x4 or 1x4x6 etc.
+> # chocolate rotated to 1x6x4: needs 1x6 in XY - possible at y=0 where we have 8 wide
+> # Actually chocolate is 6x4x1, if we rotate to put 1-thick along y:
+> # perm=xzy: 6x1x4 - footprint 6x1 in XY, 4 in z
+> print("\nChecking 6x1 rectangles in interior:")
+> for ox in range(12):
+>     for oy in range(4):
+>         fits = all((ox+dx, oy) in interior_xy for dx in range(6))
+>         if fits:
+>             print(f"  6x1 fits at ({ox},{oy})")
+>
+> print("\nChecking 8x1 rectangles in interior:")
+> for ox in range(12):
+>     for oy in range(4):
+>         fits = all((ox+dx, oy) in interior_xy for dx in range(8))
+>         if fits:
+>             print(f"  8x1 fits at ({ox},{oy})")
+>
+> print("\nChecking 4x1 rectangles in interior:")
+> for ox in range(12):
+>     for oy in range(4):
+>         fits = all((ox+dx, oy) in interior_xy for dx in range(4))
+>         if fits:
+>             print(f"  4x1 fits at ({ox},{oy})")
+> EOF
+Bowl interior XY:
+  y=0: ##........##
+  y=1: .##......##.
+  y=2: ..##....##..
+  y=3: ...######...
+Interior cells per layer: 30
+Interior volume (6 layers): 180
+
+Checking 3x2 rectangles in interior:
+  3x2 fits at (3,0)
+  3x2 fits at (4,0)
+  3x2 fits at (4,1)
+  3x2 fits at (5,0)
+  3x2 fits at (5,1)
+  3x2 fits at (6,0)
+
+Checking 2x3 rectangles in interior:
+  2x3 fits at (4,0)
+  2x3 fits at (5,0)
+  2x3 fits at (6,0)
+
+Checking 6x1 rectangles in interior:
+  6x1 fits at (2,0)
+  6x1 fits at (3,0)
+  6x1 fits at (3,1)
+  6x1 fits at (4,0)
+
+Checking 8x1 rectangles in interior:
+  8x1 fits at (2,0)
+
+Checking 4x1 rectangles in interior:
+  4x1 fits at (2,0)
+  4x1 fits at (3,0)
+  4x1 fits at (3,1)
+  4x1 fits at (4,0)
+  4x1 fits at (4,1)
+  4x1 fits at (4,2)
+  4x1 fits at (5,0)
+  4x1 fits at (5,1)
+  4x1 fits at (6,0)
+user@a968081b7478:~$

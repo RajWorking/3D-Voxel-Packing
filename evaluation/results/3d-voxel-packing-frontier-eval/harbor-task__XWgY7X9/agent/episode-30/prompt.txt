@@ -1,0 +1,41 @@
+Current Terminal Screen:
+> print("\n=== 2 flipped + 3 normal bowls ===")
+> occupied2 = set()
+> occupied2 |= ball_v
+> # Normalize ball to start at y=2 (to make room for flipped bowls)
+> # Actually, let's shift ball up and put flipped bowls below
+> # Flipped bowls at dy=-2 and dy=-4
+> for x,y in flipped_bowl_xy:
+>     for z in range(6):
+>         occupied2.add((x, y-2, z))
+>         occupied2.add((x, y-4, z))
+>
+> # 3 normal bowls
+> for i in range(3):
+>     for x,y,z in bowl_v:
+>         occupied2.add((x, y + 6 + i*2, z))
+>
+> min_y2 = min(y for x,y,z in occupied2)
+> max_y2 = max(y for x,y,z in occupied2)
+> print(f"  y: {min_y2}..{max_y2} = {max_y2-min_y2+1} units")
+> print(f"  Volume: 12x{max_y2-min_y2+1}x6 = {12*(max_y2-min_y2+1)*6}")
+>
+> # Check overlap between 2 flipped bowls
+> fb1 = set((x, y-2) for x,y in flipped_bowl_xy)
+> fb2 = set((x, y-4) for x,y in flipped_bowl_xy)
+> overlap = fb1 & fb2
+> print(f"  Overlap between 2 flipped bowls: {len(overlap)}")
+> EOF
+1 flipped + 4 normal bowls + ball:
+  x: 0..11, y: -2..15
+  Size: 12x18x6
+  Voxels: 860
+  After normalization: x=0..11, y=0..17
+  Bbox: 12x18x6 = 1296
+  Donut1 positions found: 0
+
+=== 2 flipped + 3 normal bowls ===
+  y: -4..13 = 18 units
+  Volume: 12x18x6 = 1296
+  Overlap between 2 flipped bowls: 0
+user@a968081b7478:~$

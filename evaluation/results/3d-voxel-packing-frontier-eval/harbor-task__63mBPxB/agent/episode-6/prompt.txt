@@ -1,0 +1,184 @@
+Previous response had warnings:
+WARNINGS: - Extra text detected before JSON object
+- Extra text detected after JSON object
+
+New Terminal Output:
+
+user@36710be3486f:~$ cat << 'EOF' > solver.py
+> import json
+> import sys
+> import time
+>
+> W = int(sys.argv[1])
+> H = int(sys.argv[2])
+> D = int(sys.argv[3])
+>
+> with open('/task/objects.json') as f:
+>     objs = json.load(f)
+>
+> flat_objs = {}
+> for name, obj in objs.items():
+>     voxels = []
+>     for group in obj.values():
+>         voxels.extend(group)
+>     flat_objs[name] = voxels
+>
+> def get_orientations(voxels):
+>     perms = [
+>         (0,1,2), (0,2,1), (1,0,2), (1,2,0), (2,0,1), (2,1,0)
+>     ]
+>     signs = [
+>         (1,1,1), (1,1,-1), (1,-1,1), (1,-1,-1),
+>         (-1,1,1), (-1,1,-1), (-1,-1,1), (-1,-1,-1)
+>     ]
+>
+>     unique_shapes = set()
+>     orientations = []
+>
+>     for p in perms:
+>         for s in signs:
+>             res = []
+>             for v in voxels:
+>                 nx = v[p[0]] * s[0]
+>                 ny = v[p[1]] * s[1]
+>                 nz = v[p[2]] * s[2]
+>                 res.append((nx, ny, nz))
+>
+>             min_x = min(v[0] for v in res)
+'x': x_off,
+                            'y': y_off,
+                            'z': z_off
+                        }
+
+                        if solve(idx + 1):
+                            return True
+
+                        for z_m, y_dict in mask.items():
+                            gz = z_off + z_m
+                            for y_m, x_mask in y_dict.items():
+                                gy = y_off + y_m
+                                grid[gz][gy] &= ~(x_mask << x_off)
+    return False
+
+start = time.time()
+if solve(0):
+    print(f"Found solution for {W}x{H}x{D} in {time.time()-start:.2f}s")
+    with open('solution_cmds.sh', 'w') as f:
+        for name in ordered_names:
+            s = solution[name]
+            f.write(f"python3 /task/tools/place_object.py {name} {s['perm']} {s['signs']} {s['x']} {s['y']} {s['z']}\n")
+    sys.exit(0)
+else:
+    print(f"No so>             min_y = min(v[1] for v in res)
+>             min_z = min(v[2] for v in res)
+>
+r.py 12 12 12>             norm = tuple(sorted((v[0]-min_x, v[1]-min_y, v[2]-min_z) for v in res))
+>             if norm not in unique_shapes:
+>                 unique_shapes.add(norm)
+>
+>                 max_x = max(v[0] for v in norm)
+>                 max_y = max(v[1] for v in norm)
+>                 max_z = max(v[2] for v in norm)
+>
+>                 if max_x >= W or max_y >= H or max_z >= D:
+>                     continue
+>
+>                 mask_dict = {}
+>                 for v in norm:
+>                     z, y, x = v[2], v[1], v[0]
+>                     if z not in mask_dict:
+>                         mask_dict[z] = {}
+>                     if y not in mask_dict[z]:
+>                         mask_dict[z][y] = 0
+>                     mask_dict[z][y] |= (1 << x)
+>
+>                 perm_chars = ['x', 'y', 'z']
+>                 perm_str = "".join(perm_chars[i] for i in p)
+>                 sign_chars = {1: '+', -1: '-'}
+>                 signs_str = "".join(sign_chars[i] for i in s)
+>
+>                 orientations.append({
+>                     'perm': perm_str,
+>                     'signs': signs_str,
+>                     'mask': mask_dict,
+>                     'dx': max_x + 1,
+>                     'dy': max_y + 1,
+>                     'dz': max_z + 1
+>                 })
+>     return orientations
+>
+> obj_orientations = {name: get_orientations(voxels) for name, voxels in flat_objs.items()}
+>
+> ordered_names = sorted(flat_objs.keys(), key=lambda k: len(flat_objs[k]), reverse=True)
+>
+> for name in ordered_names:
+>     if not obj_orientations[name]:
+>         print(f"Object {name} cannot fit in {W}x{H}x{D}")
+>         sys.exit(1)
+>
+> grid = [[0] * H for _ in range(D)]
+> solution = {}
+>
+> def solve(idx):
+>     if idx == len(ordered_names):
+>         return True
+>
+>     name = ordered_names[idx]
+>     for ori in obj_orientations[name]:
+>         mask = ori['mask']
+>         dx, dy, dz = ori['dx'], ori['dy'], ori['dz']
+>
+>         for z_off in range(D - dz + 1):
+>             for y_off in range(H - dy + 1):
+>                 for x_off in range(W - dx + 1):
+>                     collision = False
+>                     for z_m, y_dict in mask.items():
+>                         gz = z_off + z_m
+>                         for y_m, x_mask in y_dict.items():
+>                             gy = y_off + y_m
+>                             if grid[gz][gy] & (x_mask << x_off):
+>                                 collision = True
+>                                 break
+>                         if collision:
+>                             break
+>
+>                     if not collision:
+>                         for z_m, y_dict in mask.items():
+>                             gz = z_off + z_m
+>                             for y_m, x_mask in y_dict.items():
+>                                 gy = y_off + y_m
+>                                 grid[gz][gy] |= (x_mask << x_off)
+>
+>                         solution[name] = {
+>                             'perm': ori['perm'],
+>                             'signs': ori['signs'],
+>                             'x': x_off,
+>                             'y': y_off,
+>                             'z': z_off
+>                         }
+>
+>                         if solve(idx + 1):
+>                             return True
+>
+>                         for z_m, y_dict in mask.items():
+>                             gz = z_off + z_m
+>                             for y_m, x_mask in y_dict.items():
+>                                 gy = y_off + y_m
+>                                 grid[gz][gy] &= ~(x_mask << x_off)
+>     return False
+>
+> start = time.time()
+> if solve(0):
+>     print(f"Found solution for {W}x{H}x{D} in {time.time()-start:.2f}s")
+>     with open('solution_cmds.sh', 'w') as f:
+>         for name in ordered_names:
+>             s = solution[name]
+>             f.write(f"python3 /task/tools/place_object.py {name} {s['perm']} {s['signs']} {s['x']} {s['y']} {s['z']}\n")
+>     sys.exit(0)
+> else:
+>     print(f"No solution for {W}x{H}x{D} in {time.time()-start:.2f}s")
+>     sys.exit(1)
+> EOF
+user@36710be3486f:~$ python3 solver.py 12 12 12
+Found solution for 12x12x12 in 0.00s
+user@36710be3486f:~$

@@ -1,0 +1,41 @@
+Current Terminal Screen:
+Bounding box: 12 x 18 x 6 = 1296
+Placed   (8): ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut2
+Unplaced (5): donut1, match_box1, match_box2, match_box3, match_box4
+user@a968081b7478:~$ python3 /task/tools/place_object.py match_box1 xyz +++ 8 0 0
+PLACED match_box1
+  Transform : perm=xyz signs=+++ offset=(8,0,0)
+  Voxels    : 18
+  Range     : x=[8,10] y=[0,1] z=[0,2]
+  Bounding box so far: 12 x 18 x 6 = 1296
+Bounding box: 12 x 18 x 6 = 1296
+Placed   (9): ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut2, match_box1
+Unplaced (4): donut1, match_box2, match_box3, match_box4
+user@a968081b7478:~$ python3 /task/tools/place_object.py match_box2 xyz +++ 8 0 3
+PLACED match_box2
+  Transform : perm=xyz signs=+++ offset=(8,0,3)
+  Voxels    : 18
+  Range     : x=[8,10] y=[0,1] z=[3,5]
+  Bounding box so far: 12 x 18 x 6 = 1296
+Bounding box: 12 x 18 x 6 = 1296
+Placed   (10): ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut2, match_box1, match_box2
+Unplaced (3): donut1, match_box3, match_box4
+user@a968081b7478:~$ python3 /task/tools/place_object.py match_box3 yxz +++ 10 2 0
+PLACED match_box3
+  Transform : perm=yxz signs=+++ offset=(10,2,0)
+  Voxels    : 18
+  Range     : x=[10,11] y=[2,4] z=[0,2]
+  Bounding box so far: 12 x 18 x 6 = 1296
+Bounding box: 12 x 18 x 6 = 1296
+Placed   (11): ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut2, match_box1, match_box2, match_box3
+Unplaced (2): donut1, match_box4
+user@a968081b7478:~$ python3 /task/tools/place_object.py match_box4 yxz +++ 10 2 3
+PLACED match_box4
+  Transform : perm=yxz signs=+++ offset=(10,2,3)
+  Voxels    : 18
+  Range     : x=[10,11] y=[2,4] z=[3,5]
+  Bounding box so far: 12 x 18 x 6 = 1296
+Bounding box: 12 x 18 x 6 = 1296
+Placed   (12): ball, bowl1, bowl2, bowl3, bowl4, bowl5, chocolate, donut2, match_box1, match_box2, match_box3, match_box4
+Unplaced (1): donut1
+user@a968081b7478:~$

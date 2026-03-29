@@ -1,0 +1,104 @@
+New Terminal Output:
+
+user@a85be64098f5:~$ cat > /tmp/nest2.py << 'PYEOF'
+> import json
+>
+> with open('/task/objects.json') as f:
+>     data = json.load(f)
+>
+> def get_voxels(name):
+>     voxels = set()
+>     for group in data[name].values():
+>         for v in group:
+>             voxels.add(tuple(v))
+>     min_x = min(v[0] for v in voxels)
+>     min_y = min(v[1] for v in voxels)
+>     min_z = min(v[2] for v in voxels)
+>     return set((x-min_x, y-min_y, z-min_z) for x,y,z in voxels)
+>
+> bowl = get_voxels('bowl1')
+> bowl_2d = set((x,y) for x,y,z in bowl if z == 0)
+>
+> # Try stacking 5 bowls with dy=2 increments
+> print("Stacking 5 bowls with dy=2:")
+> combined = set()
+> for i in range(5):
+>     shifted = set((x, y + 2*i) for x,y in bowl_2d)
+>     overlap = combined & shifted
+>     if overlap:
+>         print(f"  Bowl {i+1} at dy={2*i}: OVERLAP of {len(overlap)} cells!")
+>     else:
+>         print(f"  Bowl {i+1} at dy={2*i}: OK")
+>     combined |= shifted
+>
+> min_x = min(v[0] for v in combined)
+> max_x = max(v[0] for v in combined)
+> min_y = min(v[1] for v in combined)
+> max_y = max(v[1] for v in combined)
+> print(f"\nCombined: {len(combined)} cells, bbox={max_x-min_x+1}x{max_y-min_y+1}")
+> print(f"In 3D with z=6: bbox={max_x-min_x+1}x{max_y-min_y+1}x6 = {(max_x-min_x+1)*(max_y-min_y+1)*6}")
+>
+> # Visualize
+> print("\nCombined layout:")
+> for y in range(max_y+1):
+>     row = ''.join('#' if (x,y) in combined else '.' for x in range(12))
+>     # Count which bowls are at this y
+>     bowls_here = []
+>     for i in range(5):
+>         if any((x, y-2*i) in bowl_2d for x in range(12)):
+>             bowls_here.append(str(i+1))
+>     print(f"  y={y:2d}: {row}  bowls: {','.join(bowls_here)}")
+>
+> # Now check what empty space remains
+> full_2d = set((x,y) for x in range(12) for y in range(max_y+1))
+> empty_2d = full_2d - combined
+> print(f"\nEmpty cells in bbox: {len(empty_2d)}")
+> print(f"Fill ratio: {len(combined)}/{len(full_2d)} = {len(combined)/len(full_2d):.2%}")
+>
+> # What about stacking with dy=1?
+> print("\n\nStacking 5 bowls with dy=1:")
+> combined1 = set()
+> for i in range(5):
+>     shifted = set((x, y + i) for x,y in bowl_2d)
+>     overlap = combined1 & shifted
+>     if overlap:
+>         print(f"  Bowl {i+1} at dy={i}: OVERLAP of {len(overlap)} cells!")
+>         break
+>     else:
+>         print(f"  Bowl {i+1} at dy={i}: OK")
+>     combined1 |= shifted
+>
+> PYEOF
+user@a85be64098f5:~$ python3 /tmp/nest2.py
+Stacking 5 bowls with dy=2:
+  Bowl 1 at dy=0: OK
+  Bowl 2 at dy=2: OK
+  Bowl 3 at dy=4: OK
+  Bowl 4 at dy=6: OK
+  Bowl 5 at dy=8: OK
+
+Combined: 90 cells, bbox=12x12
+In 3D with z=6: bbox=12x12x6 = 864
+
+Combined layout:
+  y= 0: ##........##  bowls: 1
+  y= 1: .##......##.  bowls: 1
+  y= 2: ####....####  bowls: 1,2
+  y= 3: .##########.  bowls: 1,2
+  y= 4: ####....####  bowls: 2,3
+  y= 5: .##########.  bowls: 2,3
+  y= 6: ####....####  bowls: 3,4
+  y= 7: .##########.  bowls: 3,4
+  y= 8: ####....####  bowls: 4,5
+  y= 9: .##########.  bowls: 4,5
+  y=10: ..##....##..  bowls: 5
+  y=11: ...######...  bowls: 5
+
+Empty cells in bbox: 54
+Fill ratio: 90/144 = 62.50%
+
+
+Stacking 5 bowls with dy=1:
+  Bowl 1 at dy=0: OK
+  Bowl 2 at dy=1: OVERLAP of 6 cells!
+user@a85be64098f5:~$

@@ -1,0 +1,231 @@
+New Terminal Output:
+
+user@65dade1cf33c:~$ python3 - <<'PY'
+> import json,itertools,sys,time
+> with open('/task/objects.json') as f:
+>     data=json.load(f)
+> objs={}
+> for name,obj in data.items():
+>     pts=[]
+>     for g,arr in obj.items():
+>         pts.extend(map(tuple,arr))
+>     objs[name]=sorted(set(pts))
+> perms=['xyz','xzy','yxz','yzx','zxy','zyx']
+> signs=list(itertools.product([1,-1], repeat=3))
+>
+> def transform(pts,perm,sgn):
+n sgn),dims,vox)
+    orients[name]=list(seen.values())
+
+names=sorted(objs, key=lambda n: -len(objs[n]))
+print('order', names)
+
+def search(W,H,D,limit_orients=6, timelimit=20):
+    start=time.time()
+    occ=set()
+    placed=[]
+    # reduce orientation count by preferring low z extent then area
+    orient_choices={}
+    for n in names:
+        cand=[o for o in orients[n] if o[2][2] <= D and o[2][1] <= H and o[2][0] <= W]
+        cand.sort(key=lambda o:(o[2][2],o[2][1]*o[2][0],o[2]))
+        orient_choices[n]=cand[:limit_orients] if len(cand)>limit_orients else cand
+    def first_empty():
+        for z in range(D):
+            for y in range(H):
+                for x in range(W):
+                    if (x,y,z) not in occ:
+                        return (x,y,z)
+        return None
+    def rec(i):
+        if time.time()-start>timelimit:
+            raise TimeoutError
+        if i==len(names):
+            return True
+        anchor=first_empty()
+        n=names[i]
+        tried=set()
+        for perm,sgn,dims,vox in orient_choices[n]:
+            if dims in tried:
+                pass
+            tried.add(dims)
+            ax,ay,az=anchor
+            # try aligning one voxel of piece to anchor for a few low voxels
+            lowvox=[v for v in vox if v[2]==0]
+            lowvox=lowvox[:min(12,len(lowvox))]
+            for vx,vy,vz in lowvox:
+                ox,oy,oz=ax-vx,ay-vy,az-vz
+                if ox<0 or oy<0 or oz<0: continue
+                if ox+dims[0]>W or oy+dims[1]>H or oz+dims[2]>D: continue
+                pts=[(x+ox,y+oy,z+oz) for x,y,z in vox]
+                if any(p in occ for p in pts): continue
+                occ.update(pts); placed.append((n,perm,sgn,ox,oy,oz,dims))
+                if rec(i+1): return True
+                placed.pop()
+                for p in pts: occ.remove(p)
+        return False
+    try:
+        ok=rec(0)
+    except TimeoutError:
+        ok=False
+    return ok,placed,time.time()-start
+
+cands=[]
+for W in range(10,25):
+    for H in range(8,25):
+        D=6
+        V=W*H*D
+   >     out=[]
+>     for p in pts:
+>         d={'x':p[0],'y':p[1],'z':p[2]}
+>         q=[sgn[i]*d[perm[i]] for i in range(3)]
+>         out.append(tuple(q))
+>     mins=[min(p[i] for p in out) for i in range(3)]
+>     out=tuple(sorted((p[0]-mins[0],p[1]-mins[1],p[2]-mins[2]) for p in out))
+>     dims=(max(p[0] for p in out)+1,max(p[1] for p in out)+1,max(p[2] for p in out)+1)
+>     return out,dims
+>
+> orients={}
+> for name,pts in objs.items():
+>     seen={}
+>     for perm in perms:
+>         for sgn in signs:
+>             vox,dims=transform(pts,perm,sgn)
+>             key=vox
+>             if key not in seen:
+>                 seen[key]=(perm,''.join('+' if x==1 else '-' for x in sgn),dims,vox)
+>     orients[name]=list(seen.values())
+>
+> names=sorted(objs, key=lambda n: -len(objs[n]))
+> print('order', names)
+>
+> def search(W,H,D,limit_orients=6, timelimit=20):
+>     start=time.time()
+>     occ=set()
+>     placed=[]
+>     # reduce orientation count by preferring low z extent then area
+>     orient_choices={}
+>     for n in names:
+>         cand=[o for o in orients[n] if o[2][2] <= D and o[2][1] <= H and o[2][0] <= W]
+>         cand.sort(key=lambda o:(o[2][2],o[2][1]*o[2][0],o[2]))
+>         orient_choices[n]=cand[:limit_orients] if len(cand)>limit_orients else cand
+>     def first_empty():
+>         for z in range(D):
+>             for y in range(H):
+>                 for x in range(W):
+>                     if (x,y,z) not in occ:
+>                         return (x,y,z)
+>         return None
+>     def rec(i):
+>         if time.time()-start>timelimit:
+>             raise TimeoutError
+>         if i==len(names):
+>             return True
+>         anchor=first_empty()
+>         n=names[i]
+>         tried=set()
+>         for perm,sgn,dims,vox in orient_choices[n]:
+>             if dims in tried:
+>                 pass
+>             tried.add(dims)
+>             ax,ay,az=anchor
+>             # try aligning one voxel of piece to anchor for a few low voxels
+>             lowvox=[v for v in vox if v[2]==0]
+>             lowvox=lowvox[:min(12,len(lowvox))]
+>             for vx,vy,vz in lowvox:
+>                 ox,oy,oz=ax-vx,ay-vy,az-vz
+>                 if ox<0 or oy<0 or oz<0: continue
+>                 if ox+dims[0]>W or oy+dims[1]>H or oz+dims[2]>D: continue
+>                 pts=[(x+ox,y+oy,z+oz) for x,y,z in vox]
+>                 if any(p in occ for p in pts): continue
+>                 occ.update(pts); placed.append((n,perm,sgn,ox,oy,oz,dims))
+>                 if rec(i+1): return True
+>                 placed.pop()
+>                 for p in pts: occ.remove(p)
+>         return False
+>     try:
+>         ok=rec(0)
+>     except TimeoutError:
+>         ok=False
+>     return ok,placed,time.time()-start
+>
+> cands=[]
+> for W in range(10,25):
+>     for H in range(8,25):
+>         D=6
+>         V=W*H*D
+>         if V<968 or V>1152: continue
+>         cands.append((V,W,H,D))
+> cands.sort()
+> for V,W,H,D in cands[:80]:
+>     print('try',W,H,D,'V',V)
+>     ok,placed,t=search(W,H,D,limit_orients=8,timelimit=6)
+>     print(' ->',ok,'time',round(t,2),'placed',len(placed))
+>     if ok:
+>         print('FOUND',W,H,D,V)
+>         for p in placed:
+>             print('python3 /task/tools/place_object.py', p[0], p[1], p[2], p[3], p[4], p[5])
+>         sys.exit(0)
+> print('no solution found')
+> PY
+order ['ball', 'bowl1', 'bowl2', 'bowl3', 'bowl4', 'bowl5', 'donut1', 'chocolate', 'donut2', 'match_box1', 'match_box2', 'match_box3', 'match_box4']
+try 18 9 6 V 972
+ -> False time 0.0 placed 0
+try 11 15 6 V 990
+ -> False time 0.0 placed 0
+try 15 11 6 V 990
+ -> False time 0.0 placed 0
+try 12 14 6 V 1008
+ -> False time 0.0 placed 0
+try 14 12 6 V 1008
+ -> False time 0.0 placed 0
+try 21 8 6 V 1008
+ -> False time 0.0 placed 0
+try 13 13 6 V 1014
+ -> False time 0.0 placed 0
+try 10 17 6 V 1020
+ -> False time 0.0 placed 0
+try 17 10 6 V 1020
+ -> False time 0.0 placed 0
+try 19 9 6 V 1026
+ -> False time 0.0 placed 0
+try 11 16 6 V 1056
+ -> False time 0.0 placed 0
+try 16 11 6 V 1056
+ -> False time 0.0 placed 0
+try 22 8 6 V 1056
+ -> False time 0.0 placed 0
+try 10 18 6 V 1080
+ -> False time 0.0 placed 0
+try 12 15 6 V 1080
+ -> False time 0.0 placed 0
+try 15 12 6 V 1080
+ -> False time 0.0 placed 0
+try 18 10 6 V 1080
+ -> False time 0.0 placed 0
+try 20 9 6 V 1080
+ -> False time 0.0 placed 0
+try 13 14 6 V 1092
+ -> False time 0.0 placed 0
+try 14 13 6 V 1092
+ -> False time 0.0 placed 0
+try 23 8 6 V 1104
+ -> False time 0.0 placed 0
+try 11 17 6 V 1122
+ -> False time 0.0 placed 0
+try 17 11 6 V 1122
+ -> False time 0.0 placed 0
+try 21 9 6 V 1134
+ -> False time 0.0 placed 0
+try 10 19 6 V 1140
+ -> False time 0.0 placed 0
+try 19 10 6 V 1140
+ -> False time 0.0 placed 0
+try 12 16 6 V 1152
+ -> False time 0.0 placed 0
+try 16 12 6 V 1152
+ -> False time 0.0 placed 0
+try 24 8 6 V 1152
+ -> False time 0.0 placed 0
+no solution found
+user@65dade1cf33c:~$

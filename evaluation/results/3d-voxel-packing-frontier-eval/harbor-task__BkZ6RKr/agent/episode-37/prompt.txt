@@ -1,0 +1,7 @@
+New Terminal Output:
+nd
+user@a85be64098f5:~$ cat /home/user/solution.json | python3 -c "import json,sys; d=json.load(sys.stdin); print('Objects:', len(d)); total=sum(len(v) for v in d.
+values()); print('Total voxels:', total)"
+Objects: 13
+Total voxels: 13
+user@a85be64098f5:~$

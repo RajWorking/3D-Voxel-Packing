@@ -1,0 +1,483 @@
+New Terminal Output:
+
+user@61aa19fdb377:~$ python3 - <<'PY'
+> import json
+> from collections import defaultdict
+> with open('/task/objects.json') as f:
+>     data=json.load(f)
+> for name in ['bowl1','ball','donut1','donut2','chocolate']:
+>     pts=[]
+>     for arr in data[name].values(): pts.extend(map(tuple,arr))
+>     pts=set(pts)
+>     xs=sorted(set(x for x,_,_ in pts)); ys=sorted(set(y for _,y,_ in pts)); zs=sorted(set(z for _,_,z in pts))
+>     print('\nOBJECT',name,'count',len(pts),'bbox',(max(xs)+1,max(ys)+1,max(zs)+1))
+>     print('x-slices counts:', [sum(1 for p in pts if p[0]==x) for x in xs])
+>     print('y-slices counts:', [sum(1 for p in pts if p[1]==y) for y in ys])
+>     print('z-slices counts:', [sum(1 for p in pts if p[2]==z) for z in zs])
+>     print('xy footprint by y descending (# occupied in z-collapsed slice):')
+>     for y in reversed(ys):
+>         row=''
+>         for x in xs:
+>             row += '#' if any((x,y,z) in pts for z in zs) else '.'
+>         print(row)
+>     if max(zs)==0:
+>         continue
+>     print('cross-sections per z:')
+>     for z in zs:
+>         print('z=',z)
+>         for y in reversed(ys):
+>             row=''
+>             for x in xs:
+>                 row += '#' if (x,y,z) in pts else '.'
+>             print(row)
+> PY
+
+OBJECT bowl1 count 108 bbox (12, 4, 7)
+x-slices counts: [6, 12, 12, 12, 6, 6, 6, 6, 12, 12, 12, 6]
+y-slices counts: [24, 24, 24, 36]
+z-slices counts: [18, 18, 18, 18, 18, 18]
+xy footprint by y descending (# occupied in z-collapsed slice):
+...######...
+..##....##..
+.##......##.
+##........##
+cross-sections per z:
+z= 1
+...######...
+..##....##..
+.##......##.
+##........##
+z= 2
+...######...
+..##....##..
+.##......##.
+##........##
+z= 3
+...######...
+..##....##..
+.##......##.
+##........##
+z= 4
+...######...
+..##....##..
+.##......##.
+##........##
+z= 5
+...######...
+..##....##..
+.##......##.
+##........##
+z= 6
+...######...
+..##....##..
+.##......##.
+##........##
+
+OBJECT ball count 320 bbox (10, 8, 6)
+x-slices counts: [12, 24, 32, 48, 44, 44, 48, 32, 24, 12]
+y-slices counts: [24, 36, 44, 56, 56, 44, 36, 24]
+z-slices counts: [56, 56, 48, 48, 56, 56]
+xy footprint by y descending (# occupied in z-collapsed slice):
+...####...
+..######..
+.########.
+##########
+##########
+.########.
+..######..
+...####...
+cross-sections per z:
+z= 0
+...####...
+..######..
+.########.
+##########
+##########
+.########.
+..######..
+...####...
+z= 1
+...####...
+..######..
+.########.
+##########
+##########
+.########.
+..######..
+...####...
+z= 2
+...####...
+..######..
+.###..###.
+##.####.##
+##.####.##
+.###..###.
+..######..
+...####...
+z= 3
+...####...
+..######..
+.###..###.
+##.####.##
+##.####.##
+.###..###.
+..######..
+...####...
+z= 4
+...####...
+..######..
+.########.
+##########
+##########
+.########.
+..######..
+...####...
+z= 5
+...####...
+..######..
+.########.
+##########
+##########
+.########.
+..######..
+...####...
+
+OBJECT donut1 count 28 bbox (8, 4, 1)
+x-slices counts: [4, 4, 4, 2, 2, 4, 4, 4]
+y-slices counts: [8, 6, 6, 8]
+z-slices counts: [28]
+xy footprint by y descending (# occupied in z-collapsed slice):
+########
+###..###
+###..###
+########
+
+OBJECT donut2 count 20 bbox (6, 4, 1)
+x-slices counts: [4, 4, 2, 2, 4, 4]
+y-slices counts: [6, 4, 4, 6]
+z-slices counts: [20]
+xy footprint by y descending (# occupied in z-collapsed slice):
+######
+##..##
+##..##
+######
+
+OBJECT chocolate count 24 bbox (6, 4, 1)
+x-slices counts: [4, 4, 4, 4, 4, 4]
+y-slices counts: [6, 6, 6, 6]
+z-slices counts: [24]
+xy footprint by y descending (# occupied in z-collapsed slice):
+######
+######
+######
+######
+user@61aa19fdb377:~$ python3 - <<'PY'
+> import json,itertools
+> with open('/task/objects.json') as f:
+>     data=json.load(f)
+> pts=[]
+> for arr in data['bowl1'].values(): pts.extend(map(tuple,arr))
+> pts=set(pts)
+> perms=['xyz','xzy','yxz','yzx','zxy','zyx']
+> signs=['+++','++-','+-+','+--','-++','-+-','--+','---']
+>
+> def tr(pts,perm,sign):
+>     out=[]
+>     for x,y,z in pts:
+>         d={'x':x,'y':y,'z':z}
+>         q=[d[perm[i]] for i in range(3)]
+>         q=[q[i] if sign[i]=='+' else -q[i] for i in range(3)]
+>         out.append(tuple(q))
+>     mins=[min(p[i] for p in out) for i in range(3)]
+>     out={(p[0]-mins[0],p[1]-mins[1],p[2]-mins[2]) for p in out}
+>     dims=(max(p[0] for p in out)+1,max(p[1] for p in out)+1,max(p[2] for p in out)+1)
+>     return out,dims
+> # show one orientation for each dims
+> shown=set()
+> for perm in perms:
+>     for sign in signs:
+>         out,dims=tr(pts,perm,sign)
+>         if dims in shown: continue
+>         shown.add(dims)
+>         print('\nBOWL orientation',perm,sign,'dims',dims)
+>         xs=range(dims[0]); ys=range(dims[1]); zs=range(dims[2])
+>         # print occupancy collapsed along smallest axis if possible
+>         for z in zs[:min(6,dims[2])]:
+>             print('slice',z)
+>             for y in reversed(list(ys)):
+>                 print(''.join('#' if (x,y,z) in out else '.' for x in xs))
+>         if len(shown)==6: raise SystemExit
+> PY
+
+BOWL orientation xyz +++ dims (12, 4, 6)
+slice 0
+...######...
+..##....##..
+.##......##.
+##........##
+slice 1
+...######...
+..##....##..
+.##......##.
+##........##
+slice 2
+...######...
+..##....##..
+.##......##.
+##........##
+slice 3
+...######...
+..##....##..
+.##......##.
+##........##
+slice 4
+...######...
+..##....##..
+.##......##.
+##........##
+slice 5
+...######...
+..##....##..
+.##......##.
+##........##
+
+BOWL orientation xzy +++ dims (12, 6, 4)
+slice 0
+##........##
+##........##
+##........##
+##........##
+##........##
+##........##
+slice 1
+.##......##.
+.##......##.
+.##......##.
+.##......##.
+.##......##.
+.##......##.
+slice 2
+..##....##..
+..##....##..
+..##....##..
+..##....##..
+..##....##..
+..##....##..
+slice 3
+...######...
+...######...
+...######...
+...######...
+...######...
+...######...
+
+BOWL orientation yxz +++ dims (4, 12, 6)
+slice 0
+#...
+##..
+.##.
+..##
+...#
+...#
+...#
+...#
+..##
+.##.
+##..
+#...
+slice 1
+#...
+##..
+.##.
+..##
+...#
+...#
+...#
+...#
+..##
+.##.
+##..
+#...
+slice 2
+#...
+##..
+.##.
+..##
+...#
+...#
+...#
+...#
+..##
+.##.
+##..
+#...
+slice 3
+#...
+##..
+.##.
+..##
+...#
+...#
+...#
+...#
+..##
+.##.
+##..
+#...
+slice 4
+#...
+##..
+.##.
+..##
+...#
+...#
+...#
+...#
+..##
+.##.
+##..
+#...
+slice 5
+#...
+##..
+.##.
+..##
+...#
+...#
+...#
+...#
+..##
+.##.
+##..
+#...
+
+BOWL orientation yzx +++ dims (4, 6, 12)
+slice 0
+#...
+#...
+#...
+#...
+#...
+#...
+slice 1
+##..
+##..
+##..
+##..
+##..
+##..
+slice 2
+.##.
+.##.
+.##.
+.##.
+.##.
+.##.
+slice 3
+..##
+..##
+..##
+..##
+..##
+..##
+slice 4
+...#
+...#
+...#
+...#
+...#
+...#
+slice 5
+...#
+...#
+...#
+...#
+...#
+...#
+
+BOWL orientation zxy +++ dims (6, 12, 4)
+slice 0
+######
+######
+......
+......
+......
+......
+......
+......
+......
+......
+######
+######
+slice 1
+......
+######
+######
+......
+......
+......
+......
+......
+......
+######
+######
+......
+slice 2
+......
+......
+######
+######
+......
+......
+......
+......
+######
+######
+......
+......
+slice 3
+......
+......
+......
+######
+######
+######
+######
+######
+######
+......
+......
+......
+
+BOWL orientation zyx +++ dims (6, 4, 12)
+slice 0
+......
+......
+......
+######
+slice 1
+......
+......
+######
+######
+slice 2
+......
+######
+######
+......
+slice 3
+######
+######
+......
+......
+slice 4
+######
+......
+......
+......
+slice 5
+######
+......
+......
+......
+user@61aa19fdb377:~$

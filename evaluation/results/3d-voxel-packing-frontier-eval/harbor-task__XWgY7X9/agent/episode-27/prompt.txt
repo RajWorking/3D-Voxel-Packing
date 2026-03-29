@@ -1,0 +1,41 @@
+Current Terminal Screen:
+>             obj_placed = False
+>             for p2 in perms:
+>                 if obj_placed:
+>                     break
+>                 for s2 in product('+-', repeat=3):
+>                     if obj_placed:
+>                         break
+>                     s2_str = ''.join(s2)
+>                     t2 = transform_voxels(obj_v, p2, s2_str)
+>                     sx2 = max(v[0] for v in t2) + 1
+>                     sy2 = max(v[1] for v in t2) + 1
+>                     sz2 = max(v[2] for v in t2) + 1
+>                     if sx2 > 12 or sy2 > 18 or sz2 > 6:
+>                         continue
+>                     for ox2 in range(12 - sx2 + 1):
+>                         if obj_placed:
+>                             break
+>                         for oy2 in range(18 - sy2 + 1):
+>                             if obj_placed:
+>                                 break
+>                             for oz2 in range(6 - sz2 + 1):
+>                                 p2_set = set((x+ox2, y+oy2, z+oz2) for x,y,z in t2)
+>                                 if not (p2_set & test_occupied):
+>                                     test_occupied |= p2_set
+>                                     obj_placed = True
+>                                     break
+>             if not obj_placed:
+>                 all_placed = False
+>                 break
+>
+>         if all_placed:
+>             print(f"  SUCCESS with donut1 at perm={perm} signs={signs} offset=({ox},{oy},{oz})")
+>             break
+>     else:
+>         print("  No complete solution found in first 50 donut1 positions")
+> EOF
+Ball + 5 bowls: 860 voxels
+Searching for donut1 in 12x18x6 (ball+bowls only)...
+Found 0 valid positions for donut1
+user@a968081b7478:~$

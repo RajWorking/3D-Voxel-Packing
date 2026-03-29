@@ -1,0 +1,122 @@
+Previous response had warnings:
+WARNINGS: - Extra text detected before JSON object
+- Extra text detected after JSON object
+
+New Terminal Output:
+
+user@9732490332b2:~$ cat << 'EOF' > solve.py
+ = v.max(axis=0)
+                obj_grid = np.zeros(max_c + 1, dtype=bool)
+                for voxel in v:
+                    obj_grid[tuple(voxel)] = True
+
+                syms.append((v, perm_str, signs_str, obj_grid))
+    return syms
+
+syms_dict = {name: get_symmetries(voxels) for name, voxels in objects.items()}
+
+ordered_names = sorted(objects.keys(), key=lambda name: len(objects[name]), reverse=True)
+
+for BOX_X, BOX_Y, BOX_Z in [(12, 12, 8), (12, 12, 9), (14, 12, 8), (14, 14, 8), (14, 14, 10)]:
+    print(f"Trying box {BOX_X}x{BOX_Y}x{BOX_Z}...")
+    grid = np.zeros((BOX_X, BOX_Y, BOX_Z), dtype=bool)
+    placements = {}
+
+    def solve(idx):
+        if idx == len(ordered_names):
+            return True
+        name = ordered_names[idx]
+        for sym_voxels, perm_str, signs_str, obj_grid in syms_dict[name]:
+            sx, sy, sz = obj_grid.shape
+            if sx > BOX_X or sy > BOX_Y or sz > BOX_Z:
+                continue
+
+            positions = []
+            for x in> import json
+> import numpy as np
+> import os
+>
+> with open('/task/objects.json') as f:
+>     objs = json.load(f)
+>
+> def get_voxels(name):
+>     voxels = []
+>     for layer in objs[name].values():
+>         voxels.extend(layer)
+>     return np.array(voxels)
+>
+> objects = {name: get_voxels(name) for name in objs.keys()}
+>
+> def get_symmetries(voxels):
+>     syms = []
+>     for perm in [(0,1,2), (0,2,1), (1,0,2), (1,2,0), (2,0,1), (2,1,0)]:
+>         for signs in [(1,1,1), (1,1,-1), (1,-1,1), (1,-1,-1), (-1,1,1), (-1,1,-1), (-1,-1,1), (-1,-1,-1)]:
+>             v = voxels[:, perm] * signs
+>             v = v - v.min(axis=0)
+>             is_new = True
+>             for s, _, _, _ in syms:
+>                 if v.shape == s.shape and set(map(tuple, v)) == set(map(tuple, s)):
+>                     is_new = False
+>                     break
+>             if is_new:
+>                 perm_str = "".join(["xyz"[i] for i in perm])
+>                 signs_str = "".join(["+" if s == 1 else "-" for s in signs])
+>
+>                 max_c = v.max(axis=0)
+>                 obj_grid = np.zeros(max_c + 1, dtype=bool)
+>                 for voxel in v:
+>                     obj_grid[tuple(voxel)] = True
+>
+>                 syms.append((v, perm_str, signs_str, obj_grid))
+>     return syms
+>
+> syms_dict = {name: get_symmetries(voxels) for name, voxels in objects.items()}
+>
+> ordered_names = sorted(objects.keys(), key=lambda name: len(objects[name]), reverse=True)
+>
+> for BOX_X, BOX_Y, BOX_Z in [(12, 12, 8), (12, 12, 9), (14, 12, 8), (14, 14, 8), (14, 14, 10)]:
+>     print(f"Trying box {BOX_X}x{BOX_Y}x{BOX_Z}...")
+>     grid = np.zeros((BOX_X, BOX_Y, BOX_Z), dtype=bool)
+>     placements = {}
+>
+>     def solve(idx):
+>         if idx == len(ordered_names):
+>             return True
+>         name = ordered_names[idx]
+>         for sym_voxels, perm_str, signs_str, obj_grid in syms_dict[name]:
+>             sx, sy, sz = obj_grid.shape
+>             if sx > BOX_X or sy > BOX_Y or sz > BOX_Z:
+>                 continue
+>
+>             positions = []
+>             for x in range(BOX_X - sx + 1):
+>                 for y in range(BOX_Y - sy + 1):
+>                     for z in range(BOX_Z - sz + 1):
+>                         positions.append((x, y, z))
+>             positions.sort(key=lambda p: p[0] + p[1] + p[2])
+>
+>             for x, y, z in positions:
+>                 if not np.any(grid[x:x+sx, y:y+sy, z:z+sz] & obj_grid):
+>                     grid[x:x+sx, y:y+sy, z:z+sz] |= obj_grid
+>                     placements[name] = (perm_str, signs_str, x, y, z)
+>
+>                     if solve(idx + 1):
+>                         return True
+>
+>                     grid[x:x+sx, y:y+sy, z:z+sz] ^= obj_grid
+>                     del placements[name]
+>         return False
+>
+>     if solve(0):
+>         print(f"Found solution in {BOX_X}x{BOX_Y}x{BOX_Z}!")
+>         with open('solution_cmds.sh', 'w') as f:
+>             for name in ordered_names:
+>                 perm, signs, x, y, z = placements[name]
+>                 f.write(f"python3 /task/tools/place_object.py {name} {perm} {signs} {x} {y} {z}\n")
+>             f.write("python3 /task/tools/finalize.py\n")
+>         break
+> EOF
+user@9732490332b2:~$ python3 solve.py
+Trying box 12x12x8...
+Trying box 12x12x9...
+

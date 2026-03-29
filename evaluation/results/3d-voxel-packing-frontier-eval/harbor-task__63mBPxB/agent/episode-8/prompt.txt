@@ -1,0 +1,37 @@
+Previous response had warnings:
+WARNINGS: - Extra text detected before JSON object
+- Extra text detected after JSON object
+
+New Terminal Output:
+
+user@36710be3486f:~$ for h in {8..12}; do
+>   for d in {8..12}; do
+>     if [ $h -ge $d ]; then
+>       vol=$((12 * h * d))
+>       if [ $vol -ge 1004 ]; then
+>         echo "Trying 12x${h}x${d} (vol $vol)"
+>         python3 solver.py 12 $h $d
+>       fi
+>     fi
+>   done
+> done
+Trying 12x10x9 (vol 1080)
+No solution for 12x10x9 in 0.04s
+Trying 12x10x10 (vol 1200)
+No solution for 12x10x10 in 0.26s
+Trying 12x11x8 (vol 1056)
+No solution for 12x11x8 in 0.10s
+Trying 12x11x9 (vol 1188)
+No solution for 12x11x9 in 0.19s
+Trying 12x11x10 (vol 1320)
+No solution for 12x11x10 in 1.24s
+Trying 12x11x11 (vol 1452)
+No solution for 12x11x11 in 6.69s
+Trying 12x12x8 (vol 1152)
+No solution for 12x12x8 in 0.73s
+Trying 12x12x9 (vol 1296)
+No solution for 12x12x9 in 3.85s
+Trying 12x12x10 (vol 1440)
+Found solution for 12x12x10 in 1.11s
+Trying 12x12x11 (vol 1584)
+

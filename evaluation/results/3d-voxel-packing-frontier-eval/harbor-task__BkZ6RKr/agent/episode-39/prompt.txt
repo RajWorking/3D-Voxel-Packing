@@ -1,0 +1,30 @@
+New Terminal Output:
+ ]
+  }
+}user@a85be64098f5:~$ python3 -c "
+> import json
+> with open('/home/user/solution.json') as f:
+>     d = json.load(f)
+> print('Objects:', len(d))
+> total = sum(len(v) for v in d.values())
+> print('Total voxels:', total)
+> all_v = []
+> for v in d.values():
+>     all_v.extend(v)
+> mx = [max(p[i] for p in all_v) for i in range(3)]
+> mn = [min(p[i] for p in all_v) for i in range(3)]
+> dims = [mx[i]-mn[i]+1 for i in range(3)]
+> print(f'Bbox: {dims[0]}x{dims[1]}x{dims[2]} = {dims[0]*dims[1]*dims[2]}')
+> # Check for duplicates
+> all_tuples = [tuple(p) for p in all_v]
+> print(f'Unique voxels: {len(set(all_tuples))}')
+> if len(set(all_tuples)) != len(all_tuples):
+>     print('WARNING: duplicate voxels!')
+> "
+Objects: 13
+Total voxels: 13
+Traceback (most recent call last):
+  File "<string>", line 13, in <module>
+  File "<string>", line 13, in <listcomp>
+TypeError: unsupported operand type(s) for -: 'str' and 'str'
+user@a85be64098f5:~$
